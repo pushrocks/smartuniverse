@@ -1,0 +1,5 @@
+.nogit/
+node_modules/
+coverage/
+public/
+pages/
