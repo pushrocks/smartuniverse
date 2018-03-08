@@ -11,10 +11,11 @@
     "format": "(gitzone format)"
   },
   "devDependencies": {
-    "tapbundle": "^1.0.13"
+    "tapbundle": "^2.0.0"
   },
   "dependencies": {
     "smartcli": "^2.0.12",
-    "smartexpress": "^1.0.19"
+    "smartexpress": "^1.0.19",
+    "smartfile": "^4.2.28"
   }
 }
