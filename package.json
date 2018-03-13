@@ -14,8 +14,13 @@
     "tapbundle": "^2.0.0"
   },
   "dependencies": {
+    "lik": "^2.0.5",
+    "rxjs": "^5.5.6",
     "smartcli": "^2.0.12",
-    "smartexpress": "^1.0.19",
-    "smartfile": "^4.2.28"
+    "smartexpress": "^1.0.21",
+    "smartfile": "^4.2.28",
+    "smartrequest": "^1.0.8",
+    "smartrx": "^1.0.5",
+    "smarttime": "^2.0.0"
   }
 }
