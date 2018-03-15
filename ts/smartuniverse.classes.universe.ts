@@ -61,11 +61,15 @@ export class Universe {
     });
 
     // route handling
+    // adds messages
     const addMessageHandler = new Handler('PUT', request => {
       const requestBody = request.body;
       this.universeStore.addMessage(requestBody.message, requestBody.payload);
+      console.log(requestBody);
       return true;
     });
+
+    // gets messages
     const readMessageHandler = new Handler('GET', request => {
       const requestBody = request.body;
       this.universeStore.readMessagesYoungerThan(requestBody.since);

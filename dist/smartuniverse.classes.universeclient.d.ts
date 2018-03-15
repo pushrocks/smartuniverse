@@ -4,6 +4,6 @@ export interface IClientOptions {
 export declare class UniverseClient {
     options: any;
     constructor(optionsArg: IClientOptions);
-    sendMessage(message: any, messagePayload: any): void;
+    sendMessage(messageArg: any, payloadArg: any): Promise<void>;
     getMessageObservable(): void;
 }

@@ -14,9 +14,13 @@ export class UniverseClient {
     this.options = optionsArg;
   }
   
-  public sendMessage(message, messagePayload) {
-    plugins.smartrequest.post(this.options.serverAddress, {
-      requestBody: messagePayload
+  public async sendMessage(messageArg, payloadArg) {
+    const requestBody = {
+      message: messageArg,
+      payload: payloadArg
+    }
+    await plugins.smartrequest.post(this.options.serverAddress, {
+      requestBody: requestBody
     })
   }
 

@@ -18,9 +18,15 @@ tap.test('add a message to the SmartUniverse', async () => {
 // testing message handling
 tap.test('create smartuniverse client', async () => {
   testUniverseClient = new smartuniverse.UniverseClient({
-    serverAddress: 'localhost:8765'
+    serverAddress: 'http://localhost:8765'
   });
   expect(testUniverseClient).to.be.instanceof(smartuniverse.UniverseClient)
+})
+
+tap.test('should send a message correctly', async () => {
+  await testUniverseClient.sendMessage('greeting', {
+    anyBool: true
+  })
 })
 
 tap.test('should end the server correctly', async () => {
