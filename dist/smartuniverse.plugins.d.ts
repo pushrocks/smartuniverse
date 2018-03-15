@@ -5,5 +5,6 @@ import * as smartexpress from 'smartexpress';
 import * as smartfile from 'smartfile';
 import * as smartrequest from 'smartrequest';
 import * as smartrx from 'smartrx';
+import * as smartsocket from 'smartsocket';
 import * as smarttime from 'smarttime';
-export { lik, path, smartcli, smartexpress, smartfile, smartrx, smartrequest, smarttime };
+export { lik, path, smartcli, smartexpress, smartfile, smartrx, smartrequest, smartsocket, smarttime };
