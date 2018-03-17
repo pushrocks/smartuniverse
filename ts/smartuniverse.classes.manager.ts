@@ -4,7 +4,7 @@ import { Objectmap } from 'lik';
 
 export class UniverseManager {
   
-  registerMember () {
-
+  public async registerMember () {
+    
   }
 }
