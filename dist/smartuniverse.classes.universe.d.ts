@@ -17,6 +17,7 @@ export declare class Universe {
     private universeVersionStore;
     private readonly universeVersion;
     private smartexpressServer;
+    private smartsocket;
     constructor(optionsArg: ISmartUniverseConstructorOptions);
     /**
      * initiates a server

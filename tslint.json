@@ -1,6 +1,12 @@
 {
-    "extends": [
-        "tslint:latest",
-        "tslint-config-prettier"
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "semicolon": [
+      true,
+      "always"
     ]
+  }
 }

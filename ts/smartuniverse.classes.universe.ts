@@ -16,8 +16,8 @@ export interface IServerGetMessagesRequestBody {
 }
 
 export interface IServerPutMessageRequestBody {
-  message: string,
-  payload: any
+  message: string;
+  payload: any;
 }
 
 export class Universe {
@@ -27,7 +27,7 @@ export class Universe {
 
   // options
   private options: ISmartUniverseConstructorOptions;
-  
+
   // Store version handling
   private universeVersionStore: string;
   private get universeVersion() {
@@ -41,12 +41,12 @@ export class Universe {
   }
 
   private smartexpressServer: plugins.smartexpress.Server;
-  
+  private smartsocket: plugins.smartsocket.Smartsocket;
+
   constructor(optionsArg: ISmartUniverseConstructorOptions) {
     this.options = optionsArg;
     this.universeStore = new UniverseStore(this.options.messageExpiryInMilliseconds);
     this.universeManager = new UniverseManager();
-
   }
 
   /**
@@ -60,6 +60,13 @@ export class Universe {
       port: portArg
     });
 
+    this.smartsocket = new plugins.smartsocket.Smartsocket({
+      port: 12345 // fix this within smartsocket
+    });
+
+    this.smartsocket.setServer(this.smartexpressServer as any); // should work with express as well
+    this.smartsocket.startServer();
+    
     // route handling
     // adds messages
     const addMessageHandler = new Handler('PUT', request => {
@@ -73,7 +80,7 @@ export class Universe {
     const readMessageHandler = new Handler('GET', request => {
       const requestBody = request.body;
       this.universeStore.readMessagesYoungerThan(requestBody.since);
-    })
+    });
 
     const messageRoute = new Route(this.smartexpressServer, 'message');
     messageRoute.addHandler(addMessageHandler);
@@ -82,7 +89,7 @@ export class Universe {
     await this.smartexpressServer.start();
   }
 
-  public async stopServer () {
+  public async stopServer() {
     await this.smartexpressServer.stop();
   }
 }

@@ -11,5 +11,4 @@ universeCli.standardTask().then(async argvArg => {
     messageExpiryInMilliseconds: 60000
   });
   await standardUniverse.initServer(8765);
-
 });

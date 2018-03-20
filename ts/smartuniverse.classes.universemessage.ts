@@ -17,17 +17,22 @@ export class UniverseMessage {
   public attachedPayload: any;
   public destructionTimer: Timer;
 
-  constructor(parentUniverseStore: UniverseStore, messageArg: string, attachedPayloadArg: any, selfdestructAfterArg: number) {
+  constructor(
+    parentUniverseStore: UniverseStore,
+    messageArg: string,
+    attachedPayloadArg: any,
+    selfdestructAfterArg: number
+  ) {
     this.universeStore = parentUniverseStore;
     this.timestamp = new TimeStamp();
     this.message = messageArg;
     this.attachedPayload = attachedPayloadArg;
-    this.destructionTimer = new Timer(selfdestructAfterArg)
-    this.destructionTimer.start()
+    this.destructionTimer = new Timer(selfdestructAfterArg);
+    this.destructionTimer.start();
 
     // set up self destruction by removing this from the parent messageStore
     this.destructionTimer.completed.then(async () => {
       this.universeStore.messageStore.remove(this);
-    })
+    });
   }
 }
