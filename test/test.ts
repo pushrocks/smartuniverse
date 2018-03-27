@@ -32,15 +32,18 @@ tap.test('should send a message correctly', async () => {
   });
 });
 
-tap.test('should get a obsevable correctly', async () => {
+tap.test('should get a observable correctly', async () => {
   testMessageObservable = testUniverseClient.getMessageObservable();
 });
 
 tap.test('should receive a message correctly', async () => {
- // TODO:
 });
 
-tap.test('should end the server correctly', async () => {
+tap.test('should disconnect the client correctly', async () => {
+  testUniverseClient.close();
+})
+
+tap.test('should end the server correctly', async (tools) => {
   await testUniverse.stopServer();
 });
 

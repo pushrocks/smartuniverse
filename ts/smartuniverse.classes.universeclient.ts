@@ -49,4 +49,8 @@ export class UniverseClient {
     }
     return this.observableIntake.observable;
   }
+
+  public close () {
+    this.socketClient.disconnect();
+  }
 }

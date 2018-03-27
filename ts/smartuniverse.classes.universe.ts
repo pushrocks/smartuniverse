@@ -64,8 +64,10 @@ export class Universe {
       port: 12345 // fix this within smartsocket
     });
 
-    this.smartsocket.setServer(this.smartexpressServer as any); // should work with express as well
-    this.smartsocket.startServer();
+    this.smartsocket.setExternalServer(
+      'express',
+      this.smartexpressServer as any); // should work with express as well
+    this.smartsocket.start();
     
     // route handling
     // adds messages
@@ -90,6 +92,7 @@ export class Universe {
   }
 
   public async stopServer() {
+    await this.smartsocket.stop();
     await this.smartexpressServer.stop();
   }
 }
