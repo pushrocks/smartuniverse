@@ -10,4 +10,5 @@ export declare class UniverseClient {
     constructor(optionsArg: IClientOptions);
     sendMessage(messageArg: any, payloadArg: any): Promise<void>;
     getMessageObservable(): plugins.smartrx.rxjs.Observable<UniverseMessage>;
+    close(): void;
 }
