@@ -2,6 +2,7 @@
   "npmci": {
     "npmGlobalTools": [
       "npmts"
-    ]
+    ],
+    "npmAccessLevel": "public"
   }
 }
