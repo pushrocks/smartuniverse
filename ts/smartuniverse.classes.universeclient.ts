@@ -1,6 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
 
-
 import { Observable } from 'rxjs';
 import { Smartsocket, SmartsocketClient } from 'smartsocket';
 import * as url from 'url';
@@ -15,6 +14,10 @@ export interface IClientOptions {
   serverAddress: string;
 }
 
+/**
+ * this class is for client side only!!!
+ * allows connecting to a universe server
+ */
 export class UniverseClient {
   public options;
   private socketClient: plugins.smartsocket.SmartsocketClient;
@@ -29,11 +32,12 @@ export class UniverseClient {
       message: messageArg,
       payload: payloadArg
     };
+    // TODO: User websocket connection if available
     await plugins.smartrequest.post(this.options.serverAddress, {
       requestBody
     });
   }
-  
+
   public getMessageObservable() {
     if (!this.socketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
@@ -42,7 +46,7 @@ export class UniverseClient {
         password: 'UniverseClient',
         port: parseInt(parsedURL.port, 10),
         role: 'UniverseClient',
-        url: parsedURL.hostname,
+        url: parsedURL.hostname
       });
       this.observableIntake = new plugins.smartrx.ObservableIntake();
       this.socketClient.connect();
@@ -50,7 +54,7 @@ export class UniverseClient {
     return this.observableIntake.observable;
   }
 
-  public close () {
+  public close() {
     this.socketClient.disconnect();
   }
 }

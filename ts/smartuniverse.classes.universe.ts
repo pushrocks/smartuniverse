@@ -3,8 +3,10 @@ import * as plugins from './smartuniverse.plugins';
 import { Handler, Route, Server } from 'smartexpress';
 
 import { UniverseManager } from './smartuniverse.classes.manager';
+import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 import { UniverseStore } from './smartuniverse.classes.universestore';
+
 import * as paths from './smartuniverse.paths';
 
 export interface ISmartUniverseConstructorOptions {
@@ -60,16 +62,7 @@ export class Universe {
       port: portArg
     });
 
-    this.smartsocket = new plugins.smartsocket.Smartsocket({
-      port: 12345 // fix this within smartsocket
-    });
-
-    this.smartsocket.setExternalServer(
-      'express',
-      this.smartexpressServer as any); // should work with express as well
-    this.smartsocket.start();
-    
-    // route handling
+    // message handling
     // adds messages
     const addMessageHandler = new Handler('PUT', request => {
       const requestBody = request.body;
@@ -80,13 +73,30 @@ export class Universe {
 
     // gets messages
     const readMessageHandler = new Handler('GET', request => {
+      const done = plugins.smartq.defer<UniverseMessage[]>();
       const requestBody = request.body;
-      this.universeStore.readMessagesYoungerThan(requestBody.since);
+      const messageObservable = this.universeStore.readMessagesYoungerThan(requestBody.since);
+      messageObservable.toArray().subscribe(universeMessageArrayArg => {
+        done.resolve(universeMessageArrayArg);
+      });
+      return done.promise;
     });
 
+    // create new Route for messages
     const messageRoute = new Route(this.smartexpressServer, 'message');
     messageRoute.addHandler(addMessageHandler);
     messageRoute.addHandler(readMessageHandler);
+
+    const leaderElectionRoute = new Route(this.smartexpressServer, 'leadelection');
+    // TODO: implement Handlers for leader election
+
+    // add websocket upgrade
+    this.smartsocket = new plugins.smartsocket.Smartsocket({
+      port: 12345 // fix this within smartsocket
+    });
+
+    this.smartsocket.setExternalServer('express', this.smartexpressServer as any); // should work with express as well
+    this.smartsocket.start();
 
     await this.smartexpressServer.start();
   }

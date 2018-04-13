@@ -3,6 +3,9 @@ import * as plugins from './smartuniverse.plugins';
 import { Timer, TimeStamp } from 'smarttime';
 import { UniverseStore } from './smartuniverse.classes.universestore';
 
+/**
+ * represents a message within a universe
+ */
 export class UniverseMessage {
   /**
    * public and unique id

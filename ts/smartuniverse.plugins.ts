@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as smartcli from 'smartcli';
 import * as smartexpress from 'smartexpress';
 import * as smartfile from 'smartfile';
+import * as smartq from 'smartq';
 import * as smartrequest from 'smartrequest';
 import * as smartrx from 'smartrx';
 import * as smartsocket from 'smartsocket';
@@ -14,6 +15,7 @@ export {
   smartcli,
   smartexpress,
   smartfile,
+  smartq,
   smartrx,
   smartrequest,
   smartsocket,
