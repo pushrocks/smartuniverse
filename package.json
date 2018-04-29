@@ -7,7 +7,7 @@
   "author": "Lossless GmbH",
   "license": "MIT",
   "scripts": {
-    "test": "ts-node test/test.ts",
+    "test": "(ts-node -O '{\"lib\": [ \"es2015\" ]}' test/test.ts)",
     "build": "(npmts)",
     "format": "(gitzone format)"
   },
