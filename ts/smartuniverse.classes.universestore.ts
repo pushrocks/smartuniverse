@@ -7,6 +7,9 @@ import { Objectmap } from 'lik';
 import { Observable } from 'rxjs';
 import { rxjs } from 'smartrx';
 
+/**
+ * universe store handles the creation, storage and retrieval of messages.
+ */
 export class UniverseStore {
   public standardMessageExpiry: number;
   public destructionTime: number = 60000;

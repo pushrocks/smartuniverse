@@ -1,7 +1,7 @@
 {
   "npmci": {
     "npmGlobalTools": [
-      "@pushrocks/npmts",
+      "@shipzone/npmts",
       "ts-node"
     ],
     "npmAccessLevel": "public"
