@@ -15,11 +15,19 @@ export class UniverseMessage {
    */
   public id: number;
   public universeStore: UniverseStore;
-  public timestamp: TimeStamp;
-  public message: string;
-  public attachedPayload: any;
-  public destructionTimer: Timer;
+  public timestamp: TimeStamp; // when has this message been created
+  public topic: string; // enables unprotected grouping of messages for efficiency purposes.
+  public message: string; // the actual message
+  public attachedPayload: any; // any attached payloads. Can be of binary format.
+  public destructionTimer: Timer; // a timer to take care of message destruction
 
+  /**
+   * the constructor to create a universe message
+   * @param parentUniverseStore
+   * @param messageArg 
+   * @param attachedPayloadArg 
+   * @param selfdestructAfterArg 
+   */
   constructor(
     parentUniverseStore: UniverseStore,
     messageArg: string,

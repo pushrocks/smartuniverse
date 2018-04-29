@@ -14,6 +14,8 @@ export interface ISmartUniverseConstructorOptions {
 }
 
 export interface IServerGetMessagesRequestBody {
+  channel: string;
+  topic?: string;
   youngerThan: number;
 }
 

@@ -1,10 +1,25 @@
 import * as plugins from './smartuniverse.plugins';
 
+import { Objectmap } from 'lik';
+
 /**
- * enables a set of apps to talk within their own limited borders.
+ * enables messages to stay within a certain scope.
  */
 export class UniverseChannel {
-  topic: string;
+  /**
+   * stores the channels that are available within the universe
+   */
+  public static channelStore = new Objectmap();
+
+  /**
+   * creates new channels
+   * @param channelArg the name of the topic
+   * @param secretArg the secret thats used for a certain topic.
+   */
+  public static createChannel = (channelArg: string, secretArg: string) => {
+
+  }
+
   credentials: {
     user: string;
     password: string;
