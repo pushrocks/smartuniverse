@@ -16,7 +16,5 @@ export class UniverseManager {
    * @param channelName the name of the channel
    * @param authSecret the secret against which to verify members of the channel
    */
-  public async registerChannel(channelName: string, authSecret: string) {
-    
-  }
+  public async registerChannel(channelName: string, authSecret: string) {}
 }

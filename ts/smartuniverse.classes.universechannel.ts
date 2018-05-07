@@ -10,6 +10,14 @@ export class UniverseChannel {
    * stores the channels that are available within the universe
    */
   public static channelStore = new Objectmap();
+  
+  /**
+   * the credentials for the channel
+   */
+  private credentials: {
+    user: string;
+    password: string;
+  };
 
   /**
    * creates new channels
@@ -18,11 +26,6 @@ export class UniverseChannel {
    */
   public static createChannel = (channelArg: string, secretArg: string) => {
 
-  }
-
-  credentials: {
-    user: string;
-    password: string;
   };
 
   /**

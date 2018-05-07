@@ -10,15 +10,18 @@ stages:
 - security
 - test
 - release
-- trigger
-- pages
+- metadata
 
+# ====================
+# security stage
+# ====================
 mirror:
   stage: security
   script:
   - npmci git mirror
   tags:
   - docker
+  - notpriv
 
 snyk:
   stage: security
@@ -28,7 +31,11 @@ snyk:
     - npmci command snyk test
   tags:
   - docker
+  - notpriv
 
+# ====================
+# test stage
+# ====================
 testLEGACY:
   stage: test
   script:
@@ -38,6 +45,7 @@ testLEGACY:
   coverage: /\d+.?\d+?\%\s*coverage/
   tags:
   - docker
+  - notpriv
   allow_failure: true
 
 testLTS:
@@ -49,6 +57,7 @@ testLTS:
   coverage: /\d+.?\d+?\%\s*coverage/
   tags:
   - docker
+  - notpriv
     
 testSTABLE:
   stage: test
@@ -59,34 +68,60 @@ testSTABLE:
   coverage: /\d+.?\d+?\%\s*coverage/
   tags:
   - docker
+  - notpriv
 
 release:
   stage: release
   script:
-  - npmci npm prepare
+  - npmci node install stable
   - npmci npm publish
   only:
   - tags
   tags:
   - docker
+  - notpriv
+
+# ====================
+# metadata stage
+# ====================
+codequality:
+  stage: metadata
+  image: docker:stable
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+        --env SOURCE_CODE="$PWD"
+        --volume "$PWD":/code
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
+  artifacts:
+    paths: [codeclimate.json]
+  tags:
+  - docker
+  - priv
 
 trigger:
-  stage: trigger
+  stage: metadata
   script:
   - npmci trigger
   only:
   - tags
   tags:
   - docker
+  - notpriv
 
 pages:
   image: hosttoday/ht-docker-node:npmci
-  stage: pages
+  stage: metadata
   script:
     - npmci command yarn global add npmpage
     - npmci command npmpage
   tags:
     - docker
+    - notpriv
   only:
     - tags
   artifacts:

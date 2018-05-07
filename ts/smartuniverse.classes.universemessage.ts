@@ -14,9 +14,21 @@ export class UniverseMessage {
    * avoids duplications though
    */
   public id: number;
+
+  /**
+   * the universe store the message is attached to
+   */
   public universeStore: UniverseStore;
-  public timestamp: TimeStamp; // when has this message been created
-  public topic: string; // enables unprotected grouping of messages for efficiency purposes.
+
+  /**
+   * time of creation
+   */
+  public timestamp: TimeStamp;
+
+  /**
+   * enables unprotected grouping of messages for efficiency purposes.
+   */
+  public universeChannel: string;
   public message: string; // the actual message
   public attachedPayload: any; // any attached payloads. Can be of binary format.
   public destructionTimer: Timer; // a timer to take care of message destruction
@@ -24,9 +36,9 @@ export class UniverseMessage {
   /**
    * the constructor to create a universe message
    * @param parentUniverseStore
-   * @param messageArg 
-   * @param attachedPayloadArg 
-   * @param selfdestructAfterArg 
+   * @param messageArg
+   * @param attachedPayloadArg
+   * @param selfdestructAfterArg
    */
   constructor(
     parentUniverseStore: UniverseStore,
