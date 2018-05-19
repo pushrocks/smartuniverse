@@ -19,6 +19,10 @@ export class UniverseMessage {
    * the universe store the message is attached to
    */
   public universeStore: UniverseStore;
+  /**
+   * enables unprotected grouping of messages for efficiency purposes.
+   */
+  public universeChannel: string;
 
   /**
    * time of creation
@@ -26,36 +30,58 @@ export class UniverseMessage {
   public timestamp: TimeStamp;
 
   /**
-   * enables unprotected grouping of messages for efficiency purposes.
+   * the actual message
    */
-  public universeChannel: string;
-  public message: string; // the actual message
-  public attachedPayload: any; // any attached payloads. Can be of binary format.
+  public message: string;
+
+  /**
+   * any attached payloads. Can be of binary format.
+   */
+  public attachedPayload: any;
   public destructionTimer: Timer; // a timer to take care of message destruction
 
   /**
    * the constructor to create a universe message
-   * @param parentUniverseStore
    * @param messageArg
    * @param attachedPayloadArg
-   * @param selfdestructAfterArg
    */
   constructor(
-    parentUniverseStore: UniverseStore,
     messageArg: string,
-    attachedPayloadArg: any,
-    selfdestructAfterArg: number
+    attachedPayloadArg: any
   ) {
-    this.universeStore = parentUniverseStore;
     this.timestamp = new TimeStamp();
     this.message = messageArg;
     this.attachedPayload = attachedPayloadArg;
-    this.destructionTimer = new Timer(selfdestructAfterArg);
-    this.destructionTimer.start();
+    this.fallBackDestruction();
+  }
 
-    // set up self destruction by removing this from the parent messageStore
-    this.destructionTimer.completed.then(async () => {
-      this.universeStore.messageStore.remove(this);
+  public setUniverseStore (universeStoreArg: UniverseStore) {
+    this.universeStore = universeStoreArg;
+  }
+
+  public setDestructionTimer (selfdestructAfterArg: number) {
+    if (selfdestructAfterArg) {
+      this.destructionTimer = new Timer(selfdestructAfterArg);
+      this.destructionTimer.start();
+
+      // set up self destruction by removing this from the parent messageStore
+      this.destructionTimer.completed.then(async () => {
+        this.universeStore.messageStore.remove(this);
+      });
+    } else {
+      this.fallBackDestruction();
+    }
+
+  };
+
+  /**
+   * prevents memory leaks if channels have no default 
+   */
+  private fallBackDestruction () {
+    plugins.smartdelay.delayFor(1000).then(() => {
+      if (!this.destructionTimer) {
+        this.setDestructionTimer(6000);
+      }
     });
   }
 }

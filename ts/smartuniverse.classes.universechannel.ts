@@ -12,24 +12,35 @@ export class UniverseChannel {
   public static channelStore = new Objectmap();
   
   /**
-   * the credentials for the channel
-   */
-  private credentials: {
-    user: string;
-    password: string;
-  };
-
-  /**
    * creates new channels
    * @param channelArg the name of the topic
-   * @param secretArg the secret thats used for a certain topic.
+   * @param passphraseArg the secret thats used for a certain topic.
    */
-  public static createChannel = (channelArg: string, secretArg: string) => {
+  public static createChannel = (channelNameArg: string, passphraseArg: string) => {
+    const newChannel = new UniverseChannel(channelNameArg, passphraseArg);
+    return newChannel;
+  }
+  
+  /**
+   * the name of the channel
+   */
+  public name: string;
 
-  };
+  /**
+   * the passphrase for the channel
+   */
+  public passphrase: string;
+
+  constructor(channelNameArg: string, passphraseArg: string) {
+    this.name = channelNameArg;
+    this.passphrase = passphraseArg;
+    UniverseChannel.channelStore.add(this);
+  }
 
   /**
    * authenticates a client on the server side
    */
-  async authenticateClient() {}
+  public async authenticateClient(passphraseArg: string): boolean {
+    return passphraseArg === this.passphrase;
+  }
 }

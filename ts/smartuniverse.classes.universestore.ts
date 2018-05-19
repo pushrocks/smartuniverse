@@ -25,10 +25,8 @@ export class UniverseStore {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  public addMessage(messageArg, attachedPayloadArg) {
-    this.messageStore.add(
-      new UniverseMessage(this, messageArg, attachedPayloadArg, this.destructionTime)
-    );
+  public addMessage(messageArg: UniverseMessage) {
+    this.messageStore.add(messageArg);
   }
 
   /**

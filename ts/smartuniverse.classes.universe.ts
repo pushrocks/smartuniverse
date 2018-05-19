@@ -1,8 +1,6 @@
 import * as plugins from './smartuniverse.plugins';
 
 import { Handler, Route, Server } from 'smartexpress';
-
-import { UniverseManager } from './smartuniverse.classes.manager';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 import { UniverseStore } from './smartuniverse.classes.universestore';
@@ -20,6 +18,8 @@ export interface IServerGetMessagesRequestBody {
 }
 
 export interface IServerPutMessageRequestBody {
+  channel: string;
+  passphrase: string;
   message: string;
   payload: any;
 }
@@ -27,7 +27,6 @@ export interface IServerPutMessageRequestBody {
 export class Universe {
   // subinstances
   public universeStore: UniverseStore;
-  public universeManager: UniverseManager;
 
   // options
   private options: ISmartUniverseConstructorOptions;
@@ -50,7 +49,6 @@ export class Universe {
   constructor(optionsArg: ISmartUniverseConstructorOptions) {
     this.options = optionsArg;
     this.universeStore = new UniverseStore(this.options.messageExpiryInMilliseconds);
-    this.universeManager = new UniverseManager();
   }
 
   /**
@@ -67,8 +65,13 @@ export class Universe {
     // message handling
     // adds messages
     const addMessageHandler = new Handler('PUT', request => {
-      const requestBody = request.body;
-      this.universeStore.addMessage(requestBody.message, requestBody.payload);
+      const requestBody: IServerPutMessageRequestBody = request.body;
+      const message = new UniverseMessage(
+        requestBody.message,
+        requestBody.payload,
+        
+      )
+      this.universeStore.addMessage(message);
       console.log(requestBody);
       return true;
     });
