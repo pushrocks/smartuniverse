@@ -45,21 +45,18 @@ export class UniverseMessage {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  constructor(
-    messageArg: string,
-    attachedPayloadArg: any
-  ) {
+  constructor(messageArg: string, attachedPayloadArg: any) {
     this.timestamp = new TimeStamp();
     this.message = messageArg;
     this.attachedPayload = attachedPayloadArg;
     this.fallBackDestruction();
   }
 
-  public setUniverseStore (universeStoreArg: UniverseStore) {
+  public setUniverseStore(universeStoreArg: UniverseStore) {
     this.universeStore = universeStoreArg;
   }
 
-  public setDestructionTimer (selfdestructAfterArg: number) {
+  public setDestructionTimer(selfdestructAfterArg: number) {
     if (selfdestructAfterArg) {
       this.destructionTimer = new Timer(selfdestructAfterArg);
       this.destructionTimer.start();
@@ -71,13 +68,12 @@ export class UniverseMessage {
     } else {
       this.fallBackDestruction();
     }
-
-  };
+  }
 
   /**
-   * prevents memory leaks if channels have no default 
+   * prevents memory leaks if channels have no default
    */
-  private fallBackDestruction () {
+  private fallBackDestruction() {
     plugins.smartdelay.delayFor(1000).then(() => {
       if (!this.destructionTimer) {
         this.setDestructionTimer(6000);

@@ -10,7 +10,7 @@ export class UniverseChannel {
    * stores the channels that are available within the universe
    */
   public static channelStore = new Objectmap();
-  
+
   /**
    * creates new channels
    * @param channelArg the name of the topic
@@ -19,8 +19,8 @@ export class UniverseChannel {
   public static createChannel = (channelNameArg: string, passphraseArg: string) => {
     const newChannel = new UniverseChannel(channelNameArg, passphraseArg);
     return newChannel;
-  }
-  
+  };
+
   /**
    * the name of the channel
    */

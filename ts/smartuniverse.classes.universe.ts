@@ -66,11 +66,7 @@ export class Universe {
     // adds messages
     const addMessageHandler = new Handler('PUT', request => {
       const requestBody: IServerPutMessageRequestBody = request.body;
-      const message = new UniverseMessage(
-        requestBody.message,
-        requestBody.payload,
-        
-      )
+      const message = new UniverseMessage(requestBody.message, requestBody.payload);
       this.universeStore.addMessage(message);
       console.log(requestBody);
       return true;
