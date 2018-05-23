@@ -17,6 +17,9 @@ export interface IServerGetMessagesRequestBody {
   youngerThan: number;
 }
 
+/**
+ * the interface for a standard request
+ */
 export interface IServerPutMessageRequestBody {
   channel: string;
   passphrase: string;
@@ -24,6 +27,9 @@ export interface IServerPutMessageRequestBody {
   payload: any;
 }
 
+/**
+ * main class that setsup a Universe
+ */
 export class Universe {
   // subinstances
   public universeStore: UniverseStore;
@@ -66,7 +72,7 @@ export class Universe {
     // adds messages
     const addMessageHandler = new Handler('PUT', request => {
       const requestBody: IServerPutMessageRequestBody = request.body;
-      const message = new UniverseMessage(requestBody.message, requestBody.payload);
+      const message = new UniverseMessage(requestBody.message, requestBody.channel, requestBody.passphrase, requestBody.payload);
       this.universeStore.addMessage(message);
       console.log(requestBody);
       return true;

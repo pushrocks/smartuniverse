@@ -1,7 +1,9 @@
 import * as plugins from './smartuniverse.plugins';
 
 import { Timer, TimeStamp } from 'smarttime';
+import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseStore } from './smartuniverse.classes.universestore';
+import { Universe } from './smartuniverse.classes.universe';
 
 /**
  * represents a message within a universe
@@ -22,7 +24,7 @@ export class UniverseMessage {
   /**
    * enables unprotected grouping of messages for efficiency purposes.
    */
-  public universeChannel: string;
+  public universeChannel: UniverseChannel;
 
   /**
    * time of creation
@@ -45,9 +47,10 @@ export class UniverseMessage {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  constructor(messageArg: string, attachedPayloadArg: any) {
+  constructor(messageArg: string, channelNameArg: string, passphraseArg: string,  attachedPayloadArg: any) {
     this.timestamp = new TimeStamp();
     this.message = messageArg;
+    this.universeChannel = UniverseChannel.authorizeForChannel(channelNameArg, passphraseArg); 
     this.attachedPayload = attachedPayloadArg;
     this.fallBackDestruction();
   }

@@ -9,16 +9,33 @@ export class UniverseChannel {
   /**
    * stores the channels that are available within the universe
    */
-  public static channelStore = new Objectmap();
+  public static channelStore = new Objectmap<UniverseChannel>();
+
+  /**
+   * allows messages to be processed in a blacklist mode for further analysis
+   */
+  public static blackListChannel = new UniverseChannel('blacklist', 'nada');
 
   /**
    * creates new channels
    * @param channelArg the name of the topic
    * @param passphraseArg the secret thats used for a certain topic.
    */
-  public static createChannel = (channelNameArg: string, passphraseArg: string) => {
+  public static createChannel (channelNameArg: string, passphraseArg: string) {
     const newChannel = new UniverseChannel(channelNameArg, passphraseArg);
     return newChannel;
+  };
+
+  public static authorizeForChannel (channelNameArg: string, passphraseArg: string) {
+    const foundChannel = this.channelStore.find(universeChannel => {
+       const result = universeChannel.authenticate(channelNameArg, passphraseArg);
+       return result;
+    });
+    if(foundChannel) {
+      return foundChannel;
+    } else {
+      return this.blackListChannel;
+    }
   };
 
   /**
@@ -40,7 +57,7 @@ export class UniverseChannel {
   /**
    * authenticates a client on the server side
    */
-  public async authenticateClient(passphraseArg: string): boolean {
-    return passphraseArg === this.passphrase;
+  public authenticate(channelNameArg: string, passphraseArg: string): boolean {
+    return (this.name === channelNameArg &&  this.passphrase === passphraseArg);
   }
 }

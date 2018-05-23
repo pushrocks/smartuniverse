@@ -14,7 +14,9 @@
   },
   "devDependencies": {
     "@types/node": "^9.6.0",
-    "tapbundle": "^2.0.0"
+    "tapbundle": "^2.0.0",
+    "ts-node": "^6.0.3",
+    "typescript": "^2.8.3"
   },
   "dependencies": {
     "lik": "^2.0.5",
