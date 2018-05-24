@@ -1,7 +1,7 @@
+import * as smartcli from '@pushrocks/smartcli';
 import * as lik from 'lik';
 import * as nodehash from 'nodehash';
 import * as path from 'path';
-import * as smartcli from 'smartcli';
 import * as smartdelay from 'smartdelay';
 import * as smartexpress from 'smartexpress';
 import * as smartfile from 'smartfile';

@@ -6,7 +6,7 @@ process.env.CLI = 'true';
 
 const universeCli = new plugins.smartcli.Smartcli();
 
-universeCli.standardTask().then(async argvArg => {
+universeCli.standardTask().subscribe(async argvArg => {
   const standardUniverse = new Universe({
     messageExpiryInMilliseconds: 60000
   });
