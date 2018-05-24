@@ -6,6 +6,11 @@ import { Objectmap } from 'lik';
  * enables messages to stay within a certain scope.
  */
 export class UniverseChannel {
+  
+  // ======
+  // STATIC
+  // ======
+  
   /**
    * stores the channels that are available within the universe
    */
@@ -26,6 +31,20 @@ export class UniverseChannel {
     return newChannel;
   };
 
+  /**
+   * returns boolean wether certain channel exists
+   */
+  public static async doesChannelExists (channelNameArg: string) {
+    const channel = this.channelStore.find(channelArg => {
+      return channelArg.name === channelNameArg;
+    });
+    if(channel) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public static authorizeForChannel (channelNameArg: string, passphraseArg: string) {
     const foundChannel = this.channelStore.find(universeChannel => {
        const result = universeChannel.authenticate(channelNameArg, passphraseArg);
@@ -38,6 +57,9 @@ export class UniverseChannel {
     }
   };
 
+  // ========
+  // INSTANCE
+  // ========
   /**
    * the name of the channel
    */
