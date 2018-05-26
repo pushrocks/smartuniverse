@@ -1,61 +1,62 @@
 import * as plugins from './smartuniverse.plugins';
 
 import { Objectmap } from 'lik';
+import { UniverseCache } from './smartuniverse.classes.universecache';
+import { UniverseMessage } from './smartuniverse.classes.universemessage';
 
 /**
  * enables messages to stay within a certain scope.
  */
 export class UniverseChannel {
-  
   // ======
   // STATIC
   // ======
-  
-  /**
-   * stores the channels that are available within the universe
-   */
-  public static channelStore = new Objectmap<UniverseChannel>();
-
-  /**
-   * allows messages to be processed in a blacklist mode for further analysis
-   */
-  public static blackListChannel = new UniverseChannel('blacklist', 'nada');
 
   /**
    * creates new channels
    * @param channelArg the name of the topic
    * @param passphraseArg the secret thats used for a certain topic.
    */
-  public static createChannel (channelNameArg: string, passphraseArg: string) {
-    const newChannel = new UniverseChannel(channelNameArg, passphraseArg);
+  public static createChannel(
+    universeCacheArg: UniverseCache,
+    channelNameArg: string,
+    passphraseArg: string
+  ) {
+    const newChannel = new UniverseChannel(universeCacheArg, channelNameArg, passphraseArg);
     return newChannel;
-  };
+  }
 
   /**
    * returns boolean wether certain channel exists
    */
-  public static async doesChannelExists (channelNameArg: string) {
-    const channel = this.channelStore.find(channelArg => {
+  public static async doesChannelExists(universeCacheArg: UniverseCache, channelNameArg: string) {
+    const channel = universeCacheArg.channelCache.find(channelArg => {
       return channelArg.name === channelNameArg;
     });
-    if(channel) {
+    if (channel) {
       return true;
     } else {
       return false;
     }
   }
 
-  public static authorizeForChannel (channelNameArg: string, passphraseArg: string) {
-    const foundChannel = this.channelStore.find(universeChannel => {
-       const result = universeChannel.authenticate(channelNameArg, passphraseArg);
-       return result;
+  public static authorizeAMessageForAChannel(
+    universeCacheArg: UniverseCache,
+    universeMessageArg: UniverseMessage
+  ) {
+    const foundChannel = universeCacheArg.channelCache.find(universeChannel => {
+      const result = universeChannel.authenticate(universeMessageArg);
+      return result;
     });
-    if(foundChannel) {
+    if (foundChannel) {
+      universeMessageArg.authenticated = true;
+      universeMessageArg.universeChannelList.add(foundChannel);
       return foundChannel;
     } else {
-      return this.blackListChannel;
+      universeMessageArg.authenticated = false;
+      universeMessageArg.universeChannelList.add(universeCacheArg.blackListChannel);
     }
-  };
+  }
 
   // ========
   // INSTANCE
@@ -64,22 +65,25 @@ export class UniverseChannel {
    * the name of the channel
    */
   public name: string;
+  public universeCacheInstance: UniverseCache;
 
   /**
    * the passphrase for the channel
    */
   public passphrase: string;
 
-  constructor(channelNameArg: string, passphraseArg: string) {
+  constructor(universeCacheArg: UniverseCache, channelNameArg: string, passphraseArg: string) {
     this.name = channelNameArg;
     this.passphrase = passphraseArg;
-    UniverseChannel.channelStore.add(this);
   }
 
   /**
    * authenticates a client on the server side
    */
-  public authenticate(channelNameArg: string, passphraseArg: string): boolean {
-    return (this.name === channelNameArg &&  this.passphrase === passphraseArg);
+  public authenticate(universeMessageArg: UniverseMessage): boolean {
+    return (
+      this.name === universeMessageArg.requestedChannelName &&
+      this.passphrase === universeMessageArg.requestedChannelPassphrase
+    );
   }
 }

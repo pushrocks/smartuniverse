@@ -1,12 +1,16 @@
 import * as plugins from './smartuniverse.plugins';
 
+import { Objectmap } from 'lik';
+
+
 import { Timer, TimeStamp } from 'smarttime';
-import { UniverseChannel } from './smartuniverse.classes.universechannel';
-import { UniverseStore } from './smartuniverse.classes.universestore';
 import { Universe } from './smartuniverse.classes.universe';
+import { UniverseChannel } from './smartuniverse.classes.universechannel';
+import { UniverseCache } from './smartuniverse.classes.universecache';
 
 /**
  * represents a message within a universe
+ * acts as a container to save message states like authentication status
  */
 export class UniverseMessage {
   /**
@@ -18,13 +22,25 @@ export class UniverseMessage {
   public id: number;
 
   /**
-   * the universe store the message is attached to
+   * the UniverseCache the message is attached to
    */
-  public universeStore: UniverseStore;
+  public universeCache: UniverseCache;
+
+  /**
+   * requestedChannelName
+   */
+  public requestedChannelName: string;
+  public requestedChannelPassphrase: string;
+
   /**
    * enables unprotected grouping of messages for efficiency purposes.
    */
-  public universeChannel: UniverseChannel;
+  public universeChannelList = new Objectmap<UniverseChannel>();
+
+  /**
+   * wether the message is authenticated
+   */
+  public authenticated: boolean = null;
 
   /**
    * time of creation
@@ -47,16 +63,23 @@ export class UniverseMessage {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  constructor(messageArg: string, channelNameArg: string, passphraseArg: string,  attachedPayloadArg: any) {
+  constructor(
+    messageArg: string,
+    requestedChannelNameArg: string,
+    passphraseArg: string,
+    attachedPayloadArg: any
+  ) {
     this.timestamp = new TimeStamp();
     this.message = messageArg;
-    this.universeChannel = UniverseChannel.authorizeForChannel(channelNameArg, passphraseArg); 
+    this.requestedChannelName = requestedChannelNameArg;
+    this.requestedChannelPassphrase = passphraseArg;
     this.attachedPayload = attachedPayloadArg;
+    // prevent memory issues
     this.fallBackDestruction();
   }
 
-  public setUniverseStore(universeStoreArg: UniverseStore) {
-    this.universeStore = universeStoreArg;
+  public setUniverseCache(universeCacheArg: UniverseCache) {
+    this.universeCache = universeCacheArg;
   }
 
   public setDestructionTimer(selfdestructAfterArg: number) {
@@ -64,13 +87,20 @@ export class UniverseMessage {
       this.destructionTimer = new Timer(selfdestructAfterArg);
       this.destructionTimer.start();
 
-      // set up self destruction by removing this from the parent messageStore
+      // set up self destruction by removing this from the parent messageCache
       this.destructionTimer.completed.then(async () => {
-        this.universeStore.messageStore.remove(this);
+        this.universeCache.messageCache.remove(this);
       });
     } else {
       this.fallBackDestruction();
     }
+  }
+
+  /**
+   * handles bad messages for further analysis
+   */
+  handleAsBadMessage() {
+    console.log('received a bad message');
   }
 
   /**

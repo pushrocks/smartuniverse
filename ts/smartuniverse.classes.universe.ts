@@ -3,7 +3,7 @@ import * as plugins from './smartuniverse.plugins';
 import { Handler, Route, Server } from 'smartexpress';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
-import { UniverseStore } from './smartuniverse.classes.universestore';
+import { UniverseCache } from './smartuniverse.classes.universecache';
 
 import * as paths from './smartuniverse.paths';
 
@@ -32,7 +32,7 @@ export interface IServerPutMessageRequestBody {
  */
 export class Universe {
   // subinstances
-  public universeStore: UniverseStore;
+  public universeCache: UniverseCache;
 
   // options
   private options: ISmartUniverseConstructorOptions;
@@ -54,7 +54,7 @@ export class Universe {
 
   constructor(optionsArg: ISmartUniverseConstructorOptions) {
     this.options = optionsArg;
-    this.universeStore = new UniverseStore(this.options.messageExpiryInMilliseconds);
+    this.universeCache = new UniverseCache(this.options.messageExpiryInMilliseconds);
   }
 
   /**
@@ -70,10 +70,15 @@ export class Universe {
 
     // message handling
     // adds messages
-    const addMessageHandler = new Handler('PUT', request => {
+    const addMessageHandler = new Handler('PUT', async request => {
       const requestBody: IServerPutMessageRequestBody = request.body;
-      const message = new UniverseMessage(requestBody.message, requestBody.channel, requestBody.passphrase, requestBody.payload);
-      this.universeStore.addMessage(message);
+      const message = new UniverseMessage(
+        requestBody.message,
+        requestBody.channel,
+        requestBody.passphrase,
+        requestBody.payload
+      );
+      this.universeCache.addMessage(message);
       console.log(requestBody);
       return true;
     });
@@ -82,7 +87,7 @@ export class Universe {
     const readMessageHandler = new Handler('GET', request => {
       const done = plugins.smartq.defer<UniverseMessage[]>();
       const requestBody = request.body;
-      const messageObservable = this.universeStore.readMessagesYoungerThan(requestBody.since);
+      const messageObservable = this.universeCache.readMessagesYoungerThan(requestBody.since);
       messageObservable.toArray().subscribe(universeMessageArrayArg => {
         done.resolve(universeMessageArrayArg);
       });
