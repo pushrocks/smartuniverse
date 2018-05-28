@@ -1,14 +1,16 @@
 import * as plugins from './smartuniverse.plugins';
 
+import { Objectmap } from 'lik';
 import { Observable } from 'rxjs';
 import { Smartsocket, SmartsocketClient } from 'smartsocket';
 import * as url from 'url';
 
 import {
+  ClientUniverseChannel,
   IServerGetMessagesRequestBody,
-  IServerPutMessageRequestBody
-} from './smartuniverse.classes.universe';
-import { UniverseMessage } from './smartuniverse.classes.universemessage';
+  IServerPutMessageRequestBody,
+  UniverseMessage
+} from './';
 
 export interface IClientOptions {
   serverAddress: string;
@@ -18,10 +20,12 @@ export interface IClientOptions {
  * this class is for client side only!!!
  * allows connecting to a universe server
  */
-export class UniverseClient {
+export class ClientUniverse {
   public options;
-  private socketClient: plugins.smartsocket.SmartsocketClient;
-  private observableIntake: plugins.smartrx.ObservableIntake<UniverseMessage>;
+  public socketClient: plugins.smartsocket.SmartsocketClient;
+  public observableIntake: plugins.smartrx.ObservableIntake<UniverseMessage>;
+
+  public channelCache = new Objectmap<ClientUniverseChannel>();
 
   constructor(optionsArg: IClientOptions) {
     this.options = optionsArg;
@@ -38,7 +42,21 @@ export class UniverseClient {
     });
   }
 
-  public getMessageObservable() {
+  public async getChannel(channelName: string): Promise<ClientUniverseChannel> {
+    await this.checkConnection();
+    const clientUniverseChannel = await ClientUniverseChannel.createClientUniverseChannel(
+      this,
+      channelName
+    );
+    this.channelCache.add(clientUniverseChannel);
+    return clientUniverseChannel;
+  }
+
+  public close() {
+    this.socketClient.disconnect();
+  }
+
+  private async checkConnection() {
     if (!this.socketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
       this.socketClient = new SmartsocketClient({
@@ -51,10 +69,5 @@ export class UniverseClient {
       this.observableIntake = new plugins.smartrx.ObservableIntake();
       this.socketClient.connect();
     }
-    return this.observableIntake.observable;
-  }
-
-  public close() {
-    this.socketClient.disconnect();
   }
 }

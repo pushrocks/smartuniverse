@@ -13,16 +13,17 @@
     "format": "(gitzone format)"
   },
   "devDependencies": {
-    "@types/node": "^9.6.0",
+    "@types/node": "^9.6.18",
     "tapbundle": "^2.0.0",
-    "ts-node": "^6.0.3",
+    "ts-node": "^6.0.5",
     "typescript": "^2.8.3"
   },
+  "peerDependencies": {
+    "rxjs": "*"
+  },
   "dependencies": {
-    "@pushrocks/smartcli": "^3.0.1",
     "lik": "^2.0.5",
     "nodehash": "^1.0.4",
-    "rxjs": "^5.5.8",
     "smartdelay": "^1.0.4",
     "smartexpress": "^1.0.21",
     "smartfile": "^4.2.28",

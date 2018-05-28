@@ -2,7 +2,6 @@ import * as plugins from './smartuniverse.plugins';
 
 import { Objectmap } from 'lik';
 
-
 import { Timer, TimeStamp } from 'smarttime';
 import { Universe } from './smartuniverse.classes.universe';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
@@ -89,7 +88,7 @@ export class UniverseMessage {
 
       // set up self destruction by removing this from the parent messageCache
       this.destructionTimer.completed.then(async () => {
-        this.universeCache.messageCache.remove(this);
+        this.universeCache.messageMap.remove(this);
       });
     } else {
       this.fallBackDestruction();

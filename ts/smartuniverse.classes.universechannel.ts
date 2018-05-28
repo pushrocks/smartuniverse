@@ -30,7 +30,7 @@ export class UniverseChannel {
    * returns boolean wether certain channel exists
    */
   public static async doesChannelExists(universeCacheArg: UniverseCache, channelNameArg: string) {
-    const channel = universeCacheArg.channelCache.find(channelArg => {
+    const channel = universeCacheArg.channelMap.find(channelArg => {
       return channelArg.name === channelNameArg;
     });
     if (channel) {
@@ -44,7 +44,7 @@ export class UniverseChannel {
     universeCacheArg: UniverseCache,
     universeMessageArg: UniverseMessage
   ) {
-    const foundChannel = universeCacheArg.channelCache.find(universeChannel => {
+    const foundChannel = universeCacheArg.channelMap.find(universeChannel => {
       const result = universeChannel.authenticate(universeMessageArg);
       return result;
     });
@@ -86,4 +86,6 @@ export class UniverseChannel {
       this.passphrase === universeMessageArg.requestedChannelPassphrase
     );
   }
+
+  public pushToClients(messageArg: UniverseMessage) {}
 }
