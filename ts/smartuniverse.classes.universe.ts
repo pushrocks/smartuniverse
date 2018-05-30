@@ -79,6 +79,19 @@ export class Universe {
       port: 12345 // fix this within smartsocket
     });
 
+    const ClientRole = new plugins.smartsocket.SocketRole({
+      name: 'clientuniverse',
+      passwordHash: 'clientuniverse' // authentication happens on another level
+    });
+
+    this.smartsocket.addSocketRoles([ClientRole]);
+
+    const SubscriptionSocketFunction = new plugins.smartsocket.SocketFunction({
+      allowedRoles: [ClientRole],
+      funcName: 'channelSubscription',
+      funcDef: () => {}
+    });
+
     this.smartsocket.setExternalServer('express', this.smartexpressServer as any);
     // should work with express as well
     this.smartsocket.start();
