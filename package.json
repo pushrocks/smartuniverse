@@ -8,29 +8,27 @@
   "author": "Lossless GmbH",
   "license": "MIT",
   "scripts": {
-    "test": "(ts-node -O '{\"lib\": [ \"es2015\" ]}' test/test.ts)",
+    "test": "(tstest test/)",
     "build": "(npmts)",
     "format": "(gitzone format)"
   },
   "devDependencies": {
     "@types/node": "^9.6.18",
-    "tapbundle": "^2.0.0",
-    "ts-node": "^6.0.5",
-    "typescript": "^2.8.3"
+    "@pushrocks/tapbundle": "^2.0.0"
   },
   "peerDependencies": {
     "rxjs": "*"
   },
   "dependencies": {
-    "lik": "^2.0.5",
-    "nodehash": "^1.0.4",
-    "smartdelay": "^1.0.4",
-    "smartexpress": "^1.0.21",
-    "smartfile": "^4.2.28",
-    "smartq": "^1.1.8",
-    "smartrequest": "^1.0.8",
-    "smartrx": "^1.0.5",
-    "smartsocket": "^1.1.19",
-    "smarttime": "^2.0.0"
+    "@pushrocks/lik": "^2.0.5",
+    "@pushrocks/smarthash": "^1.0.4",
+    "@pushrocks/smartdelay": "^1.0.4",
+    "@pushrocks/smartexpress": "^1.0.21",
+    "@pushrocks/smartfile": "^4.2.28",
+    "@pushrocks/smartpromise": "^1.1.8",
+    "@pushrocks/smartrequest": "^1.0.8",
+    "@pushrocks/smartrx": "^1.0.5",
+    "@pushrocks/smartsocket": "^1.1.19",
+    "@pushrocks/smarttime": "^2.0.0"
   }
 }
