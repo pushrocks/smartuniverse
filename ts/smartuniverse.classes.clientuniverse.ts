@@ -1,8 +1,8 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { Objectmap } from 'lik';
+import { Objectmap } from '@pushrocks/lik';
 import { Observable } from 'rxjs';
-import { Smartsocket, SmartsocketClient } from 'smartsocket';
+import { Smartsocket, SmartsocketClient } from '@pushrocks/smartsocket';
 import * as url from 'url';
 
 import {
@@ -37,7 +37,7 @@ export class ClientUniverse {
       payload: payloadArg
     };
     // TODO: User websocket connection if available
-    await plugins.smartrequest.post(this.options.serverAddress, {
+    await plugins.smartrequest.postJson(this.options.serverAddress, {
       requestBody
     });
   }

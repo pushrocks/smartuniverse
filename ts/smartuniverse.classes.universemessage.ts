@@ -1,8 +1,8 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { Objectmap } from 'lik';
+import { Objectmap } from '@pushrocks/lik';
 
-import { Timer, TimeStamp } from 'smarttime';
+import { Timer, TimeStamp } from '@pushrocks/smarttime';
 import { Universe } from './smartuniverse.classes.universe';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseCache } from './smartuniverse.classes.universecache';

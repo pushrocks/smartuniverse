@@ -1,6 +1,6 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { Objectmap } from 'lik';
+import { Objectmap } from '@pushrocks/lik';
 import { UniverseCache } from './smartuniverse.classes.universecache';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 

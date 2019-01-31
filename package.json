@@ -1,7 +1,7 @@
 {
   "name": "@pushrocks/smartuniverse",
   "version": "1.0.24",
-  "private": true,
+  "private": false,
   "description": "messaging service for your micro services",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -13,8 +13,12 @@
     "format": "(gitzone format)"
   },
   "devDependencies": {
+    "@gitzone/tsbuild": "^2.1.8",
+    "@gitzone/tstest": "^1.0.18",
     "@pushrocks/tapbundle": "^3.0.7",
-    "@types/node": "^10.12.19"
+    "@types/node": "^10.12.20",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0"
   },
   "peerDependencies": {
     "rxjs": "*"
@@ -26,9 +30,9 @@
     "@pushrocks/smartfile": "^6.0.12",
     "@pushrocks/smarthash": "^2.0.4",
     "@pushrocks/smartpromise": "^2.0.5",
-    "@pushrocks/smartrequest": "^1.0.8",
+    "@pushrocks/smartrequest": "^1.1.14",
     "@pushrocks/smartrx": "^2.0.3",
-    "@pushrocks/smartsocket": "^1.1.24",
+    "@pushrocks/smartsocket": "^1.1.27",
     "@pushrocks/smarttime": "^3.0.5"
   }
 }

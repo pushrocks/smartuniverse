@@ -3,10 +3,11 @@ import * as plugins from './smartuniverse.plugins';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 
-import { Objectmap } from 'lik';
+import { Objectmap } from '@pushrocks/lik';
 
-import { Observable } from 'rxjs';
-import { rxjs } from 'smartrx';
+import { Observable, from } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { rxjs } from '@pushrocks/smartrx';
 
 /**
  * universe store handles the creation, storage and retrieval of messages.
@@ -52,10 +53,10 @@ export class UniverseCache {
    * Read a message from the UniverseStore
    */
   public readMessagesYoungerThan(unixTimeArg?: number): Observable<UniverseMessage> {
-    const messageObservable = rxjs.Observable.from(this.messageMap.getArray()).filter(
-      messageArg => {
+    const messageObservable = from(this.messageMap.getArray()).pipe(
+      filter(messageArg => {
         return messageArg.timestamp.isYoungerThanMilliSeconds(this.destructionTime);
-      }
+      })
     );
     return messageObservable;
   }

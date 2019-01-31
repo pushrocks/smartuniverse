@@ -1,5 +1,5 @@
 // tslint:disable-next-line:no-implicit-dependencies
-import { expect, tap } from 'tapbundle';
+import { expect, tap } from '@pushrocks/tapbundle';
 import * as smartuniverse from '../ts/index';
 
 import { Observable } from 'rxjs';

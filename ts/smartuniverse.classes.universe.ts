@@ -1,6 +1,6 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { Handler, Route, Server } from 'smartexpress';
+import { Handler, Route, Server } from '@pushrocks/smartexpress';
 import { UniverseCache, UniverseChannel, UniverseMessage } from './';
 
 import * as paths from './smartuniverse.paths';
@@ -69,7 +69,9 @@ export class Universe {
   public async initServer(portArg: number | string) {
     this.smartexpressServer = new plugins.smartexpress.Server({
       cors: true,
-      defaultAnswer: `smartuniverse server ${this.universeVersion}`,
+      defaultAnswer: async () => {
+        return `smartuniverse server ${this.universeVersion}`;
+      },
       forceSsl: false,
       port: portArg
     });
