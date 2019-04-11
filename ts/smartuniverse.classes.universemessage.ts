@@ -17,7 +17,10 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
    * public and unique id
    * numeric ascending
    * adheres to time in milliseconds
-   * avoids duplications though
+   *   -> meaning it describes the time of arrival
+   *   -> two messages received at the same time will count up the second one
+   *   -> avoids duplications of messages
+   *   -> may be changed to nanoseconds to ensure higher throughput
    */
   public id: number;
 
