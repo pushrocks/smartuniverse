@@ -31,11 +31,8 @@ export class ClientUniverse {
     this.options = optionsArg;
   }
 
-  public async sendMessage(messageArg, payloadArg) {
-    const requestBody: interfaces.IUniverseMessage = {
-      message: messageArg,
-      payload: payloadArg
-    };
+  public async sendMessage(messageArg: interfaces.IUniverseMessage) {
+    const requestBody: interfaces.IUniverseMessage = messageArg;
     const requestBodyString = JSON.stringify(requestBody);
     // TODO: User websocket connection if available
     const response = await plugins.smartrequest.postJson(`${this.options.serverAddress}/sendmessage` , {

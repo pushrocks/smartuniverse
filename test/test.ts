@@ -8,6 +8,11 @@ let testUniverse: smartuniverse.Universe;
 let testUniverseClient: smartuniverse.ClientUniverse;
 let testClientChannel: smartuniverse.ClientUniverseChannel;
 
+const testChannelData = {
+  channelName: 'awesomeTestChannel',
+  channelPass: 'awesomeChannelPAss'
+}
+
 tap.test('first test', async () => {
   testUniverse = new smartuniverse.Universe({
     messageExpiryInMilliseconds: 1000
@@ -15,7 +20,7 @@ tap.test('first test', async () => {
 });
 
 tap.test('add a message to the SmartUniverse', async () => {
-  await testUniverse.initServer(8765);
+  await testUniverse.start(8765);
 });
 
 // testing message handling
@@ -31,7 +36,7 @@ tap.test('should add a channel to the universe', async () => {
 });
 
 tap.test('should get a observable correctly', async () => {
-  testClientChannel = await testUniverseClient.getChannel('testChannel');
+  testClientChannel = await testUniverseClient.getChannel(testChannelData.channelName, testChannelData.channelPass);
   expect(testClientChannel).to.be.instanceof(smartuniverse.ClientUniverseChannel);
 });
 

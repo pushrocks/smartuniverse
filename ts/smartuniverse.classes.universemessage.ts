@@ -1,4 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
+import * as interfaces from './interfaces';
 
 import { Objectmap } from '@pushrocks/lik';
 
@@ -11,7 +12,7 @@ import { UniverseCache } from './smartuniverse.classes.universecache';
  * represents a message within a universe
  * acts as a container to save message states like authentication status
  */
-export class UniverseMessage {
+export class UniverseMessage implements interfaces.IUniverseMessage {
   /**
    * public and unique id
    * numeric ascending

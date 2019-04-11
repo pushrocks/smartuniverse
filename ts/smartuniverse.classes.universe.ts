@@ -67,7 +67,7 @@ export class Universe {
   /**
    * initiates a server
    */
-  public async initServer(portArg: number | string) {
+  public async start(portArg: number | string) {
     // lets create the base smartexpress server
     this.smartexpressServer = new plugins.smartexpress.Server({
       cors: true,
