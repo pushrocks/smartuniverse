@@ -27,6 +27,10 @@ Use TypeScript for best in class instellisense.
 
 Think WhatsApp, but for your microservices architecture. It allows your services to securely talk to each other in **private, shielded channels** without having to expose anything to the outside world. This allows the use of **reactive programming across your entire stack**.
 
+### Server side
+every universe has a server that manages messages.  
+Think Kafka, but without Kafka.
+
 ```typescript
 import * as smartuniverse from '@pushrocks/smartuniverse';
 
@@ -40,6 +44,9 @@ myUniverse.addChannel('awesomeChannel2', 'jhkjhfsdf87eerkjslkfja9');
 
 myUniverse.start(8765); // start the server and provide the port on which to listen on
 ```
+
+### Client side
+All your microservices represents clients in the universe that may talk to each other using the universe server.
 
 For further information read the linked docs at the top of this readme.
 
