@@ -32,17 +32,18 @@ export class ClientUniverse {
   }
 
   public async sendMessage(messageArg, payloadArg) {
-    const requestBody = {
+    const requestBody: interfaces.IUniverseMessage = {
       message: messageArg,
       payload: payloadArg
     };
+    const requestBodyString = JSON.stringify(requestBody);
     // TODO: User websocket connection if available
-    await plugins.smartrequest.postJson(this.options.serverAddress, {
-      requestBody
+    const response = await plugins.smartrequest.postJson(`${this.options.serverAddress}/sendmessage` , {
+      requestBody: requestBodyString
     });
   }
 
-  public async getChannel(channelName: string): Promise<ClientUniverseChannel> {
+  public async getChannel(channelName: string, passphrase): Promise<ClientUniverseChannel> {
     await this.checkConnection();
     const clientUniverseChannel = await ClientUniverseChannel.createClientUniverseChannel(
       this,
