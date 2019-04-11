@@ -22,7 +22,7 @@ Use TypeScript for best in class instellisense.
 
 ### What does smartuniverse all about?
 
-Think WhatsApp, but for your microservices architecture. It allows your services to securely talk to each other in private, shielded channels without having to expose anything to the outside world. This allows the use of reactive programming across your entire stack.
+Think WhatsApp, but for your microservices architecture. It allows your services to securely talk to each other in **private, shielded channels** without having to expose anything to the outside world. This allows the use of **reactive programming across your entire stack**.
 
 For further information read the linked docs at the top of this readme.
 
