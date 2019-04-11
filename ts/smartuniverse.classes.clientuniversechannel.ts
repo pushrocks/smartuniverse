@@ -1,8 +1,9 @@
 import * as plugins from './smartuniverse.plugins';
+import * as interfaces from './interfaces';
 
-import { ClientUniverse, IUniverseChannel } from './';
+import { ClientUniverse } from './';
 
-export class ClientUniverseChannel implements IUniverseChannel {
+export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ======
   // STATIC
   // ======

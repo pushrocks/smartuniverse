@@ -23,6 +23,7 @@ export class UniverseChannel {
     passphraseArg: string
   ) {
     const newChannel = new UniverseChannel(universeCacheArg, channelNameArg, passphraseArg);
+    universeCacheArg.channelMap.add(newChannel);
     return newChannel;
   }
 

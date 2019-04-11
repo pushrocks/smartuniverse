@@ -39,7 +39,7 @@ export class UniverseCache {
   }
 
   /**
-   * add a message to the UniverseStore
+   * add a message to the UniverseCache
    * @param messageArg
    * @param attachedPayloadArg
    */
@@ -50,7 +50,7 @@ export class UniverseCache {
   }
 
   /**
-   * Read a message from the UniverseStore
+   * Read a message from the UniverseCache
    */
   public readMessagesYoungerThan(unixTimeArg?: number): Observable<UniverseMessage> {
     const messageObservable = from(this.messageMap.getArray()).pipe(

@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 import { Smartsocket, SmartsocketClient } from '@pushrocks/smartsocket';
 import * as url from 'url';
 
+import * as interfaces from './interfaces';
+
 import {
   ClientUniverseChannel,
-  IServerGetMessagesRequestBody,
-  IServerPutMessageRequestBody,
   UniverseMessage
 } from './';
 
