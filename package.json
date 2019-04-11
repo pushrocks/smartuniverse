@@ -14,25 +14,25 @@
   },
   "devDependencies": {
     "@gitzone/tsbuild": "^2.1.8",
-    "@gitzone/tstest": "^1.0.18",
-    "@pushrocks/tapbundle": "^3.0.7",
-    "@types/node": "^10.12.20",
-    "tslint": "^5.12.1",
-    "tslint-config-prettier": "^1.17.0"
+    "@gitzone/tstest": "^1.0.20",
+    "@pushrocks/tapbundle": "^3.0.9",
+    "@types/node": "^11.13.4",
+    "tslint": "^5.15.0",
+    "tslint-config-prettier": "^1.18.0"
   },
   "peerDependencies": {
     "rxjs": "*"
   },
   "dependencies": {
-    "@pushrocks/lik": "^3.0.4",
-    "@pushrocks/smartdelay": "^2.0.2",
-    "@pushrocks/smartexpress": "^3.0.10",
-    "@pushrocks/smartfile": "^6.0.12",
+    "@pushrocks/lik": "^3.0.5",
+    "@pushrocks/smartdelay": "^2.0.3",
+    "@pushrocks/smartexpress": "^3.0.18",
+    "@pushrocks/smartfile": "^7.0.2",
     "@pushrocks/smarthash": "^2.0.4",
-    "@pushrocks/smartpromise": "^2.0.5",
+    "@pushrocks/smartpromise": "^3.0.2",
     "@pushrocks/smartrequest": "^1.1.14",
     "@pushrocks/smartrx": "^2.0.3",
     "@pushrocks/smartsocket": "^1.1.27",
-    "@pushrocks/smarttime": "^3.0.5"
+    "@pushrocks/smarttime": "^3.0.7"
   }
 }
