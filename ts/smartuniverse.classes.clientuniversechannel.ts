@@ -21,11 +21,16 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // INSTANCE
   // ========
 
-  public clientUniverse: ClientUniverse;
+  // properties
+  public name: string;
   public passphrase: string;
-
-  constructor(clientUniverseArg: ClientUniverse, passphraseArg: string) {
+  
+  // refs
+  public clientUniverse: ClientUniverse;
+  
+  constructor(clientUniverseArg: ClientUniverse, nameArg: string,  passphraseArg: string) {
     this.clientUniverse = clientUniverseArg;
+    this.name = nameArg;
     this.passphrase = passphraseArg;
   }
 
