@@ -31,11 +31,34 @@ export class ClientUniverse {
     this.options = optionsArg;
   }
 
+  /**
+   * adds a channel to the channelcache
+   * TODO: verify channel before adding it to the channel cache
+   */
+  public async addChannel (channelNameArg: string, passphraseArg: string) {
+    const clientUniverseChannel = await ClientUniverseChannel.createClientUniverseChannel(
+      this,
+      channelNameArg,
+      passphraseArg
+    );
+    this.channelCache.add(clientUniverseChannel);
+  }
+
+  /**
+   * gets a channel from the channelcache
+   * @param channelName
+   * @param passphraseArg 
+   */
+  public async getChannel(channelName: string, passphraseArg?: string): Promise<ClientUniverseChannel> {
+    await this.checkConnection();
+    return clientUniverseChannel;
+  }
+
   public async sendMessage(messageArg: interfaces.IMessageCreator) {
     const requestBody: interfaces.IUniverseMessage = {
       id: plugins.smartunique.shortId(),
       timestamp: Date.now(),
-      passphrase: (await this.getChannel(messageArg.targetChannelName)).,
+      passphrase: (await this.getChannel(messageArg.targetChannelName)).passphrase,
       ...messageArg,
 
     };
@@ -46,21 +69,15 @@ export class ClientUniverse {
     });
   }
 
-  public async getChannel(channelName: string, passphraseArg?: string): Promise<ClientUniverseChannel> {
-    await this.checkConnection();
-    const clientUniverseChannel = await ClientUniverseChannel.createClientUniverseChannel(
-      this,
-      channelName
-    );
-    this.channelCache.add(clientUniverseChannel);
-    return clientUniverseChannel;
-  }
-
   public close() {
     this.socketClient.disconnect();
   }
 
-  private async checkConnection() {
+  /**
+   * checks the connection towards a universe server
+   * since password validation is done through other means, a connection should always be possible
+   */
+  private async checkConnection(): Promise<void> {
     if (!this.socketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
       this.socketClient = new SmartsocketClient({

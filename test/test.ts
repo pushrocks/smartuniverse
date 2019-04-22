@@ -11,7 +11,7 @@ let testClientChannel: smartuniverse.ClientUniverseChannel;
 const testChannelData = {
   channelName: 'awesomeTestChannel',
   channelPass: 'awesomeChannelPAss'
-}
+};
 
 tap.test('first test', async () => {
   testUniverse = new smartuniverse.Universe({
@@ -43,9 +43,7 @@ tap.test('should get a observable correctly', async () => {
 tap.test('should send a message correctly', async () => {
   await testUniverseClient.sendMessage({
     messageText: 'hello',
-    passphrase: 'wowza',
-    targetChannelName: 'channel1',
-    
+    targetChannelName: 'channel1'
   });
 });
 

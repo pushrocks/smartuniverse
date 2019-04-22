@@ -101,7 +101,9 @@ export class Universe {
     const SubscriptionSocketFunction = new plugins.smartsocket.SocketFunction({
       allowedRoles: [ClientRole],
       funcName: 'channelSubscription',
-      funcDef: () => {} // TODO: implement an action upon connection of clients
+      funcDef: () => {
+        console.log('a client connected');
+      } // TODO: implement an action upon connection of clients
     });
 
     // add smartsocket to the running smartexpress app

@@ -13,7 +13,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
     passphraseArg: string
   ): Promise<ClientUniverseChannel> {
     const clientChannel = new ClientUniverseChannel(clientUniverseArg, passphraseArg);
-    await clientChannel.transmitSubscription();
+    await clientChannel.subscribe();
     return clientChannel;
   }
 
@@ -26,13 +26,14 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
 
   constructor(clientUniverseArg: ClientUniverse, passphraseArg: string) {
     this.clientUniverse = clientUniverseArg;
-    this.passphrase = passphraseArg
+    this.passphrase = passphraseArg;
   }
 
   /**
+   * subscribes to a channel
    * tells the universe about this instances interest into a channel
    */
-  public async transmitSubscription() {
+  public async subscribe() {
     this.clientUniverse.socketClient;
   }
 }
