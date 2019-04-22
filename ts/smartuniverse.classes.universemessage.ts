@@ -14,7 +14,6 @@ import { IUniverseMessage } from './interfaces';
  * acts as a container to save message states like authentication status
  */
 export class UniverseMessage implements interfaces.IUniverseMessage {
-  
   public id: string;
 
   public timestamp: number;
@@ -40,7 +39,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
    * wether the message is authenticated
    */
   public authenticated: boolean = null;
-  
+
   /**
    * a destruction timer for this message
    */

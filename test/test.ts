@@ -32,17 +32,11 @@ tap.test('create smartuniverse client', async () => {
 });
 
 tap.test('should add a channel to the universe', async () => {
-  await testUniverse.addChannel(
-    testChannelData.channelName,
-    testChannelData.channelPass
-  );
+  await testUniverse.addChannel(testChannelData.channelName, testChannelData.channelPass);
 });
 
 tap.test('should add the same channel to the client universe in the same way', async () => {
-  await testClientUniverse.addChannel(
-    testChannelData.channelName,
-    testChannelData.channelPass
-  );
+  await testClientUniverse.addChannel(testChannelData.channelName, testChannelData.channelPass);
 });
 
 tap.test('should get a observable correctly', async () => {

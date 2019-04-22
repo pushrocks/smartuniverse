@@ -10,15 +10,19 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   /**
    * creates a channel and adds it to the cache of clientUniverseArg
    * @param clientUniverseArg
-   * @param channelNameArg 
-   * @param passphraseArg 
+   * @param channelNameArg
+   * @param passphraseArg
    */
   public static async createClientUniverseChannel(
     clientUniverseArg: ClientUniverse,
     channelNameArg: string,
     passphraseArg: string
   ): Promise<ClientUniverseChannel> {
-    const clientChannel = new ClientUniverseChannel(clientUniverseArg, channelNameArg, passphraseArg);
+    const clientChannel = new ClientUniverseChannel(
+      clientUniverseArg,
+      channelNameArg,
+      passphraseArg
+    );
     clientUniverseArg.channelCache.add(clientChannel);
     await clientChannel.subscribe();
     return clientChannel;
@@ -31,11 +35,11 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // properties
   public name: string;
   public passphrase: string;
-  
+
   // refs
   public clientUniverse: ClientUniverse;
-  
-  constructor(clientUniverseArg: ClientUniverse, nameArg: string,  passphraseArg: string) {
+
+  constructor(clientUniverseArg: ClientUniverse, nameArg: string, passphraseArg: string) {
     this.clientUniverse = clientUniverseArg;
     this.name = nameArg;
     this.passphrase = passphraseArg;

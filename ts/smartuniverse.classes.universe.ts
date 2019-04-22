@@ -11,8 +11,6 @@ export interface ISmartUniverseConstructorOptions {
   messageExpiryInMilliseconds: number;
 }
 
-
-
 /**
  * main class that setsup a Universe
  */
@@ -67,7 +65,7 @@ export class Universe {
   /**
    * initiates a server
    */
-  public async start(portArg: number | string) {
+  public async start(portArg: number) {
     // lets create the base smartexpress server
     this.smartexpressServer = new plugins.smartexpress.Server({
       cors: true,
@@ -79,10 +77,15 @@ export class Universe {
     });
 
     // lets create the http request route
-    this.smartexpressServer.addRoute('/sendmessage', new Handler('POST', async (req, res) => {
-      const universeMessageInstance = new UniverseMessage(req.body);
-      this.universeCache.addMessage(universeMessageInstance);
-    }));
+    this.smartexpressServer.addRoute(
+      '/sendmessage',
+      new Handler('POST', async (req, res) => {
+        const universeMessageInstance = new UniverseMessage(req.body);
+        this.universeCache.addMessage(universeMessageInstance);
+        res.status(200);
+        res.end();
+      })
+    );
 
     // add websocket upgrade
     this.smartsocket = new plugins.smartsocket.Smartsocket({

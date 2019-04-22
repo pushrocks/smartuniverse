@@ -6,9 +6,7 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   // ======
   // STATIC
   // ======
-  public static createMessageFromPayload(messageDescriptor: interfaces.IUniverseMessage) {
-
-  };
+  public static createMessageFromPayload(messageDescriptor: interfaces.IUniverseMessage) {}
 
   // ========
   // INSTANCE
@@ -26,7 +24,5 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   public targetChannelName: string;
   constructor(messageArg, payloadArg) {}
 
-  getAsJsonForPayload () {
-
-  }
+  getAsJsonForPayload() {}
 }
