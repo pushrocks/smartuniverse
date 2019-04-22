@@ -14,6 +14,7 @@ import * as smartrequest from '@pushrocks/smartrequest';
 import * as smartrx from '@pushrocks/smartrx';
 import * as smartsocket from '@pushrocks/smartsocket';
 import * as smarttime from '@pushrocks/smarttime';
+import * as smartunique from '@pushrocks/smartunique';
 
 export {
   lik,
@@ -25,5 +26,6 @@ export {
   smartrx,
   smartrequest,
   smartsocket,
-  smarttime
+  smarttime,
+  smartunique
 };

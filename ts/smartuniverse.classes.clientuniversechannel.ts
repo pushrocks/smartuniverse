@@ -9,9 +9,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ======
   public static async createClientUniverseChannel(
     clientUniverseArg: ClientUniverse,
-    channelName: string
+    channelName: string,
+    passphraseArg: string
   ): Promise<ClientUniverseChannel> {
-    const clientChannel = new ClientUniverseChannel(clientUniverseArg);
+    const clientChannel = new ClientUniverseChannel(clientUniverseArg, passphraseArg);
     await clientChannel.transmitSubscription();
     return clientChannel;
   }
@@ -21,9 +22,11 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ========
 
   public clientUniverse: ClientUniverse;
+  public passphrase: string;
 
-  constructor(clientUniverseArg: ClientUniverse) {
+  constructor(clientUniverseArg: ClientUniverse, passphraseArg: string) {
     this.clientUniverse = clientUniverseArg;
+    this.passphrase = passphraseArg
   }
 
   /**

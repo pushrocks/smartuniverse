@@ -7,33 +7,29 @@ import { Timer, TimeStamp } from '@pushrocks/smarttime';
 import { Universe } from './smartuniverse.classes.universe';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseCache } from './smartuniverse.classes.universecache';
+import { IUniverseMessage } from './interfaces';
 
 /**
  * represents a message within a universe
  * acts as a container to save message states like authentication status
  */
 export class UniverseMessage implements interfaces.IUniverseMessage {
-  /**
-   * public and unique id
-   * numeric ascending
-   * adheres to time in milliseconds
-   *   -> meaning it describes the time of arrival
-   *   -> two messages received at the same time will count up the second one
-   *   -> avoids duplications of messages
-   *   -> may be changed to nanoseconds to ensure higher throughput
-   */
-  public id: number;
+  
+  public id: string;
+
+  public timestamp: number;
+  public smartTimestamp: TimeStamp;
+
+  public messageText: string;
+  public passphrase: string;
+  public payload: any;
+  public payloadStringType;
+  public targetChannelName: string;
 
   /**
    * the UniverseCache the message is attached to
    */
   public universeCache: UniverseCache;
-
-  /**
-   * requestedChannelName
-   */
-  public requestedChannelName: string;
-  public requestedChannelPassphrase: string;
 
   /**
    * enables unprotected grouping of messages for efficiency purposes.
@@ -44,21 +40,10 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
    * wether the message is authenticated
    */
   public authenticated: boolean = null;
-
+  
   /**
-   * time of creation
+   * a destruction timer for this message
    */
-  public timestamp: TimeStamp;
-
-  /**
-   * the actual message
-   */
-  public message: string;
-
-  /**
-   * any attached payloads. Can be of binary format.
-   */
-  public attachedPayload: any;
   public destructionTimer: Timer; // a timer to take care of message destruction
 
   /**
@@ -66,17 +51,12 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  constructor(
-    messageArg: string,
-    requestedChannelNameArg: string,
-    passphraseArg: string,
-    attachedPayloadArg: any
-  ) {
-    this.timestamp = new TimeStamp();
-    this.message = messageArg;
-    this.requestedChannelName = requestedChannelNameArg;
-    this.requestedChannelPassphrase = passphraseArg;
-    this.attachedPayload = attachedPayloadArg;
+  constructor(messageDescriptor: IUniverseMessage) {
+    this.smartTimestamp = new TimeStamp(this.timestamp);
+    this.messageText = messageDescriptor.messageText;
+    this.targetChannelName = messageDescriptor.targetChannelName;
+    this.passphrase = messageDescriptor.passphrase;
+    this.payload = messageDescriptor.payload;
     // prevent memory issues
     this.fallBackDestruction();
   }
@@ -102,7 +82,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
   /**
    * handles bad messages for further analysis
    */
-  handleAsBadMessage() {
+  public handleAsBadMessage() {
     console.log('received a bad message');
   }
 

@@ -33,6 +33,7 @@
     "@pushrocks/smartrequest": "^1.1.14",
     "@pushrocks/smartrx": "^2.0.3",
     "@pushrocks/smartsocket": "^1.1.27",
-    "@pushrocks/smarttime": "^3.0.7"
+    "@pushrocks/smarttime": "^3.0.7",
+    "@pushrocks/smartunique": "^3.0.1"
   }
 }

@@ -41,8 +41,11 @@ tap.test('should get a observable correctly', async () => {
 });
 
 tap.test('should send a message correctly', async () => {
-  await testUniverseClient.sendMessage('greeting', {
-    anyBool: true
+  await testUniverseClient.sendMessage({
+    messageText: 'hello',
+    passphrase: 'wowza',
+    targetChannelName: 'channel1',
+    
   });
 });
 

@@ -55,7 +55,7 @@ export class UniverseCache {
   public readMessagesYoungerThan(unixTimeArg?: number): Observable<UniverseMessage> {
     const messageObservable = from(this.messageMap.getArray()).pipe(
       filter(messageArg => {
-        return messageArg.timestamp.isYoungerThanMilliSeconds(this.destructionTime);
+        return messageArg.smartTimestamp.isYoungerThanMilliSeconds(this.destructionTime);
       })
     );
     return messageObservable;

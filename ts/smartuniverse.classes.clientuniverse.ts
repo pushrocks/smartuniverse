@@ -31,8 +31,14 @@ export class ClientUniverse {
     this.options = optionsArg;
   }
 
-  public async sendMessage(messageArg: interfaces.IUniverseMessage) {
-    const requestBody: interfaces.IUniverseMessage = messageArg;
+  public async sendMessage(messageArg: interfaces.IMessageCreator) {
+    const requestBody: interfaces.IUniverseMessage = {
+      id: plugins.smartunique.shortId(),
+      timestamp: Date.now(),
+      passphrase: (await this.getChannel(messageArg.targetChannelName)).,
+      ...messageArg,
+
+    };
     const requestBodyString = JSON.stringify(requestBody);
     // TODO: User websocket connection if available
     const response = await plugins.smartrequest.postJson(`${this.options.serverAddress}/sendmessage` , {
@@ -40,7 +46,7 @@ export class ClientUniverse {
     });
   }
 
-  public async getChannel(channelName: string, passphrase): Promise<ClientUniverseChannel> {
+  public async getChannel(channelName: string, passphraseArg?: string): Promise<ClientUniverseChannel> {
     await this.checkConnection();
     const clientUniverseChannel = await ClientUniverseChannel.createClientUniverseChannel(
       this,

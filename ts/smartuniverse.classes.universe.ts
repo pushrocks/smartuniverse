@@ -80,7 +80,8 @@ export class Universe {
 
     // lets create the http request route
     this.smartexpressServer.addRoute('/sendmessage', new Handler('POST', async (req, res) => {
-      this.universeCache.addMessage(req.body);
+      const universeMessageInstance = new UniverseMessage(req.body);
+      this.universeCache.addMessage(universeMessageInstance);
     }));
 
     // add websocket upgrade
