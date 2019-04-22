@@ -42,12 +42,12 @@ export class ClientUniverse {
       throw new Error('channel exists');
     }
 
-    const clientUniverseChannel = await ClientUniverseChannel.createClientUniverseChannel(
+    // lets create the channel
+    ClientUniverseChannel.createClientUniverseChannel(
       this,
       channelNameArg,
       passphraseArg
     );
-    this.channelCache.add(clientUniverseChannel);
   }
 
   /**

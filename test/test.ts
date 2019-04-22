@@ -5,7 +5,7 @@ import * as smartuniverse from '../ts/index';
 import { Observable } from 'rxjs';
 
 let testUniverse: smartuniverse.Universe;
-let testUniverseClient: smartuniverse.ClientUniverse;
+let testClientUniverse: smartuniverse.ClientUniverse;
 let testClientChannel: smartuniverse.ClientUniverseChannel;
 
 const testChannelData = {
@@ -25,10 +25,10 @@ tap.test('add a message to the SmartUniverse', async () => {
 
 // testing message handling
 tap.test('create smartuniverse client', async () => {
-  testUniverseClient = new smartuniverse.ClientUniverse({
+  testClientUniverse = new smartuniverse.ClientUniverse({
     serverAddress: 'http://localhost:8765'
   });
-  expect(testUniverseClient).to.be.instanceof(smartuniverse.ClientUniverse);
+  expect(testClientUniverse).to.be.instanceof(smartuniverse.ClientUniverse);
 });
 
 tap.test('should add a channel to the universe', async () => {
@@ -36,12 +36,12 @@ tap.test('should add a channel to the universe', async () => {
 });
 
 tap.test('should get a observable correctly', async () => {
-  testClientChannel = await testUniverseClient.getChannel(testChannelData.channelName, testChannelData.channelPass);
+  testClientChannel = await testClientUniverse.getChannel(testChannelData.channelName);
   expect(testClientChannel).to.be.instanceof(smartuniverse.ClientUniverseChannel);
 });
 
 tap.test('should send a message correctly', async () => {
-  await testUniverseClient.sendMessage({
+  await testClientUniverse.sendMessage({
     messageText: 'hello',
     targetChannelName: 'channel1'
   });
@@ -50,7 +50,7 @@ tap.test('should send a message correctly', async () => {
 tap.test('should receive a message correctly', async () => {});
 
 tap.test('should disconnect the client correctly', async () => {
-  testUniverseClient.close();
+  testClientUniverse.close();
 });
 
 tap.test('should end the server correctly', async tools => {

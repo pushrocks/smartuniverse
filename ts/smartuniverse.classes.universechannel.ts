@@ -83,8 +83,8 @@ export class UniverseChannel {
    */
   public authenticate(universeMessageArg: UniverseMessage): boolean {
     return (
-      this.name === universeMessageArg.requestedChannelName &&
-      this.passphrase === universeMessageArg.requestedChannelPassphrase
+      this.name === universeMessageArg.targetChannelName &&
+      this.passphrase === universeMessageArg.passphrase
     );
   }
 

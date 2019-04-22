@@ -7,12 +7,19 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ======
   // STATIC
   // ======
+  /**
+   * creates a channel and adds it to the cache of clientUniverseArg
+   * @param clientUniverseArg
+   * @param channelNameArg 
+   * @param passphraseArg 
+   */
   public static async createClientUniverseChannel(
     clientUniverseArg: ClientUniverse,
-    channelName: string,
+    channelNameArg: string,
     passphraseArg: string
   ): Promise<ClientUniverseChannel> {
-    const clientChannel = new ClientUniverseChannel(clientUniverseArg, passphraseArg);
+    const clientChannel = new ClientUniverseChannel(clientUniverseArg, channelNameArg, passphraseArg);
+    clientUniverseArg.channelCache.add(clientChannel);
     await clientChannel.subscribe();
     return clientChannel;
   }
