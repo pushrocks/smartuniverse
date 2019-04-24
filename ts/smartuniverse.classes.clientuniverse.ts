@@ -19,7 +19,7 @@ export interface IClientOptions {
  */
 export class ClientUniverse {
   public options;
-  public socketClient: plugins.smartsocket.SmartsocketClient;
+  public smartsocketClient: plugins.smartsocket.SmartsocketClient;
   public observableIntake: plugins.smartrx.ObservableIntake<UniverseMessage>;
 
   public channelCache = new Objectmap<ClientUniverseChannel>();
@@ -74,7 +74,7 @@ export class ClientUniverse {
   }
 
   public close() {
-    this.socketClient.disconnect();
+    this.smartsocketClient.disconnect();
   }
 
   /**
@@ -82,7 +82,7 @@ export class ClientUniverse {
    * since password validation is done through other means, a connection should always be possible
    */
   private async checkConnection(): Promise<void> {
-    if (!this.socketClient && !this.observableIntake) {
+    if (!this.smartsocketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
       const socketConfig: plugins.smartsocket.ISmartsocketClientOptions = {
         alias: process.env.SOCKET_ALIAS || 'someclient',
@@ -92,9 +92,30 @@ export class ClientUniverse {
         url: parsedURL.protocol + '//' + parsedURL.hostname
       };
       console.log(socketConfig);
-      this.socketClient = new SmartsocketClient(socketConfig);
+      this.smartsocketClient = new SmartsocketClient(socketConfig);
       this.observableIntake = new plugins.smartrx.ObservableIntake();
-      await this.socketClient.connect();
+
+      // lets define some basic actions
+
+      /**
+       * should handle a forced unsubscription by the server
+       */
+      const unsubscribe = new plugins.smartsocket.SocketFunction({
+        funcName: 'unsubscribe',
+        allowedRoles: [],
+        funcDef: async () => {},
+      });
+
+      /**
+       * should handle a message reception
+       */
+      const receiveMessage = async () => {
+
+      };
+
+      
+
+      await this.smartsocketClient.connect();
     }
   }
 }
