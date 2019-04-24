@@ -80,22 +80,21 @@ export class Universe {
     this.smartexpressServer.addRoute(
       '/sendmessage',
       new Handler('POST', async (req, res) => {
-        const universeMessageInstance = new UniverseMessage(req.body);
+        const universeMessageInstance: UniverseMessage = new UniverseMessage(req.body);
         this.universeCache.addMessage(universeMessageInstance);
+        
         res.status(200);
         res.end();
       })
     );
 
     // add websocket upgrade
-    this.smartsocket = new plugins.smartsocket.Smartsocket({
-      port: 12345 // fix this within smartsocket
-    });
+    this.smartsocket = new plugins.smartsocket.Smartsocket({});
 
     // add a role for the clients
     const ClientRole = new plugins.smartsocket.SocketRole({
-      name: 'clientuniverse',
-      passwordHash: 'clientuniverse' // authentication happens on another level
+      name: 'UniverseClient',
+      passwordHash: plugins.smarthash.sha256FromStringSync('UniverseClient') // authentication happens on another level
     });
 
     // add the role to smartsocket
@@ -105,18 +104,16 @@ export class Universe {
       allowedRoles: [ClientRole],
       funcName: 'channelSubscription',
       funcDef: () => {
-        console.log('a client connected');
       } // TODO: implement an action upon connection of clients
     });
 
     // add smartsocket to the running smartexpress app
-    this.smartsocket.setExternalServer('express', this.smartexpressServer as any);
-
-    // start the socket
-    this.smartsocket.start();
-
-    // start the smartexpress instance
+    this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer as any);
+    // start everything
     await this.smartexpressServer.start();
+    await this.smartsocket.start();
+    console.log('started universe');
+    
   }
 
   /**

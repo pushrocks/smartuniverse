@@ -51,6 +51,10 @@ tap.test('should send a message correctly', async () => {
   });
 });
 
+tap.test('universe should contain the sent message', async () => {
+  expect(testUniverse.universeCache.messageMap.getArray()[0].messageText).to.equal('hello');
+});
+
 tap.test('should receive a message correctly', async () => {});
 
 tap.test('should disconnect the client correctly', async () => {

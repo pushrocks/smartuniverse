@@ -57,19 +57,18 @@ export class ClientUniverse {
   }
 
   public async sendMessage(messageArg: interfaces.IMessageCreator) {
-    console.log('hello');
+    await this.checkConnection();
     const requestBody: interfaces.IUniverseMessage = {
       id: plugins.smartunique.shortId(),
       timestamp: Date.now(),
       passphrase: (await this.getChannel(messageArg.targetChannelName)).passphrase,
       ...messageArg
     };
-    const requestBodyString = JSON.stringify(requestBody);
     // TODO: User websocket connection if available
     const response = await plugins.smartrequest.postJson(
       `${this.options.serverAddress}/sendmessage`,
       {
-        requestBody: requestBodyString
+        requestBody
       }
     );
   }
@@ -85,15 +84,17 @@ export class ClientUniverse {
   private async checkConnection(): Promise<void> {
     if (!this.socketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
-      this.socketClient = new SmartsocketClient({
+      const socketConfig: plugins.smartsocket.ISmartsocketClientOptions = {
         alias: process.env.SOCKET_ALIAS || 'someclient',
         password: 'UniverseClient',
         port: parseInt(parsedURL.port, 10),
         role: 'UniverseClient',
-        url: parsedURL.hostname
-      });
+        url: parsedURL.protocol + '//' + parsedURL.hostname
+      };
+      console.log(socketConfig);
+      this.socketClient = new SmartsocketClient(socketConfig);
       this.observableIntake = new plugins.smartrx.ObservableIntake();
-      this.socketClient.connect();
+      await this.socketClient.connect();
     }
   }
 }
