@@ -8,6 +8,9 @@ import * as url from 'url';
 import * as interfaces from './interfaces';
 
 import { ClientUniverseChannel, UniverseMessage } from './';
+import {
+  ClientUniverseCache
+} from './smartuniverse.classes.clientuniversecache';
 
 export interface IClientOptions {
   serverAddress: string;
@@ -22,7 +25,8 @@ export class ClientUniverse {
   public smartsocketClient: plugins.smartsocket.SmartsocketClient;
   public observableIntake: plugins.smartrx.ObservableIntake<UniverseMessage>;
 
-  public channelCache = new Objectmap<ClientUniverseChannel>();
+  public channelStore = new Objectmap<ClientUniverseChannel>();
+  public clientUniverseCache = new ClientUniverseCache();
 
   constructor(optionsArg: IClientOptions) {
     this.options = optionsArg;
@@ -50,12 +54,27 @@ export class ClientUniverse {
    */
   public async getChannel(channelName: string): Promise<ClientUniverseChannel> {
     await this.checkConnection();
-    const clientUniverseChannel = this.channelCache.find(channel => {
+    const clientUniverseChannel = this.channelStore.find(channel => {
       return channel.name === channelName;
     });
     return clientUniverseChannel;
   }
 
+  /**
+   * remove a a achannel
+   * @param messageArg
+   */
+  public removeChannel(channelNameArg, notifyServer = true) {
+    const clientUniverseChannel = this.channelStore.findOneAndRemove(channelItemArg => {
+      return channelItemArg.name === channelNameArg;
+    });
+  }
+
+
+  /**
+   * sends a message towards the server
+   * @param messageArg 
+   */
   public async sendMessage(messageArg: interfaces.IMessageCreator) {
     await this.checkConnection();
     const requestBody: interfaces.IUniverseMessage = {
@@ -103,7 +122,9 @@ export class ClientUniverse {
       const unsubscribe = new plugins.smartsocket.SocketFunction({
         funcName: 'unsubscribe',
         allowedRoles: [],
-        funcDef: async () => {},
+        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
+          
+        },
       });
 
       /**

@@ -23,7 +23,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       channelNameArg,
       passphraseArg
     );
-    clientUniverseArg.channelCache.add(clientChannel);
+    clientUniverseArg.channelStore.add(clientChannel);
     await clientChannel.subscribe();
     return clientChannel;
   }

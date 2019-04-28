@@ -7,3 +7,7 @@ export interface IServerCallSubscribeActionPayload {
   name: string;
   passphrase: string;
 }
+
+export interface IServerUnsubscribeActionPayload {
+  name: string;
+}

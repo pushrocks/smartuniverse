@@ -6,7 +6,12 @@ import { Observable } from 'rxjs';
 
 let testUniverse: smartuniverse.Universe;
 let testClientUniverse: smartuniverse.ClientUniverse;
+let testClientUniverse2: smartuniverse.ClientUniverse;
 let testClientChannel: smartuniverse.ClientUniverseChannel;
+
+const testServerData = {
+  serverAddress: 'http://localhost:8765'
+};
 
 const testChannelData = {
   channelName: 'awesomeTestChannel',
@@ -26,7 +31,7 @@ tap.test('add a message to the SmartUniverse', async () => {
 // testing message handling
 tap.test('create smartuniverse client', async () => {
   testClientUniverse = new smartuniverse.ClientUniverse({
-    serverAddress: 'http://localhost:8765'
+    serverAddress: testServerData.serverAddress
   });
   expect(testClientUniverse).to.be.instanceof(smartuniverse.ClientUniverse);
 });
@@ -53,6 +58,14 @@ tap.test('should send a message correctly', async () => {
 
 tap.test('universe should contain the sent message', async () => {
   expect(testUniverse.universeCache.messageMap.getArray()[0].messageText).to.equal('hello');
+});
+
+tap.test('a second client should be able to subscibe', async () => {
+  testClientUniverse2 = new smartuniverse.ClientUniverse({
+    serverAddress: testServerData.serverAddress
+  });
+
+  testClientUniverse2.addChannel(testChannelData.channelName, testChannelData.channelPass);
 });
 
 tap.test('should receive a message correctly', async () => {});
