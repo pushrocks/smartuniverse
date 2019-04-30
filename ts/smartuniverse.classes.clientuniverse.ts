@@ -84,12 +84,6 @@ export class ClientUniverse {
       ...messageArg
     };
     // TODO: User websocket connection if available
-    const response = await plugins.smartrequest.postJson(
-      `${this.options.serverAddress}/sendmessage`,
-      {
-        requestBody
-      }
-    );
   }
 
   public close() {

@@ -4,7 +4,7 @@ import { UniverseChannel } from './smartuniverse.classes.universechannel';
 
 
 /**
- * represents a subscription into a specific topic
+ * represents a connection to the universe
  */
 export class UniverseConnection {
   /**

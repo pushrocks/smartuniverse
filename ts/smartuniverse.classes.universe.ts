@@ -6,6 +6,8 @@ import { UniverseCache, UniverseChannel, UniverseMessage } from './';
 import * as paths from './smartuniverse.paths';
 
 import * as interfaces from './interfaces';
+import { UniverseConnectionManager } from './smartuniverse.classes.universeconnectionmanager';
+import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 
 export interface ISmartUniverseConstructorOptions {
   messageExpiryInMilliseconds: number;
@@ -17,28 +19,10 @@ export interface ISmartUniverseConstructorOptions {
 export class Universe {
   // subinstances
   public universeCache: UniverseCache;
+  public universeConnectionManager: UniverseConnectionManager;
 
   // options
   private options: ISmartUniverseConstructorOptions;
-
-  /**
-   * stores the version of the universe server running
-   * this is done since the version is exposed through the api and multiple fs actions are avoided this way.
-   */
-  private universeVersionStore: string;
-
-  /**
-   * get the currently running version of smartuniverse
-   */
-  public get universeVersion() {
-    if (this.universeVersionStore) {
-      return this.universeVersionStore;
-    } else {
-      const packageJson = plugins.smartfile.fs.toObjectSync(paths.packageJson);
-      this.universeVersionStore = packageJson.version;
-      return this.universeVersionStore;
-    }
-  }
 
   /**
    * the smartexpress server used
@@ -53,6 +37,26 @@ export class Universe {
   constructor(optionsArg: ISmartUniverseConstructorOptions) {
     this.options = optionsArg;
     this.universeCache = new UniverseCache(this.options.messageExpiryInMilliseconds);
+    this.universeConnectionManager = new UniverseConnectionManager();
+  }
+
+  /**
+   * stores the version of the universe server running
+   * this is done since the version is exposed through the api and multiple fs actions are avoided this way.
+   */
+  private universeVersionStore: string;
+
+  /**
+   * get the currently running version of smartuniverse
+   */
+  public getUniverseVersion() {
+    if (this.universeVersionStore) {
+      return this.universeVersionStore;
+    } else {
+      const packageJson = plugins.smartfile.fs.toObjectSync(paths.packageJson);
+      this.universeVersionStore = packageJson.version;
+      return this.universeVersionStore;
+    }
   }
 
   /**
@@ -76,18 +80,6 @@ export class Universe {
       port: portArg
     });
 
-    // lets create the http request route
-    this.smartexpressServer.addRoute(
-      '/sendmessage',
-      new Handler('POST', async (req, res) => {
-        const universeMessageInstance: UniverseMessage = new UniverseMessage(req.body);
-        this.universeCache.addMessage(universeMessageInstance);
-        
-        res.status(200);
-        res.end();
-      })
-    );
-
     // add websocket upgrade
     this.smartsocket = new plugins.smartsocket.Smartsocket({});
 
@@ -103,8 +95,11 @@ export class Universe {
     const SubscriptionSocketFunction = new plugins.smartsocket.SocketFunction({
       allowedRoles: [ClientRole],
       funcName: 'channelSubscription',
-      funcDef: () => {
-      } // TODO: implement an action upon connection of clients
+      funcDef: (data) => {
+        (() => {
+          this.universeConnectionManager
+        })()
+      }
     });
 
     // add smartsocket to the running smartexpress app
