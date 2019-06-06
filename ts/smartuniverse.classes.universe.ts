@@ -74,7 +74,7 @@ export class Universe {
     this.smartexpressServer = new plugins.smartexpress.Server({
       cors: true,
       defaultAnswer: async () => {
-        return `smartuniverse server ${this.universeVersion}`;
+        return `smartuniverse server ${this.getUniverseVersion()}`;
       },
       forceSsl: false,
       port: portArg
@@ -97,8 +97,9 @@ export class Universe {
       funcName: 'channelSubscription',
       funcDef: (data) => {
         (() => {
-          this.universeConnectionManager
-        })()
+          // TODO:
+          this.universeConnectionManager.addConnection();
+        })();
       }
     });
 
