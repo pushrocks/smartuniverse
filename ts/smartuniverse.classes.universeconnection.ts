@@ -1,8 +1,6 @@
 import * as plugins from './smartuniverse.plugins';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 
-
-
 /**
  * represents a connection to the universe
  */
@@ -10,11 +8,19 @@ export class UniverseConnection {
   /**
    * the socketClient to ping
    */
-  socketclient: plugins.smartsocket.SmartsocketClient;
-  subscribedChannels: UniverseChannel[] = [];
-  authenticatedChannels: UniverseChannel[] = [];
+  public socketConnection: plugins.smartsocket.SocketConnection;
+  public authenticationRequests = []
+  public subscribedChannels: UniverseChannel[] = [];
+  public authenticatedChannels: UniverseChannel[] = [];
+  public failedToJoinChannels: UniverseChannel[] = [];
 
-  constructor() {
+  public terminateConnection () {
+    this.socketConnection
+  }
 
+  constructor(optionsArg: {
+    socketConnection: plugins.smartsocket.SocketConnection;
+  }) {
+    this.socketConnection,
   }
 }

@@ -14,11 +14,11 @@
     "format": "(gitzone format)"
   },
   "devDependencies": {
-    "@gitzone/tsbuild": "^2.1.8",
-    "@gitzone/tstest": "^1.0.20",
+    "@gitzone/tsbuild": "^2.1.11",
+    "@gitzone/tstest": "^1.0.24",
     "@pushrocks/tapbundle": "^3.0.9",
-    "@types/node": "^11.13.7",
-    "tslint": "^5.16.0",
+    "@types/node": "^12.0.6",
+    "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0"
   },
   "peerDependencies": {
@@ -27,14 +27,24 @@
   "dependencies": {
     "@pushrocks/lik": "^3.0.5",
     "@pushrocks/smartdelay": "^2.0.3",
-    "@pushrocks/smartexpress": "^3.0.19",
+    "@pushrocks/smartexpress": "^3.0.21",
     "@pushrocks/smartfile": "^7.0.2",
     "@pushrocks/smarthash": "^2.0.4",
     "@pushrocks/smartpromise": "^3.0.2",
     "@pushrocks/smartrequest": "^1.1.15",
     "@pushrocks/smartrx": "^2.0.3",
-    "@pushrocks/smartsocket": "^1.1.35",
+    "@pushrocks/smartsocket": "^1.1.37",
     "@pushrocks/smarttime": "^3.0.7",
     "@pushrocks/smartunique": "^3.0.1"
-  }
+  },
+  "files": [
+    "ts/*",
+    "ts_web/*",
+    "dist/*",
+    "dist_web/*",
+    "assets/*",
+    "cli.js",
+    "npmextra.json",
+    "readme.md"
+  ]
 }

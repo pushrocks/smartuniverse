@@ -93,11 +93,15 @@ export class Universe {
     this.smartsocket.addSocketRoles([ClientRole]);
 
     const SubscriptionSocketFunction = new plugins.smartsocket.SocketFunction({
-      allowedRoles: [ClientRole],
+      allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'channelSubscription',
-      funcDef: (data) => {
+      funcDef: async (dataArg, socketConnectionArg) => {
+        // run in "this context" of this class
         (() => {
-          // TODO:
+          // TODO: properly add the connection
+          const universeConnection = new UniverseConnection({
+            
+          })
           this.universeConnectionManager.addConnection();
         })();
       }
@@ -109,7 +113,6 @@ export class Universe {
     await this.smartexpressServer.start();
     await this.smartsocket.start();
     console.log('started universe');
-    
   }
 
   /**

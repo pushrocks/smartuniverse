@@ -88,7 +88,5 @@ export class UniverseChannel {
     );
   }
 
-  public pushToClients(messageArg: UniverseMessage) {
-    
-  }
+  public pushToClients(messageArg: UniverseMessage) {}
 }

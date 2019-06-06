@@ -8,9 +8,7 @@ import * as url from 'url';
 import * as interfaces from './interfaces';
 
 import { ClientUniverseChannel, UniverseMessage } from './';
-import {
-  ClientUniverseCache
-} from './smartuniverse.classes.clientuniversecache';
+import { ClientUniverseCache } from './smartuniverse.classes.clientuniversecache';
 
 export interface IClientOptions {
   serverAddress: string;
@@ -70,10 +68,9 @@ export class ClientUniverse {
     });
   }
 
-
   /**
    * sends a message towards the server
-   * @param messageArg 
+   * @param messageArg
    */
   public async sendMessage(messageArg: interfaces.IMessageCreator) {
     await this.checkConnection();
@@ -116,19 +113,13 @@ export class ClientUniverse {
       const unsubscribe = new plugins.smartsocket.SocketFunction({
         funcName: 'unsubscribe',
         allowedRoles: [],
-        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
-          
-        },
+        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {}
       });
 
       /**
        * should handle a message reception
        */
-      const receiveMessage = async () => {
-
-      };
-
-      
+      const receiveMessage = async () => {};
 
       await this.smartsocketClient.connect();
     }
