@@ -7,5 +7,23 @@ import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 export class UniverseConnectionManager {
   public connectionMap = new plugins.lik.Objectmap<UniverseConnection>();
 
-  public addConnection() {}
+  public async addConnection(universeConnectionArg: UniverseConnection) {
+    let universeConnection = universeConnectionArg;
+    universeConnection = await this.deduplicateUniverseConnection(universeConnection);
+    universeConnection = this.authenticateAuthenticationRequests();
+  }
+
+  /**
+   * deduplicates UniverseConnections
+   */
+  public deduplicateUniverseConnection (universeConnectionArg: UniverseConnection): Promise<UniverseConnection> {
+
+  }
+
+  /**
+   * authenticate AuthenticationRequests
+   */
+  public authenticateAuthenticationRequests(universeConnectionArg) {
+
+  }
 }
