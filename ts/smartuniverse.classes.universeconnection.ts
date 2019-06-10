@@ -29,6 +29,7 @@ export class UniverseConnection {
     socketConnection: plugins.smartsocket.SocketConnection;
     authenticationRequests
   }) {
-    this.socketConnection,
+    // TODO: check if this is correct
+    this.socketConnection.socket.disconnect();
   }
 }

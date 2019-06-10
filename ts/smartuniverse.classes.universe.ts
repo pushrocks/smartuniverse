@@ -100,9 +100,10 @@ export class Universe {
         (() => {
           // TODO: properly add the connection
           const universeConnection = new UniverseConnection({
-            authenticationRequest: 
+            socketConnection: socketConnectionArg,
+            authenticationRequests: []
           })
-          this.universeConnectionManager.addConnection();
+          this.universeConnectionManager.addConnection(universeConnection);
         })();
       }
     });
