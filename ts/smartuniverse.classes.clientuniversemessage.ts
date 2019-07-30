@@ -1,7 +1,6 @@
 import * as plugins from './smartuniverse.plugins';
 
 import * as interfaces from './interfaces';
-import { IUniverseMessage } from './interfaces';
 
 export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   // ======
@@ -24,7 +23,7 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   public payloadStringType;
   public targetChannelName: string;
 
-  constructor(messageArg: IUniverseMessage, payloadArg) {
+  constructor(messageArg: interfaces.IUniverseMessage, payloadArg) {
     for (const key of Object.keys(messageArg)) {
       this[key] = messageArg[key];
     }
