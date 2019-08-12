@@ -140,7 +140,7 @@ export class Universe {
             this.universeCache,
             unauthenticatedMessage
           );
-          if (foundChannel) {
+          if (foundChannel && unauthenticatedMessage.authenticated) {
             const authenticatedMessage = unauthenticatedMessage;
             await this.universeCache.addMessage(authenticatedMessage);
           }

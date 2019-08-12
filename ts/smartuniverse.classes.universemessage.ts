@@ -42,7 +42,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
   /**
    * wether the message is authenticated
    */
-  public authenticated: boolean = null;
+  public authenticated: boolean = false;
 
   /**
    * a destruction timer for this message
