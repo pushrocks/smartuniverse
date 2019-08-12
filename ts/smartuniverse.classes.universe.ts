@@ -135,10 +135,15 @@ export class Universe {
               universeConnectionInstance
             );
           }
-          await UniverseChannel.authorizeAMessageForAChannel(
+          const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(dataArg);
+          const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(
             this.universeCache,
-            UniverseMessage.createMessageFromPayload(dataArg)
+            unauthenticatedMessage
           );
+          if (foundChannel) {
+            const authenticatedMessage = unauthenticatedMessage;
+            await this.universeCache.addMessage(authenticatedMessage);
+          }
         })();
       }
     });

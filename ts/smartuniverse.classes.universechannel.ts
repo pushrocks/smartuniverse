@@ -50,7 +50,7 @@ export class UniverseChannel {
   public static authorizeAMessageForAChannel(
     universeCacheArg: UniverseCache,
     universeMessageArg: UniverseMessage
-  ) {
+  ): UniverseChannel {
     const foundChannel = universeCacheArg.channelMap.find(universeChannel => {
       const result = universeChannel.authenticate(universeMessageArg);
       return result;
@@ -58,11 +58,13 @@ export class UniverseChannel {
     if (foundChannel) {
       universeMessageArg.authenticated = true;
       universeMessageArg.universeChannelList.add(foundChannel);
+      console.log('message authorized');
       return foundChannel;
     } else {
       universeMessageArg.authenticated = false;
       universeMessageArg.universeChannelList.add(universeCacheArg.blackListChannel);
       console.log('message not valid');
+      return null;
     }
   }
 
