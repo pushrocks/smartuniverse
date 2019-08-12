@@ -8,6 +8,7 @@ import { Objectmap } from '@pushrocks/lik';
 import { Observable, from } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { rxjs } from '@pushrocks/smartrx';
+import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 
 /**
  * universe store handles the creation, storage and retrieval of messages.
@@ -28,6 +29,8 @@ export class UniverseCache {
    * stores the channels that are available within the universe
    */
   public channelMap = new Objectmap<UniverseChannel>();
+
+  public connectionMap = new plugins.lik.Objectmap<UniverseConnection>();
 
   /**
    * allows messages to be processed in a blacklist mode for further analysis

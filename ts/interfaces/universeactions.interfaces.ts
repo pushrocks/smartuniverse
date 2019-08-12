@@ -1,4 +1,8 @@
-export type IServerCallActions = 'subscribe' | 'sendmessage' | 'unsubscribe';
+export type IServerCallActions =
+  | 'channelSubscription'
+  | 'processMessage'
+  | 'channelUnsubscribe'
+  | 'terminateConnection';
 
 /**
  * the interface for a subscription

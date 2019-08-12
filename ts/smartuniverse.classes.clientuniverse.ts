@@ -74,13 +74,13 @@ export class ClientUniverse {
    */
   public async sendMessage(messageArg: interfaces.IMessageCreator) {
     await this.checkConnection();
-    const requestBody: interfaces.IUniverseMessage = {
+    const universeMessageToSend: interfaces.IUniverseMessage = {
       id: plugins.smartunique.shortId(),
       timestamp: Date.now(),
       passphrase: (await this.getChannel(messageArg.targetChannelName)).passphrase,
       ...messageArg
     };
-    // TODO: User websocket connection if available
+    await this.smartsocketClient.serverCall('processMessage', universeMessageToSend);
   }
 
   public close() {
@@ -113,13 +113,21 @@ export class ClientUniverse {
       const unsubscribe = new plugins.smartsocket.SocketFunction({
         funcName: 'unsubscribe',
         allowedRoles: [],
-        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {}
+        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
+          throw new Error('TODO');
+        }
       });
 
       /**
        * should handle a message reception
        */
-      const receiveMessage = async () => {};
+      const processMessageSocketFunction = new plugins.smartsocket.SocketFunction({
+        funcName: 'processMessage',
+        allowedRoles: [],
+        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
+          throw new Error('TODO');
+        }
+      });
 
       await this.smartsocketClient.connect();
     }

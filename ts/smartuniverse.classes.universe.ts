@@ -6,7 +6,6 @@ import { UniverseCache, UniverseChannel, UniverseMessage } from './';
 import * as paths from './smartuniverse.paths';
 
 import * as interfaces from './interfaces';
-import { UniverseConnectionManager } from './smartuniverse.classes.universeconnectionmanager';
 import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 
 export interface ISmartUniverseConstructorOptions {
@@ -14,12 +13,11 @@ export interface ISmartUniverseConstructorOptions {
 }
 
 /**
- * main class that setsup a Universe
+ * main class that setups a Universe
  */
 export class Universe {
   // subinstances
   public universeCache: UniverseCache;
-  public universeConnectionManager: UniverseConnectionManager;
 
   // options
   private options: ISmartUniverseConstructorOptions;
@@ -37,7 +35,6 @@ export class Universe {
   constructor(optionsArg: ISmartUniverseConstructorOptions) {
     this.options = optionsArg;
     this.universeCache = new UniverseCache(this.options.messageExpiryInMilliseconds);
-    this.universeConnectionManager = new UniverseConnectionManager();
   }
 
   /**
@@ -95,15 +92,53 @@ export class Universe {
     const SubscriptionSocketFunction = new plugins.smartsocket.SocketFunction({
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'channelSubscription',
-      funcDef: async (dataArg: interfaces.IServerCallSubscribeActionPayload, socketConnectionArg) => {
+      funcDef: async (
+        dataArg: interfaces.IServerCallSubscribeActionPayload,
+        socketConnectionArg
+      ) => {
         // run in "this context" of this class
-        (() => {
+        await (async () => {
           // TODO: properly add the connection
           const universeConnection = new UniverseConnection({
             socketConnection: socketConnectionArg,
             authenticationRequests: []
-          })
-          this.universeConnectionManager.addConnection(universeConnection);
+          });
+          await UniverseConnection.addConnectionToCache(this.universeCache, universeConnection);
+          return {
+            'subscription status': 'success'
+          };
+        })();
+      }
+    });
+
+    const ProcessMessageSocketFunction = new plugins.smartsocket.SocketFunction({
+      allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
+      funcName: 'processMessage',
+      funcDef: async (dataArg: interfaces.IUniverseMessage, socketConnectionArg) => {
+        // run in "this" context of this class
+        await (async () => {
+          const universeConnection = UniverseConnection.findUniverseConnectionBySocketConnection(
+            this.universeCache,
+            socketConnectionArg
+          );
+          if (universeConnection) {
+            console.log('found UniverseConnection for socket');
+          } else {
+            console.log('universe client not yet present');
+            console.log('creating one now as send only');
+            const universeConnectionInstance = new UniverseConnection({
+              socketConnection: socketConnectionArg,
+              authenticationRequests: []
+            });
+            await UniverseConnection.addConnectionToCache(
+              this.universeCache,
+              universeConnectionInstance
+            );
+          }
+          await UniverseChannel.authorizeAMessageForAChannel(
+            this.universeCache,
+            UniverseMessage.createMessageFromPayload(dataArg)
+          );
         })();
       }
     });

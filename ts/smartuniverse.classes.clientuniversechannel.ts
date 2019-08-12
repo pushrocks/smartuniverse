@@ -50,7 +50,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * tells the universe about this instances interest into a channel
    */
   public async subscribe() {
-    const serverCallActionName: interfaces.IServerCallActions = 'subscribe';
+    const serverCallActionName: interfaces.IServerCallActions = 'channelSubscription';
     const serverCallActionPayload: interfaces.IServerCallSubscribeActionPayload = {
       name: this.name,
       passphrase: this.passphrase

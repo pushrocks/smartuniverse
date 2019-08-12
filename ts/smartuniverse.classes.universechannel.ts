@@ -1,6 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { Objectmap } from '@pushrocks/lik';
 import { UniverseCache } from './smartuniverse.classes.universecache';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 
@@ -41,6 +40,13 @@ export class UniverseChannel {
     }
   }
 
+  /**
+   * a static message authorization function that takes the  UniverseCache
+   * (where messages and channels are stored and their lifetime is managed)
+   * and the universemessage to find a fitting channel for the message
+   * @param universeCacheArg
+   * @param universeMessageArg
+   */
   public static authorizeAMessageForAChannel(
     universeCacheArg: UniverseCache,
     universeMessageArg: UniverseMessage
@@ -56,6 +62,7 @@ export class UniverseChannel {
     } else {
       universeMessageArg.authenticated = false;
       universeMessageArg.universeChannelList.add(universeCacheArg.blackListChannel);
+      console.log('message not valid');
     }
   }
 
@@ -79,7 +86,9 @@ export class UniverseChannel {
   }
 
   /**
-   * authenticates a client on the server side
+   * authenticates a client on the server side by matching
+   * # the messages channelName against the unverseChannel's name
+   * # the messages password against the universeChannel's password
    */
   public authenticate(universeMessageArg: UniverseMessage): boolean {
     return (

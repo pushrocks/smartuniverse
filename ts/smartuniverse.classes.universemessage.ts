@@ -14,6 +14,10 @@ import { IUniverseMessage } from './interfaces';
  * acts as a container to save message states like authentication status
  */
 export class UniverseMessage implements interfaces.IUniverseMessage {
+  public static createMessageFromPayload(dataArg: interfaces.IUniverseMessage) {
+    return new UniverseMessage(dataArg);
+  }
+
   public id: string;
 
   public timestamp: number;
