@@ -23,6 +23,7 @@ export class UniverseConnection {
     universeConnection = await UniverseConnection.authenticateAuthenticationRequests(
       universeConnection
     );
+    universeCache.connectionMap.add(universeConnection);
   }
 
   /**

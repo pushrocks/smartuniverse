@@ -37,10 +37,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   public passphrase: string;
 
   // refs
-  public clientUniverse: ClientUniverse;
+  public clientUniverseRef: ClientUniverse;
 
   constructor(clientUniverseArg: ClientUniverse, nameArg: string, passphraseArg: string) {
-    this.clientUniverse = clientUniverseArg;
+    this.clientUniverseRef = clientUniverseArg;
     this.name = nameArg;
     this.passphrase = passphraseArg;
   }
@@ -55,6 +55,24 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       name: this.name,
       passphrase: this.passphrase
     };
-    this.clientUniverse.smartsocketClient.serverCall(serverCallActionName, serverCallActionPayload);
+    await this.clientUniverseRef.smartsocketClient.serverCall(serverCallActionName, serverCallActionPayload);
+  }
+
+  /**
+   * sends a message towards the server
+   * @param messageArg
+   */
+  public async sendMessage(messageArg: interfaces.IMessageCreator) {
+    await this.clientUniverseRef.checkConnection();
+    const universeMessageToSend: interfaces.IUniverseMessage = {
+      id: plugins.smartunique.shortId(),
+      timestamp: Date.now(),
+      passphrase: this.passphrase,
+      targetChannelName: this.name,
+      messageText: messageArg.messageText,
+      payload: messageArg.payload,
+      payloadStringType: messageArg.payloadStringType
+    };
+    await this.clientUniverseRef.smartsocketClient.serverCall('processMessage', universeMessageToSend);
   }
 }

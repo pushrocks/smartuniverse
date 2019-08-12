@@ -124,16 +124,9 @@ export class Universe {
           if (universeConnection) {
             console.log('found UniverseConnection for socket');
           } else {
-            console.log('universe client not yet present');
-            console.log('creating one now as send only');
-            const universeConnectionInstance = new UniverseConnection({
-              socketConnection: socketConnectionArg,
-              authenticationRequests: []
-            });
-            await UniverseConnection.addConnectionToCache(
-              this.universeCache,
-              universeConnectionInstance
-            );
+            return {
+              error: 'You need to authenticate for a channel'
+            };
           }
           const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(dataArg);
           const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(

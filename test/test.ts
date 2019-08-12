@@ -50,9 +50,8 @@ tap.test('should get a observable correctly', async () => {
 });
 
 tap.test('should send a message correctly', async () => {
-  await testClientUniverse.sendMessage({
-    messageText: 'hello',
-    targetChannelName: testChannelData.channelName
+  await (await testClientUniverse.getChannel(testChannelData.channelName)).sendMessage({
+    messageText: 'hello'
   });
 });
 

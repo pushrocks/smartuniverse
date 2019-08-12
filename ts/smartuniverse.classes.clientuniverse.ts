@@ -42,7 +42,7 @@ export class ClientUniverse {
     }
 
     // lets create the channel
-    ClientUniverseChannel.createClientUniverseChannel(this, channelNameArg, passphraseArg);
+    await ClientUniverseChannel.createClientUniverseChannel(this, channelNameArg, passphraseArg);
   }
 
   /**
@@ -68,21 +68,6 @@ export class ClientUniverse {
     });
   }
 
-  /**
-   * sends a message towards the server
-   * @param messageArg
-   */
-  public async sendMessage(messageArg: interfaces.IMessageCreator) {
-    await this.checkConnection();
-    const universeMessageToSend: interfaces.IUniverseMessage = {
-      id: plugins.smartunique.shortId(),
-      timestamp: Date.now(),
-      passphrase: (await this.getChannel(messageArg.targetChannelName)).passphrase,
-      ...messageArg
-    };
-    await this.smartsocketClient.serverCall('processMessage', universeMessageToSend);
-  }
-
   public close() {
     this.smartsocketClient.disconnect();
   }
@@ -91,7 +76,7 @@ export class ClientUniverse {
    * checks the connection towards a universe server
    * since password validation is done through other means, a connection should always be possible
    */
-  private async checkConnection(): Promise<void> {
+  public async checkConnection(): Promise<void> {
     if (!this.smartsocketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
       const socketConfig: plugins.smartsocket.ISmartsocketClientOptions = {
