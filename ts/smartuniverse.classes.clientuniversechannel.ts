@@ -13,11 +13,11 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * @param channelNameArg
    * @param passphraseArg
    */
-  public static async createClientUniverseChannel(
+  public static createClientUniverseChannel(
     clientUniverseArg: ClientUniverse,
     channelNameArg: string,
     passphraseArg: string
-  ): Promise<ClientUniverseChannel> {
+  ): ClientUniverseChannel {
     const clientChannel = new ClientUniverseChannel(
       clientUniverseArg,
       channelNameArg,

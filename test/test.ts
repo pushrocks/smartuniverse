@@ -49,12 +49,12 @@ tap.test('should start the ClientUniverse', async () => {
 })
 
 tap.test('should get a observable correctly', async () => {
-  testClientChannel = await testClientUniverse.getChannel(testChannelData.channelName);
+  testClientChannel = testClientUniverse.getChannel(testChannelData.channelName);
   expect(testClientChannel).to.be.instanceof(smartuniverse.ClientUniverseChannel);
 });
 
 tap.test('should send a message correctly', async () => {
-  await (await testClientUniverse.getChannel(testChannelData.channelName)).sendMessage({
+  await (testClientUniverse.getChannel(testChannelData.channelName)).sendMessage({
     messageText: 'hello'
   });
 });

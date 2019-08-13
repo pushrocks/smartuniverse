@@ -32,15 +32,16 @@ export class ClientUniverse {
    * adds a channel to the channelcache
    * TODO: verify channel before adding it to the channel cache
    */
-  public async addChannel(channelNameArg: string, passphraseArg: string) {
-    const existingChannel = await this.getChannel(channelNameArg);
+  public addChannel(channelNameArg: string, passphraseArg: string) {
+    const existingChannel = this.getChannel(channelNameArg);
 
     if (existingChannel) {
       throw new Error('channel exists');
     }
 
     // lets create the channel
-    await ClientUniverseChannel.createClientUniverseChannel(this, channelNameArg, passphraseArg);
+    const clientUniverseChannel = ClientUniverseChannel.createClientUniverseChannel(this, channelNameArg, passphraseArg);
+    return clientUniverseChannel;
   }
 
   /**
@@ -48,7 +49,7 @@ export class ClientUniverse {
    * @param channelName
    * @param passphraseArg
    */
-  public async getChannel(channelName: string): Promise<ClientUniverseChannel> {
+  public getChannel(channelName: string): ClientUniverseChannel {
     const clientUniverseChannel = this.clientUniverseCache.channelMap.find(channel => {
       return channel.name === channelName;
     });
