@@ -89,7 +89,7 @@ export class Universe {
     // add the role to smartsocket
     this.smartsocket.addSocketRoles([ClientRole]);
 
-    const SubscriptionSocketFunction = new plugins.smartsocket.SocketFunction({
+    const socketFunctionSubscription = new plugins.smartsocket.SocketFunction({
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'channelSubscription',
       funcDef: async (
@@ -111,7 +111,7 @@ export class Universe {
       }
     });
 
-    const ProcessMessageSocketFunction = new plugins.smartsocket.SocketFunction({
+    const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction({
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'processMessage',
       funcDef: async (dataArg: interfaces.IUniverseMessage, socketConnectionArg) => {
@@ -140,6 +140,10 @@ export class Universe {
         })();
       }
     });
+
+    // add socket functions
+    this.smartsocket.addSocketFunction(socketFunctionSubscription);
+    this.smartsocket.addSocketFunction(socketFunctionProcessMessage);
 
     // add smartsocket to the running smartexpress app
     this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer as any);
