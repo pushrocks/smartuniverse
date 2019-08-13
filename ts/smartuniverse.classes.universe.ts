@@ -59,7 +59,7 @@ export class Universe {
   /**
    * adds a channel to the Universe
    */
-  public async addChannel(nameArg: string, passphraseArg: string) {
+  public addChannel(nameArg: string, passphraseArg: string) {
     const newChannel = UniverseChannel.createChannel(this, nameArg, passphraseArg);
   }
 
