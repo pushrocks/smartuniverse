@@ -6,7 +6,10 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   // ======
   // STATIC
   // ======
-  public static createMessageFromPayload(messageDescriptor: interfaces.IUniverseMessage) {}
+  public static createMessageFromMessageDescriptor(messageDescriptor: interfaces.IUniverseMessage) {
+    const clientuniverseMessage = new ClientUniverseMessage(messageDescriptor);
+    return clientuniverseMessage;
+  }
 
   // ========
   // INSTANCE
@@ -23,11 +26,12 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   public payloadStringType;
   public targetChannelName: string;
 
-  constructor(messageArg: interfaces.IUniverseMessage, payloadArg) {
+  constructor(messageArg: interfaces.IUniverseMessage) {
     for (const key of Object.keys(messageArg)) {
       this[key] = messageArg[key];
     }
   }
+
 
   getAsJsonForPayload() {}
 }

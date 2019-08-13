@@ -7,7 +7,7 @@ import * as url from 'url';
 
 import * as interfaces from './interfaces';
 
-import { ClientUniverseChannel, UniverseMessage } from './';
+import { ClientUniverseChannel, ClientUniverseMessage } from './';
 import { ClientUniverseCache } from './smartuniverse.classes.clientuniversecache';
 
 export interface IClientOptions {
@@ -21,7 +21,7 @@ export interface IClientOptions {
 export class ClientUniverse {
   public options;
   public smartsocketClient: plugins.smartsocket.SmartsocketClient;
-  public observableIntake: plugins.smartrx.ObservableIntake<UniverseMessage>;
+  public observableIntake: plugins.smartrx.ObservableIntake<ClientUniverseMessage>;
   public clientUniverseCache = new ClientUniverseCache();
 
   constructor(optionsArg: IClientOptions) {
@@ -109,8 +109,9 @@ export class ClientUniverse {
       const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction({
         funcName: 'processMessage',
         allowedRoles: [],
-        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
+        funcDef: async (messageDescriptorArg: interfaces.IUniverseMessage) => {
           plugins.smartlog.defaultLogger.log('info', 'Got message from server');
+          this.observableIntake.push(ClientUniverseMessage.createMessageFromMessageDescriptor(messageDescriptorArg));
         }
       });
 
