@@ -87,7 +87,6 @@ export class ClientUniverse {
         role: 'UniverseClient',
         url: parsedURL.protocol + '//' + parsedURL.hostname
       };
-      console.log(socketConfig);
       this.smartsocketClient = new SmartsocketClient(socketConfig);
       this.observableIntake = new plugins.smartrx.ObservableIntake();
 
@@ -111,7 +110,7 @@ export class ClientUniverse {
         funcName: 'processMessage',
         allowedRoles: [],
         funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
-          console.log('Got message from server');
+          plugins.smartlog.defaultLogger.log('info', 'Got message from server');
         }
       });
 
@@ -120,7 +119,7 @@ export class ClientUniverse {
       this.smartsocketClient.addSocketFunction(socketFunctionProcessMessage);
 
       await this.smartsocketClient.connect();
-      console.log('universe client connected successfully');
+      plugins.smartlog.defaultLogger.log('info', 'universe client connected successfully');
       await this.clientUniverseCache.channelMap.forEach(async clientUniverseChannelArg => {
         await clientUniverseChannelArg.subscribe();
       });

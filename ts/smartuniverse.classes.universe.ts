@@ -121,8 +121,9 @@ export class Universe {
             socketConnectionArg
           );
           if (universeConnection) {
-            console.log('found UniverseConnection for socket');
+            plugins.smartlog.defaultLogger.log('ok', 'found UniverseConnection for socket for incoming message');
           } else {
+            plugins.smartlog.defaultLogger.log('warn', 'found no Authorized channel for incoming message');
             return {
               error: 'You need to authenticate for a channel'
             };
@@ -149,7 +150,7 @@ export class Universe {
     // start everything
     await this.smartexpressServer.start();
     await this.smartsocket.start();
-    console.log('started universe');
+    plugins.smartlog.defaultLogger.log('success', 'started universe');
   }
 
   /**

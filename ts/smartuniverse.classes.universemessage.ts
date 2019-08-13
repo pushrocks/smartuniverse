@@ -91,7 +91,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
    * handles bad messages for further analysis
    */
   public handleAsBadMessage() {
-    console.log('received a bad message');
+    plugins.smartlog.defaultLogger.log('warn', 'received a bad message');
   }
 
   /**

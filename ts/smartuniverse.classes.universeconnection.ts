@@ -58,7 +58,6 @@ export class UniverseConnection {
     universeConnectionArg: UniverseConnection
   ): Promise<UniverseConnection> {
     for (const authenticationRequest of universeConnectionArg.authenticationRequests) {
-      // TODO: authenticate channel subscriptions
       const universeChannelToAuthenticateAgainst = UniverseChannel.getUniverseChannelByName(universeRef, authenticationRequest.name);
       if (universeChannelToAuthenticateAgainst.passphrase === authenticationRequest.passphrase) {
         universeConnectionArg.authenticatedChannels.push(universeChannelToAuthenticateAgainst);
@@ -74,7 +73,6 @@ export class UniverseConnection {
     connectionArg1: UniverseConnection,
     connectionArg2: UniverseConnection
   ) {
-    // TODO: merge connections
     return connectionArg1;
   }
 

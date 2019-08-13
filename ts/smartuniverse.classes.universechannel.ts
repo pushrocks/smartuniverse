@@ -61,12 +61,12 @@ export class UniverseChannel {
     if (foundChannel) {
       universeMessageArg.authenticated = true;
       universeMessageArg.universeChannelList.add(foundChannel);
-      console.log('message authorized');
+      plugins.smartlog.defaultLogger.log('ok', 'message authorized');
       return foundChannel;
     } else {
       universeMessageArg.authenticated = false;
       universeMessageArg.universeChannelList.add(universeCacheArg.blackListChannel);
-      console.log('message not valid');
+      plugins.smartlog.defaultLogger.log('warn', 'message not valid');
       return null;
     }
   }
