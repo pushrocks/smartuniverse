@@ -1,7 +1,10 @@
 import * as plugins from './smartuniverse.plugins';
+import * as interfaces from './interfaces';
 
 import { UniverseCache } from './smartuniverse.classes.universecache';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
+import { UniverseConnection } from './smartuniverse.classes.universeconnection';
+import { Universe } from './smartuniverse.classes.universe';
 
 /**
  * enables messages to stay within a certain scope.
@@ -17,12 +20,12 @@ export class UniverseChannel {
    * @param passphraseArg the secret thats used for a certain topic.
    */
   public static createChannel(
-    universeCacheArg: UniverseCache,
+    universeArg: Universe,
     channelNameArg: string,
     passphraseArg: string
   ) {
-    const newChannel = new UniverseChannel(universeCacheArg, channelNameArg, passphraseArg);
-    universeCacheArg.channelMap.add(newChannel);
+    const newChannel = new UniverseChannel(universeArg, channelNameArg, passphraseArg);
+    universeArg.universeCache.channelMap.add(newChannel);
     return newChannel;
   }
 
@@ -68,6 +71,12 @@ export class UniverseChannel {
     }
   }
 
+  public static getUniverseChannelByName(universeRef: Universe, universeChannelName: string) {
+    return universeRef.universeCache.channelMap.find(channelArg => {
+      return channelArg.name === universeChannelName;
+    });
+  }
+
   // ========
   // INSTANCE
   // ========
@@ -75,14 +84,15 @@ export class UniverseChannel {
    * the name of the channel
    */
   public name: string;
-  public universeCacheInstance: UniverseCache;
+  public universeRef: Universe;
 
   /**
    * the passphrase for the channel
    */
   public passphrase: string;
 
-  constructor(universeCacheArg: UniverseCache, channelNameArg: string, passphraseArg: string) {
+  constructor(universeArg: Universe, channelNameArg: string, passphraseArg: string) {
+    this.universeRef = universeArg;
     this.name = channelNameArg;
     this.passphrase = passphraseArg;
   }
@@ -99,5 +109,29 @@ export class UniverseChannel {
     );
   }
 
-  public pushToClients(messageArg: UniverseMessage) {}
+  /**
+   * pushes a message to clients
+   * @param messageArg
+   */
+  public async pushToClients(messageArg: UniverseMessage) {
+    const universeConnectionsWithChannelAccess: UniverseConnection[] = [];
+    this.universeRef.universeCache.connectionMap.forEach(async socketConnection => {
+      if (socketConnection.authenticatedChannels.includes(this)) {
+        universeConnectionsWithChannelAccess.push(socketConnection);
+      }
+    });
+    for (const universeConnection of universeConnectionsWithChannelAccess) {
+      const smartsocket = universeConnection.socketConnection.smartsocketRef as plugins.smartsocket.Smartsocket;
+      const universeMessageToSend: interfaces.IUniverseMessage = {
+        id: messageArg.id,
+        timestamp: messageArg.timestamp,
+        passphrase: messageArg.passphrase,
+        targetChannelName: this.name,
+        messageText: messageArg.messageText,
+        payload: messageArg.payload,
+        payloadStringType: messageArg.payloadStringType
+      };
+      smartsocket.clientCall('processMessage', universeMessageToSend, universeConnection.socketConnection);
+    }
+  }
 }

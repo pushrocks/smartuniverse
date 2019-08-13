@@ -34,7 +34,7 @@ export class Universe {
 
   constructor(optionsArg: ISmartUniverseConstructorOptions) {
     this.options = optionsArg;
-    this.universeCache = new UniverseCache(this.options.messageExpiryInMilliseconds);
+    this.universeCache = new UniverseCache(this, this.options.messageExpiryInMilliseconds);
   }
 
   /**
@@ -60,7 +60,7 @@ export class Universe {
    * adds a channel to the Universe
    */
   public async addChannel(nameArg: string, passphraseArg: string) {
-    const newChannel = UniverseChannel.createChannel(this.universeCache, nameArg, passphraseArg);
+    const newChannel = UniverseChannel.createChannel(this, nameArg, passphraseArg);
   }
 
   /**
@@ -98,12 +98,11 @@ export class Universe {
       ) => {
         // run in "this context" of this class
         await (async () => {
-          // TODO: properly add the connection
           const universeConnection = new UniverseConnection({
             socketConnection: socketConnectionArg,
-            authenticationRequests: []
+            authenticationRequests: [dataArg]
           });
-          await UniverseConnection.addConnectionToCache(this.universeCache, universeConnection);
+          await UniverseConnection.addConnectionToCache(this, universeConnection);
           return {
             'subscription status': 'success'
           };
@@ -128,7 +127,7 @@ export class Universe {
               error: 'You need to authenticate for a channel'
             };
           }
-          const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(dataArg);
+          const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(socketConnectionArg, dataArg);
           const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(
             this.universeCache,
             unauthenticatedMessage

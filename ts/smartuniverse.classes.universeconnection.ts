@@ -2,6 +2,7 @@ import * as plugins from './smartuniverse.plugins';
 import * as interfaces from './interfaces';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseCache } from './smartuniverse.classes.universecache';
+import { Universe } from './smartuniverse.classes.universe';
 
 /**
  * represents a connection to the universe
@@ -12,18 +13,19 @@ export class UniverseConnection {
    * @param universeConnectionArg
    */
   public static async addConnectionToCache(
-    universeCache: UniverseCache,
+    universeRef: Universe,
     universeConnectionArg: UniverseConnection
   ) {
     let universeConnection = universeConnectionArg;
     universeConnection = await UniverseConnection.deduplicateUniverseConnection(
-      universeCache,
+      universeRef.universeCache,
       universeConnection
     );
     universeConnection = await UniverseConnection.authenticateAuthenticationRequests(
+      universeRef,
       universeConnection
     );
-    universeCache.connectionMap.add(universeConnection);
+    universeRef.universeCache.connectionMap.add(universeConnection);
   }
 
   /**
@@ -51,10 +53,17 @@ export class UniverseConnection {
   /**
    * authenticate AuthenticationRequests
    */
-  public static authenticateAuthenticationRequests(
-    universeConnectionArg
+  public static async authenticateAuthenticationRequests(
+    universeRef: Universe,
+    universeConnectionArg: UniverseConnection
   ): Promise<UniverseConnection> {
-    // TODO: authenticate connections
+    for (const authenticationRequest of universeConnectionArg.authenticationRequests) {
+      // TODO: authenticate channel subscriptions
+      const universeChannelToAuthenticateAgainst = UniverseChannel.getUniverseChannelByName(universeRef, authenticationRequest.name);
+      if (universeChannelToAuthenticateAgainst.passphrase === authenticationRequest.passphrase) {
+        universeConnectionArg.authenticatedChannels.push(universeChannelToAuthenticateAgainst);
+      }
+    }
     return universeConnectionArg;
   }
 
@@ -88,7 +97,7 @@ export class UniverseConnection {
    * the socketClient to ping
    */
   public socketConnection: plugins.smartsocket.SocketConnection;
-  public authenticationRequests = [];
+  public authenticationRequests: interfaces.IServerCallSubscribeActionPayload[] = [];
   public subscribedChannels: UniverseChannel[] = [];
   public authenticatedChannels: UniverseChannel[] = [];
   public failedToJoinChannels: UniverseChannel[] = [];
@@ -105,7 +114,7 @@ export class UniverseConnection {
     socketConnection: plugins.smartsocket.SocketConnection;
     authenticationRequests: interfaces.IServerCallSubscribeActionPayload[];
   }) {
-    // TODO: check if this is correct
+    this.authenticationRequests = optionsArg.authenticationRequests;
     this.socketConnection = optionsArg.socketConnection;
   }
 }

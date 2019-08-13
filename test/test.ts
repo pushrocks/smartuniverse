@@ -15,7 +15,7 @@ const testServerData = {
 
 const testChannelData = {
   channelName: 'awesomeTestChannel',
-  channelPass: 'awesomeChannelPAss'
+  channelPass: 'awesomeChannelPass'
 };
 
 tap.test('first test', async () => {
@@ -44,6 +44,10 @@ tap.test('should add the same channel to the client universe in the same way', a
   await testClientUniverse.addChannel(testChannelData.channelName, testChannelData.channelPass);
 });
 
+tap.test('should start the ClientUniverse', async () => {
+  await testClientUniverse.start();
+})
+
 tap.test('should get a observable correctly', async () => {
   testClientChannel = await testClientUniverse.getChannel(testChannelData.channelName);
   expect(testClientChannel).to.be.instanceof(smartuniverse.ClientUniverseChannel);
@@ -70,7 +74,7 @@ tap.test('a second client should be able to subscibe', async () => {
 tap.test('should receive a message correctly', async () => {});
 
 tap.test('should disconnect the client correctly', async () => {
-  testClientUniverse.close();
+  testClientUniverse.stop();
 });
 
 tap.test('should end the server correctly', async tools => {

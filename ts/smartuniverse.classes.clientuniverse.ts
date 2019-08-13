@@ -22,8 +22,6 @@ export class ClientUniverse {
   public options;
   public smartsocketClient: plugins.smartsocket.SmartsocketClient;
   public observableIntake: plugins.smartrx.ObservableIntake<UniverseMessage>;
-
-  public channelStore = new Objectmap<ClientUniverseChannel>();
   public clientUniverseCache = new ClientUniverseCache();
 
   constructor(optionsArg: IClientOptions) {
@@ -51,8 +49,7 @@ export class ClientUniverse {
    * @param passphraseArg
    */
   public async getChannel(channelName: string): Promise<ClientUniverseChannel> {
-    await this.checkConnection();
-    const clientUniverseChannel = this.channelStore.find(channel => {
+    const clientUniverseChannel = this.clientUniverseCache.channelMap.find(channel => {
       return channel.name === channelName;
     });
     return clientUniverseChannel;
@@ -63,12 +60,16 @@ export class ClientUniverse {
    * @param messageArg
    */
   public removeChannel(channelNameArg, notifyServer = true) {
-    const clientUniverseChannel = this.channelStore.findOneAndRemove(channelItemArg => {
+    const clientUniverseChannel = this.clientUniverseCache.channelMap.findOneAndRemove(channelItemArg => {
       return channelItemArg.name === channelNameArg;
     });
   }
 
-  public close() {
+  public async start() {
+    await this.checkConnection();
+  }
+
+  public stop() {
     this.smartsocketClient.disconnect();
   }
 
@@ -95,7 +96,7 @@ export class ClientUniverse {
       /**
        * should handle a forced unsubscription by the server
        */
-      const unsubscribe = new plugins.smartsocket.SocketFunction({
+      const socketFunctionUnsubscribe = new plugins.smartsocket.SocketFunction({
         funcName: 'unsubscribe',
         allowedRoles: [],
         funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
@@ -104,17 +105,25 @@ export class ClientUniverse {
       });
 
       /**
-       * should handle a message reception
+       * handles message reception
        */
-      const processMessageSocketFunction = new plugins.smartsocket.SocketFunction({
+      const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction({
         funcName: 'processMessage',
         allowedRoles: [],
         funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
-          throw new Error('TODO');
+          console.log('Got message from server');
         }
       });
 
+      // add functions
+      this.smartsocketClient.addSocketFunction(socketFunctionUnsubscribe);
+      this.smartsocketClient.addSocketFunction(socketFunctionProcessMessage);
+
       await this.smartsocketClient.connect();
+      console.log('universe client connected successfully');
+      await this.clientUniverseCache.channelMap.forEach(async clientUniverseChannelArg => {
+        await clientUniverseChannelArg.subscribe();
+      });
     }
   }
 }

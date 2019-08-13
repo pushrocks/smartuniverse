@@ -9,6 +9,7 @@ import { Observable, from } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { rxjs } from '@pushrocks/smartrx';
 import { UniverseConnection } from './smartuniverse.classes.universeconnection';
+import { Universe } from './smartuniverse.classes.universe';
 
 /**
  * universe store handles the creation, storage and retrieval of messages.
@@ -30,15 +31,22 @@ export class UniverseCache {
    */
   public channelMap = new Objectmap<UniverseChannel>();
 
+  /**
+   * stores all connections
+   */
   public connectionMap = new plugins.lik.Objectmap<UniverseConnection>();
 
   /**
    * allows messages to be processed in a blacklist mode for further analysis
    */
-  public blackListChannel = new UniverseChannel(this, 'blacklist', 'nada');
+  public blackListChannel: UniverseChannel;
 
-  constructor(standardMessageExpiryArg: number) {
+  public universeRef: Universe;
+
+  constructor(universeArg: Universe, standardMessageExpiryArg: number) {
+    this.universeRef = universeArg;
     this.standardMessageExpiry = standardMessageExpiryArg;
+    this.blackListChannel = new UniverseChannel(this.universeRef, 'blacklist', 'nada');
   }
 
   /**
@@ -50,6 +58,9 @@ export class UniverseCache {
     messageArg.setUniverseCache(this);
     UniverseChannel.authorizeAMessageForAChannel(this, messageArg);
     this.messageMap.add(messageArg);
+    messageArg.universeChannelList.forEach(universeChannel => {
+      universeChannel.pushToClients(messageArg);
+    });
   }
 
   /**

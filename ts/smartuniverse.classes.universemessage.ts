@@ -7,27 +7,28 @@ import { Timer, TimeStamp } from '@pushrocks/smarttime';
 import { Universe } from './smartuniverse.classes.universe';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseCache } from './smartuniverse.classes.universecache';
-import { IUniverseMessage } from './interfaces';
+import { SocketConnection } from '@pushrocks/smartsocket';
 
 /**
  * represents a message within a universe
  * acts as a container to save message states like authentication status
  */
 export class UniverseMessage implements interfaces.IUniverseMessage {
-  public static createMessageFromPayload(dataArg: interfaces.IUniverseMessage) {
-    return new UniverseMessage(dataArg);
+  public static createMessageFromPayload(socketConnectionArg: SocketConnection, dataArg: interfaces.IUniverseMessage) {
+    const universeMessageInstance = new UniverseMessage(dataArg);
+    universeMessageInstance.socketConnection = socketConnectionArg;
+    return universeMessageInstance;
   }
 
   public id: string;
-
   public timestamp: number;
   public smartTimestamp: TimeStamp;
-
   public messageText: string;
   public passphrase: string;
   public payload: any;
   public payloadStringType;
   public targetChannelName: string;
+  public socketConnection: SocketConnection;
 
   /**
    * the UniverseCache the message is attached to
@@ -54,7 +55,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  constructor(messageDescriptor: IUniverseMessage) {
+  constructor(messageDescriptor: interfaces.IUniverseMessage) {
     this.smartTimestamp = new TimeStamp(this.timestamp);
     this.messageText = messageDescriptor.messageText;
     this.targetChannelName = messageDescriptor.targetChannelName;
@@ -66,6 +67,10 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
 
   public setUniverseCache(universeCacheArg: UniverseCache) {
     this.universeCache = universeCacheArg;
+  }
+
+  public setTargetChannel() {
+    
   }
 
   public setDestructionTimer(selfdestructAfterArg: number) {
