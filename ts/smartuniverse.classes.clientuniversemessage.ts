@@ -32,6 +32,8 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
     }
   }
 
-
+  /**
+   * gets json for payload
+   */
   getAsJsonForPayload() {}
 }
