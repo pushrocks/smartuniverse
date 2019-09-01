@@ -79,6 +79,7 @@ export class Universe {
         port: portArg
       });
     } else {
+      console.log('Universe is using externally supplied server');
       this.smartexpressServer = this.options.externalServer;
     }
 
@@ -160,7 +161,7 @@ export class Universe {
     this.smartsocket.addSocketFunction(socketFunctionProcessMessage);
 
     // add smartsocket to the running smartexpress app
-    this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer as any);
+    await this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer);
     // start everything
     if (!this.options.externalServer) {
       await this.smartexpressServer.start();
