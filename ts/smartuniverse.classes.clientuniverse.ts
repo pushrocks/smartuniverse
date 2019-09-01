@@ -88,7 +88,7 @@ export class ClientUniverse {
     if (!this.smartsocketClient && !this.observableIntake) {
       const parsedURL = url.parse(this.options.serverAddress);
       const socketConfig: plugins.smartsocket.ISmartsocketClientOptions = {
-        alias: process.env.SOCKET_ALIAS || 'someclient',
+        alias: 'universeclient',
         password: 'UniverseClient',
         port: parseInt(parsedURL.port, 10),
         role: 'UniverseClient',
