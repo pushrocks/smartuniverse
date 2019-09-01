@@ -160,12 +160,13 @@ export class Universe {
     this.smartsocket.addSocketFunction(socketFunctionSubscription);
     this.smartsocket.addSocketFunction(socketFunctionProcessMessage);
 
-    // add smartsocket to the running smartexpress app
-    await this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer);
-    // start everything
+    // start the server
     if (!this.options.externalServer) {
       await this.smartexpressServer.start();
     }
+
+    // add smartsocket to the running smartexpress app
+    await this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer);
     await this.smartsocket.start();
     plugins.smartlog.defaultLogger.log('success', 'started universe');
   }
