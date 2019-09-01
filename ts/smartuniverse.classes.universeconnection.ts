@@ -58,7 +58,10 @@ export class UniverseConnection {
     universeConnectionArg: UniverseConnection
   ): Promise<UniverseConnection> {
     for (const authenticationRequest of universeConnectionArg.authenticationRequests) {
-      const universeChannelToAuthenticateAgainst = UniverseChannel.getUniverseChannelByName(universeRef, authenticationRequest.name);
+      const universeChannelToAuthenticateAgainst = UniverseChannel.getUniverseChannelByName(
+        universeRef,
+        authenticationRequest.name
+      );
       if (universeChannelToAuthenticateAgainst.passphrase === authenticationRequest.passphrase) {
         universeConnectionArg.authenticatedChannels.push(universeChannelToAuthenticateAgainst);
       }

@@ -40,7 +40,11 @@ export class ClientUniverse {
     }
 
     // lets create the channel
-    const clientUniverseChannel = ClientUniverseChannel.createClientUniverseChannel(this, channelNameArg, passphraseArg);
+    const clientUniverseChannel = ClientUniverseChannel.createClientUniverseChannel(
+      this,
+      channelNameArg,
+      passphraseArg
+    );
     return clientUniverseChannel;
   }
 
@@ -61,9 +65,11 @@ export class ClientUniverse {
    * @param messageArg
    */
   public removeChannel(channelNameArg, notifyServer = true) {
-    const clientUniverseChannel = this.clientUniverseCache.channelMap.findOneAndRemove(channelItemArg => {
-      return channelItemArg.name === channelNameArg;
-    });
+    const clientUniverseChannel = this.clientUniverseCache.channelMap.findOneAndRemove(
+      channelItemArg => {
+        return channelItemArg.name === channelNameArg;
+      }
+    );
   }
 
   public async start() {
@@ -112,7 +118,9 @@ export class ClientUniverse {
         allowedRoles: [],
         funcDef: async (messageDescriptorArg: interfaces.IUniverseMessage) => {
           plugins.smartlog.defaultLogger.log('info', 'Got message from server');
-          this.observableIntake.push(ClientUniverseMessage.createMessageFromMessageDescriptor(messageDescriptorArg));
+          this.observableIntake.push(
+            ClientUniverseMessage.createMessageFromMessageDescriptor(messageDescriptorArg)
+          );
         }
       });
 

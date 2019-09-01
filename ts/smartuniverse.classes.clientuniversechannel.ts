@@ -54,7 +54,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       name: this.name,
       passphrase: this.passphrase
     };
-    await this.clientUniverseRef.smartsocketClient.serverCall(serverCallActionName, serverCallActionPayload);
+    await this.clientUniverseRef.smartsocketClient.serverCall(
+      serverCallActionName,
+      serverCallActionPayload
+    );
   }
 
   /**
@@ -72,6 +75,9 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       payload: messageArg.payload,
       payloadStringType: messageArg.payloadStringType
     };
-    await this.clientUniverseRef.smartsocketClient.serverCall('processMessage', universeMessageToSend);
+    await this.clientUniverseRef.smartsocketClient.serverCall(
+      'processMessage',
+      universeMessageToSend
+    );
   }
 }

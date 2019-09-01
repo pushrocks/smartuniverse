@@ -37,7 +37,7 @@ tap.test('create smartuniverse client', async () => {
 });
 
 tap.test('should add a channel to the universe', async () => {
- testUniverse.addChannel(testChannelData.channelName, testChannelData.channelPass);
+  testUniverse.addChannel(testChannelData.channelName, testChannelData.channelPass);
 });
 
 tap.test('should add the same channel to the client universe in the same way', async () => {
@@ -46,7 +46,7 @@ tap.test('should add the same channel to the client universe in the same way', a
 
 tap.test('should start the ClientUniverse', async () => {
   await testClientUniverse.start();
-})
+});
 
 tap.test('should get a observable correctly', async () => {
   testClientChannel = testClientUniverse.getChannel(testChannelData.channelName);
@@ -54,7 +54,7 @@ tap.test('should get a observable correctly', async () => {
 });
 
 tap.test('should send a message correctly', async () => {
-  await (testClientUniverse.getChannel(testChannelData.channelName)).sendMessage({
+  await testClientUniverse.getChannel(testChannelData.channelName).sendMessage({
     messageText: 'hello'
   });
 });

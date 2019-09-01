@@ -14,7 +14,10 @@ import { SocketConnection } from '@pushrocks/smartsocket';
  * acts as a container to save message states like authentication status
  */
 export class UniverseMessage implements interfaces.IUniverseMessage {
-  public static createMessageFromPayload(socketConnectionArg: SocketConnection, dataArg: interfaces.IUniverseMessage) {
+  public static createMessageFromPayload(
+    socketConnectionArg: SocketConnection,
+    dataArg: interfaces.IUniverseMessage
+  ) {
     const universeMessageInstance = new UniverseMessage(dataArg);
     universeMessageInstance.socketConnection = socketConnectionArg;
     return universeMessageInstance;
@@ -69,9 +72,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
     this.universeCache = universeCacheArg;
   }
 
-  public setTargetChannel() {
-    
-  }
+  public setTargetChannel() {}
 
   public setDestructionTimer(selfdestructAfterArg: number) {
     if (selfdestructAfterArg) {

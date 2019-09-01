@@ -126,14 +126,23 @@ export class Universe {
             socketConnectionArg
           );
           if (universeConnection) {
-            plugins.smartlog.defaultLogger.log('ok', 'found UniverseConnection for socket for incoming message');
+            plugins.smartlog.defaultLogger.log(
+              'ok',
+              'found UniverseConnection for socket for incoming message'
+            );
           } else {
-            plugins.smartlog.defaultLogger.log('warn', 'found no Authorized channel for incoming message');
+            plugins.smartlog.defaultLogger.log(
+              'warn',
+              'found no Authorized channel for incoming message'
+            );
             return {
               error: 'You need to authenticate for a channel'
             };
           }
-          const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(socketConnectionArg, dataArg);
+          const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(
+            socketConnectionArg,
+            dataArg
+          );
           const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(
             this.universeCache,
             unauthenticatedMessage

@@ -121,7 +121,8 @@ export class UniverseChannel {
       }
     });
     for (const universeConnection of universeConnectionsWithChannelAccess) {
-      const smartsocket = universeConnection.socketConnection.smartsocketRef as plugins.smartsocket.Smartsocket;
+      const smartsocket = universeConnection.socketConnection
+        .smartsocketRef as plugins.smartsocket.Smartsocket;
       const universeMessageToSend: interfaces.IUniverseMessage = {
         id: messageArg.id,
         timestamp: messageArg.timestamp,
@@ -131,7 +132,11 @@ export class UniverseChannel {
         payload: messageArg.payload,
         payloadStringType: messageArg.payloadStringType
       };
-      smartsocket.clientCall('processMessage', universeMessageToSend, universeConnection.socketConnection);
+      smartsocket.clientCall(
+        'processMessage',
+        universeMessageToSend,
+        universeConnection.socketConnection
+      );
     }
   }
 }
