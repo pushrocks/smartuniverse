@@ -10,6 +10,7 @@ import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 
 export interface ISmartUniverseConstructorOptions {
   messageExpiryInMilliseconds: number;
+  externalServer?: plugins.smartexpress.Server;
 }
 
 /**
@@ -68,14 +69,18 @@ export class Universe {
    */
   public async start(portArg: number) {
     // lets create the base smartexpress server
-    this.smartexpressServer = new plugins.smartexpress.Server({
-      cors: true,
-      defaultAnswer: async () => {
-        return `smartuniverse server ${this.getUniverseVersion()}`;
-      },
-      forceSsl: false,
-      port: portArg
-    });
+    if (!this.options.externalServer) {
+      this.smartexpressServer = new plugins.smartexpress.Server({
+        cors: true,
+        defaultAnswer: async () => {
+          return `smartuniverse server ${this.getUniverseVersion()}`;
+        },
+        forceSsl: false,
+        port: portArg
+      });
+    } else {
+      this.smartexpressServer = this.options.externalServer;
+    }
 
     // add websocket upgrade
     this.smartsocket = new plugins.smartsocket.Smartsocket({});
@@ -148,7 +153,9 @@ export class Universe {
     // add smartsocket to the running smartexpress app
     this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer as any);
     // start everything
-    await this.smartexpressServer.start();
+    if (!this.options.externalServer) {
+      await this.smartexpressServer.start();
+    }
     await this.smartsocket.start();
     plugins.smartlog.defaultLogger.log('success', 'started universe');
   }
@@ -158,6 +165,8 @@ export class Universe {
    */
   public async stopServer() {
     await this.smartsocket.stop();
-    await this.smartexpressServer.stop();
+    if (!this.options.externalServer) {
+      await this.smartexpressServer.stop();
+    }
   }
 }
