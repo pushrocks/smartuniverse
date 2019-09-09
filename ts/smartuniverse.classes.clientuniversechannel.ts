@@ -2,6 +2,7 @@ import * as plugins from './smartuniverse.plugins';
 import * as interfaces from './interfaces';
 
 import { ClientUniverse } from './';
+import { ClientUniverseMessage } from './smartuniverse.classes.clientuniversemessage';
 
 export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ======
@@ -35,6 +36,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   public name: string;
   public passphrase: string;
   public status: 'subscribed' | 'unsubscribed' = 'unsubscribed';
+  private subject = new plugins.smartrx.rxjs.Subject();
 
   // refs
   public clientUniverseRef: ClientUniverse;
@@ -49,7 +51,8 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * subscribes to a channel
    * tells the universe about this instances interest into a channel
    */
-  public async subscribe() {
+  public async subscribe(observerArg?: plugins.smartrx.rxjs.Observer<any>) {
+    // lets make sure the channel is connected
     if (this.status === 'unsubscribed') {
       const response = await this.clientUniverseRef.smartsocketClient.serverCall<interfaces.ISocketRequest_SubscribeChannel>(
         'subscribeChannel',
@@ -60,6 +63,15 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       );
       this.status = response.subscriptionStatus;
     }
+
+    if (observerArg) {
+      return this.subject.subscribe(observerArg);
+    }
+
+  }
+
+  public async emitMessageLocally(messageArg: ClientUniverseMessage) {
+    
   }
 
   /**

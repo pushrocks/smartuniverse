@@ -113,17 +113,30 @@ export class ClientUniverse {
       /**
        * handles message reception
        */
-      const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction<interfaces.ISocketRequest_ProcessMessage>({
+      const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction<
+        interfaces.ISocketRequest_ProcessMessage
+      >({
         funcName: 'processMessage',
         allowedRoles: [],
-        funcDef: async (messageDescriptorArg) => {
+        funcDef: async messageDescriptorArg => {
           plugins.smartlog.defaultLogger.log('info', 'Got message from server');
-          this.observableIntake.push(
-            ClientUniverseMessage.createMessageFromMessageDescriptor(messageDescriptorArg)
+          const clientUniverseMessage = ClientUniverseMessage.createMessageFromMessageDescriptor(
+            messageDescriptorArg
           );
-          return {
-            messageStatus: 'ok'
-          };
+          this.observableIntake.push(clientUniverseMessage);
+
+          // lets find the corresponding channel
+          const targetChannel = this.getChannel(clientUniverseMessage.targetChannelName);
+          if (targetChannel) {
+            await targetChannel.emitMessageLocally(clientUniverseMessage);
+            return {
+              messageStatus: 'ok'
+            };
+          } else {
+            return {
+              messageStatus: 'channel not found'
+            };
+          }
         }
       });
 

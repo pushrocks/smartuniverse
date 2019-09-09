@@ -15,6 +15,6 @@ export interface ISocketRequest_ProcessMessage {
   method: 'processMessage';
   request: interfaces.IUniverseMessage;
   response: {
-    messageStatus: 'ok'
+    messageStatus: 'ok' | 'channel not found'
   };
 }
