@@ -113,14 +113,17 @@ export class ClientUniverse {
       /**
        * handles message reception
        */
-      const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction({
+      const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction<interfaces.ISocketRequest_ProcessMessage>({
         funcName: 'processMessage',
         allowedRoles: [],
-        funcDef: async (messageDescriptorArg: interfaces.IUniverseMessage) => {
+        funcDef: async (messageDescriptorArg) => {
           plugins.smartlog.defaultLogger.log('info', 'Got message from server');
           this.observableIntake.push(
             ClientUniverseMessage.createMessageFromMessageDescriptor(messageDescriptorArg)
           );
+          return {
+            messageStatus: 'ok'
+          };
         }
       });
 

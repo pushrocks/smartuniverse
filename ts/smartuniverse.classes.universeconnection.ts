@@ -98,7 +98,7 @@ export class UniverseConnection {
    * the socketClient to ping
    */
   public socketConnection: plugins.smartsocket.SocketConnection;
-  public authenticationRequests: interfaces.IServerCallSubscribeActionPayload[] = [];
+  public authenticationRequests: Array<interfaces.ISocketRequest_SubscribeChannel['request']> = [];
   public subscribedChannels: UniverseChannel[] = [];
   public authenticatedChannels: UniverseChannel[] = [];
   public failedToJoinChannels: UniverseChannel[] = [];
@@ -113,7 +113,7 @@ export class UniverseConnection {
 
   constructor(optionsArg: {
     socketConnection: plugins.smartsocket.SocketConnection;
-    authenticationRequests: interfaces.IServerCallSubscribeActionPayload[];
+    authenticationRequests: Array<interfaces.ISocketRequest_SubscribeChannel['request']>;
   }) {
     this.authenticationRequests = optionsArg.authenticationRequests;
     this.socketConnection = optionsArg.socketConnection;

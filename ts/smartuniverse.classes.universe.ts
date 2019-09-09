@@ -95,24 +95,21 @@ export class Universe {
     // add the role to smartsocket
     this.smartsocket.addSocketRoles([ClientRole]);
 
-    const socketFunctionSubscription = new plugins.smartsocket.SocketFunction({
+    const socketFunctionSubscription = new plugins.smartsocket.SocketFunction<interfaces.ISocketRequest_SubscribeChannel>({
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
-      funcName: 'channelSubscription',
+      funcName: 'subscribeChannel',
       funcDef: async (
-        dataArg: interfaces.IServerCallSubscribeActionPayload,
+        dataArg,
         socketConnectionArg
       ) => {
-        // run in "this context" of this class
-        await (async () => {
-          const universeConnection = new UniverseConnection({
-            socketConnection: socketConnectionArg,
-            authenticationRequests: [dataArg]
-          });
-          await UniverseConnection.addConnectionToCache(this, universeConnection);
-          return {
-            'subscription status': 'success'
-          };
-        })();
+        const universeConnection = new UniverseConnection({
+          socketConnection: socketConnectionArg,
+          authenticationRequests: [dataArg]
+        });
+        await UniverseConnection.addConnectionToCache(this, universeConnection);
+        return {
+          subscriptionStatus: 'subscribed'
+        };
       }
     });
 
@@ -120,39 +117,36 @@ export class Universe {
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'processMessage',
       funcDef: async (dataArg: interfaces.IUniverseMessage, socketConnectionArg) => {
-        // run in "this" context of this class
-        await (async () => {
-          const universeConnection = UniverseConnection.findUniverseConnectionBySocketConnection(
-            this.universeCache,
-            socketConnectionArg
+        const universeConnection = UniverseConnection.findUniverseConnectionBySocketConnection(
+          this.universeCache,
+          socketConnectionArg
+        );
+        if (universeConnection) {
+          plugins.smartlog.defaultLogger.log(
+            'ok',
+            'found UniverseConnection for socket for incoming message'
           );
-          if (universeConnection) {
-            plugins.smartlog.defaultLogger.log(
-              'ok',
-              'found UniverseConnection for socket for incoming message'
-            );
-          } else {
-            plugins.smartlog.defaultLogger.log(
-              'warn',
-              'found no Authorized channel for incoming message'
-            );
-            return {
-              error: 'You need to authenticate for a channel'
-            };
-          }
-          const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(
-            socketConnectionArg,
-            dataArg
+        } else {
+          plugins.smartlog.defaultLogger.log(
+            'warn',
+            'found no Authorized channel for incoming message'
           );
-          const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(
-            this.universeCache,
-            unauthenticatedMessage
-          );
-          if (foundChannel && unauthenticatedMessage.authenticated) {
-            const authenticatedMessage = unauthenticatedMessage;
-            await this.universeCache.addMessage(authenticatedMessage);
-          }
-        })();
+          return {
+            error: 'You need to authenticate for a channel'
+          };
+        }
+        const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(
+          socketConnectionArg,
+          dataArg
+        );
+        const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(
+          this.universeCache,
+          unauthenticatedMessage
+        );
+        if (foundChannel && unauthenticatedMessage.authenticated) {
+          const authenticatedMessage = unauthenticatedMessage;
+          await this.universeCache.addMessage(authenticatedMessage);
+        }
       }
     });
 

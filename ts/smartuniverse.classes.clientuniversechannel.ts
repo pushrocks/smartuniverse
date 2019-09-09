@@ -34,6 +34,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // properties
   public name: string;
   public passphrase: string;
+  public status: 'subscribed' | 'unsubscribed' = 'unsubscribed';
 
   // refs
   public clientUniverseRef: ClientUniverse;
@@ -49,15 +50,16 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * tells the universe about this instances interest into a channel
    */
   public async subscribe() {
-    const serverCallActionName: interfaces.IServerCallActions = 'channelSubscription';
-    const serverCallActionPayload: interfaces.IServerCallSubscribeActionPayload = {
-      name: this.name,
-      passphrase: this.passphrase
-    };
-    await this.clientUniverseRef.smartsocketClient.serverCall(
-      serverCallActionName,
-      serverCallActionPayload
-    );
+    if (this.status === 'unsubscribed') {
+      const response = await this.clientUniverseRef.smartsocketClient.serverCall<interfaces.ISocketRequest_SubscribeChannel>(
+        'subscribeChannel',
+        {
+          name: this.name,
+          passphrase: this.passphrase
+        }
+      );
+      this.status = response.subscriptionStatus;
+    }
   }
 
   /**

@@ -5,7 +5,7 @@ export interface IMessageCreator {
 }
 
 /**
- *
+ * A universe
  */
 export interface IUniverseMessage extends IMessageCreator {
   id: string;
