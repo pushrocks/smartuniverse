@@ -3,6 +3,8 @@ import * as interfaces from './interfaces';
 
 import { ClientUniverse } from './';
 import { ClientUniverseMessage } from './smartuniverse.classes.clientuniversemessage';
+import { ReactionRequest } from './smartuniverse.classes.reactionrequest';
+import { ReactionResponse } from './smartuniverse.classes.reactionresponse';
 
 export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ======
@@ -36,7 +38,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   public name: string;
   public passphrase: string;
   public status: 'subscribed' | 'unsubscribed' = 'unsubscribed';
-  private subject = new plugins.smartrx.rxjs.Subject();
+  private subject = new plugins.smartrx.rxjs.Subject<ClientUniverseMessage>();
 
   // refs
   public clientUniverseRef: ClientUniverse;
@@ -71,7 +73,12 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   }
 
   public async emitMessageLocally(messageArg: ClientUniverseMessage) {
-    
+    this.subject.next(messageArg);
+  }
+
+  public askForReaction(reactionRequest: ReactionRequest): ReactionResponse {
+    const reactionResponse = new ReactionResponse();
+    return reactionResponse;
   }
 
   /**
