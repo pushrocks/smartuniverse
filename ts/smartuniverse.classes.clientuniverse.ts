@@ -76,8 +76,8 @@ export class ClientUniverse {
     await this.checkConnection();
   }
 
-  public stop() {
-    this.smartsocketClient.disconnect();
+  public async stop() {
+    await this.smartsocketClient.disconnect();
   }
 
   /**

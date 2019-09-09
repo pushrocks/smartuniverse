@@ -74,7 +74,7 @@ tap.test('a second client should be able to subscibe', async () => {
 tap.test('should receive a message correctly', async () => {});
 
 tap.test('should disconnect the client correctly', async () => {
-  testClientUniverse.stop();
+  await testClientUniverse.stop();
 });
 
 tap.test('should end the server correctly', async tools => {
