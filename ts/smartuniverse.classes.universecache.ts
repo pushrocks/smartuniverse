@@ -59,7 +59,7 @@ export class UniverseCache {
     UniverseChannel.authorizeAMessageForAChannel(this, messageArg);
     this.messageMap.add(messageArg);
     messageArg.universeChannelList.forEach(universeChannel => {
-      universeChannel.pushToClients(messageArg);
+      universeChannel.push(messageArg);
     });
   }
 

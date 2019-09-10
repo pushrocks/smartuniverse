@@ -85,6 +85,7 @@ export class UniverseChannel {
    */
   public name: string;
   public universeRef: Universe;
+  private subject = new plugins.smartrx.rxjs.Subject<UniverseMessage>();
 
   /**
    * the passphrase for the channel
@@ -113,7 +114,8 @@ export class UniverseChannel {
    * pushes a message to clients
    * @param messageArg
    */
-  public async pushToClients(messageArg: UniverseMessage) {
+  public async push(messageArg: UniverseMessage) {
+    this.subject.next(messageArg);
     const universeConnectionsWithChannelAccess: UniverseConnection[] = [];
     this.universeRef.universeCache.connectionMap.forEach(async socketConnection => {
       if (socketConnection.authenticatedChannels.includes(this)) {
@@ -138,5 +140,26 @@ export class UniverseChannel {
         universeConnection.socketConnection
       );
     }
+  }
+
+  // functions to interact with a channel locally
+  public async subscribe(observer: plugins.smartrx.rxjs.Observer<any>) {
+    return this.subject.subscribe(observer);
+  }
+
+  /**
+   * sends a message to the channel
+   */
+  public async sendMessage(messageDescriptor: interfaces.IMessageCreator) {
+    const messageToSend = new UniverseMessage({
+      id: plugins.smartunique.shortId(),
+      messageText: messageDescriptor.messageText,
+      payload: messageDescriptor.payload,
+      payloadStringType: messageDescriptor.payloadStringType,
+      targetChannelName: this.name,
+      passphrase: this.passphrase,
+      timestamp: Date.now()
+    });
+    this.push(messageToSend);
   }
 }
