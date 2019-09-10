@@ -4,7 +4,6 @@ export type IServerCallActions =
   | 'channelUnsubscribe'
   | 'terminateConnection';
 
-
 export interface IServerUnsubscribeActionPayload {
   name: string;
 }

@@ -105,13 +105,12 @@ export class Universe {
     // add the role to smartsocket
     this.smartsocket.addSocketRoles([ClientRole]);
 
-    const socketFunctionSubscription = new plugins.smartsocket.SocketFunction<interfaces.ISocketRequest_SubscribeChannel>({
+    const socketFunctionSubscription = new plugins.smartsocket.SocketFunction<
+      interfaces.ISocketRequest_SubscribeChannel
+    >({
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'subscribeChannel',
-      funcDef: async (
-        dataArg,
-        socketConnectionArg
-      ) => {
+      funcDef: async (dataArg, socketConnectionArg) => {
         const universeConnection = new UniverseConnection({
           socketConnection: socketConnectionArg,
           authenticationRequests: [dataArg]

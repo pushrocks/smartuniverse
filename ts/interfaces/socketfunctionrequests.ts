@@ -7,7 +7,7 @@ export interface ISocketRequest_SubscribeChannel {
     passphrase: string;
   };
   response: {
-    subscriptionStatus: 'subscribed' | 'unsubscribed'
+    subscriptionStatus: 'subscribed' | 'unsubscribed';
   };
 }
 
@@ -15,6 +15,6 @@ export interface ISocketRequest_ProcessMessage {
   method: 'processMessage';
   request: interfaces.IUniverseMessage;
   response: {
-    messageStatus: 'ok' | 'channel not found'
+    messageStatus: 'ok' | 'channel not found';
   };
 }

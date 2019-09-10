@@ -1,3 +1,3 @@
 import * as plugins from './smartuniverse.plugins';
 
-export class ReactionResponse {} 
+export class ReactionResponse {}
