@@ -25,7 +25,7 @@ export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedReq
     }
   }
 
-  private processMessageForReaction(messageArg: UniverseMessage | ClientUniverseMessage) {
+  private processMessageForReaction(messageArg: UniverseMessage<ICombinatorPayload<T>> | ClientUniverseMessage<ICombinatorPayload<T>>) {
 
   }
 }

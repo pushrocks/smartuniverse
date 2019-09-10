@@ -1,7 +1,6 @@
 export interface IMessageCreator {
   messageText: string;
   payload?: string | number | any;
-  payloadStringType?: 'Buffer' | 'string' | 'object';
 }
 
 /**

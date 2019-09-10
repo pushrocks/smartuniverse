@@ -38,7 +38,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   public name: string;
   public passphrase: string;
   public status: 'subscribed' | 'unsubscribed' = 'unsubscribed';
-  private subject = new plugins.smartrx.rxjs.Subject<ClientUniverseMessage>();
+  private subject = new plugins.smartrx.rxjs.Subject<ClientUniverseMessage<any>>();
 
   // refs
   public clientUniverseRef: ClientUniverse;
@@ -53,7 +53,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * subscribes to a channel
    * tells the universe about this instances interest into a channel
    */
-  public subscribe(observingFunctionArg: (messageArg: ClientUniverseMessage) => void) {
+  public subscribe(observingFunctionArg: (messageArg: ClientUniverseMessage<any>) => void) {
 
     return this.subject.subscribe(
       messageArg => {
@@ -76,7 +76,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
     }
   }
 
-  public async emitMessageLocally(messageArg: ClientUniverseMessage) {
+  public async emitMessageLocally(messageArg: ClientUniverseMessage<any>) {
     this.subject.next(messageArg);
   }
 
@@ -92,8 +92,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       passphrase: this.passphrase,
       targetChannelName: this.name,
       messageText: messageArg.messageText,
-      payload: messageArg.payload,
-      payloadStringType: messageArg.payloadStringType
+      payload: messageArg.payload
     };
     await this.clientUniverseRef.smartsocketClient.serverCall(
       'processMessage',

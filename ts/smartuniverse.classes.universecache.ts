@@ -24,7 +24,7 @@ export class UniverseCache {
   /**
    * stores messages for this instance
    */
-  public messageMap = new Objectmap<UniverseMessage>();
+  public messageMap = new Objectmap<UniverseMessage<any>>();
 
   /**
    * stores the channels that are available within the universe
@@ -54,7 +54,7 @@ export class UniverseCache {
    * @param messageArg
    * @param attachedPayloadArg
    */
-  public async addMessage(messageArg: UniverseMessage) {
+  public async addMessage(messageArg: UniverseMessage<any>) {
     messageArg.setUniverseCache(this);
     UniverseChannel.authorizeAMessageForAChannel(this, messageArg);
     this.messageMap.add(messageArg);
@@ -69,7 +69,7 @@ export class UniverseCache {
   public readMessagesYoungerThan(
     unixTimeArg?: number,
     channelName?: string
-  ): Observable<UniverseMessage> {
+  ): Observable<UniverseMessage<any>> {
     const messageObservable = from(this.messageMap.getArray()).pipe(
       filter(messageArg => {
         return messageArg.smartTimestamp.isYoungerThanMilliSeconds(this.destructionTime);

@@ -2,7 +2,7 @@ import * as plugins from './smartuniverse.plugins';
 
 import * as interfaces from './interfaces';
 
-export class ClientUniverseMessage implements interfaces.IUniverseMessage {
+export class ClientUniverseMessage<T> implements interfaces.IUniverseMessage {
   // ======
   // STATIC
   // ======
@@ -22,8 +22,7 @@ export class ClientUniverseMessage implements interfaces.IUniverseMessage {
   public smartTimestamp: plugins.smarttime.TimeStamp;
   public messageText: string;
   public passphrase: string;
-  public payload: any;
-  public payloadStringType;
+  public payload: T;
   public targetChannelName: string;
 
   constructor(messageArg: interfaces.IUniverseMessage) {

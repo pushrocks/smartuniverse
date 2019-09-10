@@ -21,7 +21,7 @@ export interface IClientOptions {
 export class ClientUniverse {
   public options;
   public smartsocketClient: plugins.smartsocket.SmartsocketClient;
-  public observableIntake: plugins.smartrx.ObservableIntake<ClientUniverseMessage>;
+  public observableIntake: plugins.smartrx.ObservableIntake<ClientUniverseMessage<any>>;
   public clientUniverseCache = new ClientUniverseCache();
 
   constructor(optionsArg: IClientOptions) {

@@ -52,7 +52,7 @@ export class UniverseChannel {
    */
   public static authorizeAMessageForAChannel(
     universeCacheArg: UniverseCache,
-    universeMessageArg: UniverseMessage
+    universeMessageArg: UniverseMessage<any>
   ): UniverseChannel {
     const foundChannel = universeCacheArg.channelMap.find(universeChannel => {
       const result = universeChannel.authenticate(universeMessageArg);
@@ -85,7 +85,7 @@ export class UniverseChannel {
    */
   public name: string;
   public universeRef: Universe;
-  private subject = new plugins.smartrx.rxjs.Subject<UniverseMessage>();
+  private subject = new plugins.smartrx.rxjs.Subject<UniverseMessage<any>>();
 
   /**
    * the passphrase for the channel
@@ -103,7 +103,7 @@ export class UniverseChannel {
    * # the messages channelName against the unverseChannel's name
    * # the messages password against the universeChannel's password
    */
-  public authenticate(universeMessageArg: UniverseMessage): boolean {
+  public authenticate(universeMessageArg: UniverseMessage<any>): boolean {
     return (
       this.name === universeMessageArg.targetChannelName &&
       this.passphrase === universeMessageArg.passphrase
@@ -114,7 +114,7 @@ export class UniverseChannel {
    * pushes a message to clients
    * @param messageArg
    */
-  public async push(messageArg: UniverseMessage) {
+  public async push(messageArg: UniverseMessage<any>) {
     this.subject.next(messageArg);
     const universeConnectionsWithChannelAccess: UniverseConnection[] = [];
     await this.universeRef.universeCache.connectionMap.forEach(async socketConnection => {
@@ -131,8 +131,7 @@ export class UniverseChannel {
         passphrase: messageArg.passphrase,
         targetChannelName: this.name,
         messageText: messageArg.messageText,
-        payload: messageArg.payload,
-        payloadStringType: messageArg.payloadStringType
+        payload: messageArg.payload
       };
       smartsocket.clientCall(
         'processMessage',
@@ -143,7 +142,7 @@ export class UniverseChannel {
   }
 
   // functions to interact with a channel locally
-  public subscribe(observingFunctionArg: (messageArg: UniverseMessage) => void) {
+  public subscribe(observingFunctionArg: (messageArg: UniverseMessage<any>) => void) {
     return this.subject.subscribe(
       messageArg => {
         observingFunctionArg(messageArg);
@@ -160,7 +159,6 @@ export class UniverseChannel {
       id: plugins.smartunique.shortId(),
       messageText: messageDescriptor.messageText,
       payload: messageDescriptor.payload,
-      payloadStringType: messageDescriptor.payloadStringType,
       targetChannelName: this.name,
       passphrase: this.passphrase,
       timestamp: Date.now()

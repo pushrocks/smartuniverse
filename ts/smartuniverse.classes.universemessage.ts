@@ -13,7 +13,7 @@ import { SocketConnection } from '@pushrocks/smartsocket';
  * represents a message within a universe
  * acts as a container to save message states like authentication status
  */
-export class UniverseMessage implements interfaces.IUniverseMessage {
+export class UniverseMessage<T> implements interfaces.IUniverseMessage {
   public static createMessageFromPayload(
     socketConnectionArg: SocketConnection,
     dataArg: interfaces.IUniverseMessage
@@ -28,8 +28,7 @@ export class UniverseMessage implements interfaces.IUniverseMessage {
   public smartTimestamp: TimeStamp;
   public messageText: string;
   public passphrase: string;
-  public payload: any;
-  public payloadStringType;
+  public payload: T;
   public targetChannelName: string;
   public socketConnection: SocketConnection;
 
