@@ -72,7 +72,7 @@ export class Universe {
     return this.universeCache.channelMap.find(channelArg => {
       return channelArg.name === channelNameArg;
     });
-  };
+  }
 
   /**
    * initiates a server
