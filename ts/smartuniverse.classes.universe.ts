@@ -62,7 +62,17 @@ export class Universe {
    */
   public addChannel(nameArg: string, passphraseArg: string) {
     const newChannel = UniverseChannel.createChannel(this, nameArg, passphraseArg);
+    return newChannel;
   }
+
+  /**
+   * returns a channel
+   */
+  public getChannelByName(channelNameArg: string) {
+    return this.universeCache.channelMap.find(channelArg => {
+      return channelArg.name === channelNameArg;
+    });
+  };
 
   /**
    * initiates a server
