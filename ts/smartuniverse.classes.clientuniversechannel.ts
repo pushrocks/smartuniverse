@@ -53,7 +53,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * subscribes to a channel
    * tells the universe about this instances interest into a channel
    */
-  public async subscribe(observerArg?: plugins.smartrx.rxjs.Observer<any>) {
+  public async subscribe(observingFunctionArg?: (messageArg: ClientUniverseMessage) => void) {
     // lets make sure the channel is connected
     if (this.status === 'unsubscribed') {
       const response = await this.clientUniverseRef.smartsocketClient.serverCall<
@@ -65,8 +65,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       this.status = response.subscriptionStatus;
     }
 
-    if (observerArg) {
-      return this.subject.subscribe(observerArg);
+    if (observingFunctionArg) {
+      return this.subject.subscribe(messageArg => {
+        observingFunctionArg(messageArg);
+      },error => console.log);
     }
   }
 

@@ -117,7 +117,7 @@ export class UniverseChannel {
   public async push(messageArg: UniverseMessage) {
     this.subject.next(messageArg);
     const universeConnectionsWithChannelAccess: UniverseConnection[] = [];
-    this.universeRef.universeCache.connectionMap.forEach(async socketConnection => {
+    await this.universeRef.universeCache.connectionMap.forEach(async socketConnection => {
       if (socketConnection.authenticatedChannels.includes(this)) {
         universeConnectionsWithChannelAccess.push(socketConnection);
       }

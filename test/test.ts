@@ -69,9 +69,22 @@ tap.test('a second client should be able to subscibe', async () => {
   });
 
   testClientUniverse2.addChannel(testChannelData.channelName, testChannelData.channelPass);
+  await testClientUniverse2.start();
 });
 
-tap.test('should receive a message correctly', async () => {});
+tap.test('should receive a message correctly', async (tools) => {
+  const done = tools.defer();
+  const testChannel = testClientUniverse.getChannel(testChannelData.channelName);
+  const testChannel2 = testClientUniverse2.getChannel(testChannelData.channelName);
+  const subscription = await testChannel2.subscribe(messageArg => {
+    console.log('Yay##########');
+    done.resolve();
+  });
+  await testChannel.sendMessage({
+    messageText: 'hellothere'
+  });
+  await done.promise;
+});
 
 tap.test('should disconnect the client correctly', async () => {
   await testClientUniverse.stop();

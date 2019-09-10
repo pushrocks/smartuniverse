@@ -26,6 +26,7 @@ export class UniverseConnection {
       universeConnection
     );
     universeRef.universeCache.connectionMap.add(universeConnection);
+    console.log('hi')
   }
 
   /**
