@@ -147,7 +147,7 @@ export class ClientUniverse {
       await this.smartsocketClient.connect();
       plugins.smartlog.defaultLogger.log('info', 'universe client connected successfully');
       await this.clientUniverseCache.channelMap.forEach(async clientUniverseChannelArg => {
-        await clientUniverseChannelArg.subscribe();
+        await clientUniverseChannelArg.populateSubscriptionToServer();
       });
     }
   }

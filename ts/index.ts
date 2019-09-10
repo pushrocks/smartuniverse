@@ -9,4 +9,8 @@ export * from './smartuniverse.classes.universecache';
 export * from './smartuniverse.classes.universechannel';
 export * from './smartuniverse.classes.universemessage';
 
+// Reaction Response
+export * from './smartuniverse.classes.reactionrequest';
+export * from './smartuniverse.classes.reactionresponse';
+
 export * from './interfaces';

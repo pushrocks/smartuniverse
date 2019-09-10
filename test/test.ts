@@ -76,7 +76,7 @@ tap.test('should receive a message correctly', async (tools) => {
   const done = tools.defer();
   const testChannel = testClientUniverse.getChannel(testChannelData.channelName);
   const testChannel2 = testClientUniverse2.getChannel(testChannelData.channelName);
-  const subscription = await testChannel2.subscribe(messageArg => {
+  const subscription = testChannel2.subscribe(messageArg => {
     console.log('Yay##########');
     done.resolve();
   });

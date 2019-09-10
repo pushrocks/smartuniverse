@@ -3,6 +3,13 @@ import * as path from 'path';
 
 export { path };
 
+// apiglobal scope
+import * as typedrequestInterfaces from '@apiglobal/typedrequest-interfaces';
+
+export {
+  typedrequestInterfaces
+};
+
 // pushrocks scope
 import * as lik from '@pushrocks/lik';
 import * as smarthash from '@pushrocks/smarthash';

@@ -53,7 +53,17 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * subscribes to a channel
    * tells the universe about this instances interest into a channel
    */
-  public async subscribe(observingFunctionArg?: (messageArg: ClientUniverseMessage) => void) {
+  public subscribe(observingFunctionArg: (messageArg: ClientUniverseMessage) => void) {
+
+    return this.subject.subscribe(
+      messageArg => {
+        observingFunctionArg(messageArg);
+      },
+      error => console.log(error)
+    );
+  }
+
+  public async populateSubscriptionToServer() {
     // lets make sure the channel is connected
     if (this.status === 'unsubscribed') {
       const response = await this.clientUniverseRef.smartsocketClient.serverCall<
@@ -64,21 +74,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       });
       this.status = response.subscriptionStatus;
     }
-
-    if (observingFunctionArg) {
-      return this.subject.subscribe(messageArg => {
-        observingFunctionArg(messageArg);
-      },error => console.log);
-    }
   }
 
   public async emitMessageLocally(messageArg: ClientUniverseMessage) {
     this.subject.next(messageArg);
-  }
-
-  public askForReaction(reactionRequest: ReactionRequest): ReactionResponse {
-    const reactionResponse = new ReactionResponse();
-    return reactionResponse;
   }
 
   /**

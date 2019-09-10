@@ -143,8 +143,13 @@ export class UniverseChannel {
   }
 
   // functions to interact with a channel locally
-  public async subscribe(observer: plugins.smartrx.rxjs.Observer<any>) {
-    return this.subject.subscribe(observer);
+  public subscribe(observingFunctionArg: (messageArg: UniverseMessage) => void) {
+    return this.subject.subscribe(
+      messageArg => {
+        observingFunctionArg(messageArg);
+      },
+      error => console.log(error)
+    );
   }
 
   /**
