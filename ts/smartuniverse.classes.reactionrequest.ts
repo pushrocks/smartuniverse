@@ -14,7 +14,11 @@ export interface ICombinatorPayload<T extends plugins.typedrequestInterfaces.ITy
    * needed for tying responses to requests
    */
   id: string;
-  typedRequestPayload: T;
+  typedRequestPayload: {
+    method: T['method'],
+    request : T['request'],
+    response: T['response']
+  };
 }
 
 export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequest> {
