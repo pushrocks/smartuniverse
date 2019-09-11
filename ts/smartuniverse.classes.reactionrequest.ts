@@ -28,7 +28,7 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
     this.method = optionsArg.method;
   }
 
-  public async fire(channelsArg: Array<UniverseChannel | ClientUniverseChannel>, timeoutMillisArg=60000) {
+  public async fire(channelsArg: Array<UniverseChannel | ClientUniverseChannel>, requestDataArg: T['request'], timeoutMillisArg=60000) {
     const subscriptionMap = new plugins.lik.Objectmap<plugins.smartrx.rxjs.Subscription>();
     const reactionResult = new ReactionResult<T>();
     const requestId = plugins.smartunique.shortId();
@@ -42,6 +42,18 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
           reactionResult.pushReactionResponse(payload.typedRequestPayload.response);
         }
       }));
+      const payload: ICombinatorPayload<T> = {
+        id: requestId,
+        typedRequestPayload: {
+          method: this.method,
+          request: requestDataArg,
+          response: null
+        }
+      }
+      channel.sendMessage({
+        messageText: 'reactionRequest',
+        payload
+      });
     }
     plugins.smartdelay.delayFor(timeoutMillisArg).then(async () => {
       await subscriptionMap.forEach(subscriptionArg => {
