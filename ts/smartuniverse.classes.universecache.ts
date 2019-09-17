@@ -19,7 +19,7 @@ export class UniverseCache {
   // INSTANCE
   // ========
   public standardMessageExpiry: number;
-  public destructionTime: number = 60000;
+  public destructionTime: number = 10000;
 
   /**
    * stores messages for this instance

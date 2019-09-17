@@ -77,8 +77,10 @@ tap.test('should receive a message correctly', async (tools) => {
   const testChannel = testClientUniverse.getChannel(testChannelData.channelName);
   const testChannel2 = testClientUniverse2.getChannel(testChannelData.channelName);
   const subscription = testChannel2.subscribe(messageArg => {
-    console.log('Yay##########');
-    done.resolve();
+    if (messageArg.messageText === 'hellothere') {
+      console.log('Yay##########');
+      done.resolve();
+    }
   });
   await testChannel.sendMessage({
     messageText: 'hellothere'
@@ -117,11 +119,12 @@ tap.test('ReactionRequest and ReactionResponse should work', async () => {
   console.log(result);
 });
 
-tap.test('should disconnect the client correctly', async () => {
+tap.test('should disconnect the client correctly', async (tools) => {
   await testClientUniverse.stop();
+  await testClientUniverse2.stop();
 });
 
-tap.test('should end the server correctly', async tools => {
+tap.test('should end the server correctly', async (tools) => {
   await testUniverse.stopServer();
 });
 

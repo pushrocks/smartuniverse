@@ -64,7 +64,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
     this.passphrase = messageDescriptor.passphrase;
     this.payload = messageDescriptor.payload;
     // prevent memory issues
-    this.fallBackDestruction();
+    this.setDestructionTimer();
   }
 
   public setUniverseCache(universeCacheArg: UniverseCache) {
@@ -73,17 +73,23 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
 
   public setTargetChannel() {}
 
-  public setDestructionTimer(selfdestructAfterArg: number) {
+  public setDestructionTimer(selfdestructAfterArg?: number) {
     if (selfdestructAfterArg) {
       this.destructionTimer = new Timer(selfdestructAfterArg);
       this.destructionTimer.start();
-
       // set up self destruction by removing this from the parent messageCache
       this.destructionTimer.completed.then(async () => {
         this.universeCache.messageMap.remove(this);
+      }).catch(err => {
+        console.log(err);
+        console.log(this);
       });
     } else {
-      this.fallBackDestruction();
+      plugins.smartdelay.delayFor(1000).then(() => {
+        if (!this.destructionTimer) {
+          this.setDestructionTimer(6000);
+        }
+      });
     }
   }
 
@@ -92,16 +98,5 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
    */
   public handleAsBadMessage() {
     plugins.smartlog.defaultLogger.log('warn', 'received a bad message');
-  }
-
-  /**
-   * prevents memory leaks if channels have no default
-   */
-  private fallBackDestruction() {
-    plugins.smartdelay.delayFor(1000).then(() => {
-      if (!this.destructionTimer) {
-        this.setDestructionTimer(6000);
-      }
-    });
   }
 }

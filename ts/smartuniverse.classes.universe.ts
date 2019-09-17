@@ -178,6 +178,7 @@ export class Universe {
    * stop everything
    */
   public async stopServer() {
+    console.log('hi');
     await this.smartsocket.stop();
     if (!this.options.externalServer) {
       await this.smartexpressServer.stop();

@@ -163,6 +163,6 @@ export class UniverseChannel {
       passphrase: this.passphrase,
       timestamp: Date.now()
     });
-    this.push(messageToSend);
+    this.universeRef.universeCache.addMessage(messageToSend);
   }
 }
