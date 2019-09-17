@@ -1,6 +1,6 @@
 {
   "name": "@pushrocks/smartuniverse",
-  "version": "1.0.83",
+  "version": "1.0.84",
   "private": false,
   "description": "messaging service for your micro services",
   "main": "dist/index.js",
