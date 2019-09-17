@@ -16,9 +16,24 @@ export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedReque
     return this.resultSubject.subscribe(observerArg);
   }
 
+  /**
+   * gets the end result as an array of all results
+   */
   public async getEndResult() {
     const result = await this.completeDeferred.promise;
     return result;
+  }
+
+  /**
+   * if there is a single respondant, or you are only interested in the first result
+   */
+  public async getFirstResult() {
+    const done = plugins.smartpromise.defer<T['response']>();
+    const subscription = this.resultSubject.subscribe(result => {
+      done.resolve(result);
+      subscription.unsubscribe();
+    });
+    return await done.promise;
   }
 
   /**

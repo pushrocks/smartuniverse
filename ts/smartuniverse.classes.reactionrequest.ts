@@ -49,7 +49,7 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
           request: requestDataArg,
           response: null
         }
-      }
+      };
       channel.sendMessage({
         messageText: 'reactionRequest',
         payload
