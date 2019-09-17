@@ -28,7 +28,7 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
     this.method = optionsArg.method;
   }
 
-  public async fire(channelsArg: Array<UniverseChannel | ClientUniverseChannel>, requestDataArg: T['request'], timeoutMillisArg=60000) {
+  public async fire(channelsArg: Array<UniverseChannel | ClientUniverseChannel>, requestDataArg: T['request'], timeoutMillisArg=5000) {
     const subscriptionMap = new plugins.lik.Objectmap<plugins.smartrx.rxjs.Subscription>();
     const reactionResult = new ReactionResult<T>();
     const requestId = plugins.smartunique.shortId();

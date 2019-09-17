@@ -86,6 +86,37 @@ tap.test('should receive a message correctly', async (tools) => {
   await done.promise;
 });
 
+interface IDemoReqRes {
+  method: 'demo',
+  request: {
+    wowso: string;
+  };
+  response: {
+    hereso: string;
+  };
+}
+
+tap.test('ReactionRequest and ReactionResponse should work', async () => {
+  const reactionResponse = new smartuniverse.ReactionResponse<IDemoReqRes>({
+    channels: [testClientUniverse.getChannel(testChannelData.channelName)],
+    funcDef: async reqData => {
+      console.log(reqData);
+      return {
+        hereso: 'Hello there'
+      };
+    },
+    method: 'demo'
+  });
+  const reactionRequest = new smartuniverse.ReactionRequest<IDemoReqRes>({
+    method: 'demo'
+  });
+  const reactionResult = await reactionRequest.fire([testClientUniverse2.getChannel(testChannelData.channelName)], {
+    wowso: 'wowza'
+  });
+  const result = await reactionResult.getFirstResult();
+  console.log(result);
+});
+
 tap.test('should disconnect the client correctly', async () => {
   await testClientUniverse.stop();
 });

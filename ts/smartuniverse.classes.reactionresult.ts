@@ -2,7 +2,7 @@ import * as plugins from './smartuniverse.plugins';
 import { ReactionResponse } from './smartuniverse.classes.reactionresponse';
 
 export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedRequest> {
-  private resultSubject = new plugins.smartrx.rxjs.Subject<T['response']>();
+  private resultReplaySubject = new plugins.smartrx.rxjs.ReplaySubject<T['response']>();
   private endResult: Array<T['response']> = [];
   private completeDeferred = plugins.smartpromise.defer<Array<T['response']>>();
 
@@ -13,7 +13,7 @@ export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedReque
   }
 
   public resultSubscribe(observerArg: (responseArg: T['response']) => void) {
-    return this.resultSubject.subscribe(observerArg);
+    return this.resultReplaySubject.subscribe(observerArg);
   }
 
   /**
@@ -29,7 +29,7 @@ export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedReque
    */
   public async getFirstResult() {
     const done = plugins.smartpromise.defer<T['response']>();
-    const subscription = this.resultSubject.subscribe(result => {
+    const subscription = this.resultReplaySubject.subscribe(result => {
       done.resolve(result);
       subscription.unsubscribe();
     });
@@ -40,7 +40,7 @@ export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedReque
    * push a reactionResponse
    */
   public async pushReactionResponse(responseArg: T['response']) {
-    this.resultSubject.next(responseArg);
+    this.resultReplaySubject.next(responseArg);
   }
   
   /**
