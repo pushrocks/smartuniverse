@@ -98,7 +98,7 @@ interface IDemoReqRes {
 
 tap.test('ReactionRequest and ReactionResponse should work', async () => {
   const reactionResponse = new smartuniverse.ReactionResponse<IDemoReqRes>({
-    channels: [testClientUniverse.getChannel(testChannelData.channelName)],
+    channels: [testUniverse.getChannel(testChannelData.channelName)],
     funcDef: async reqData => {
       console.log(reqData);
       return {

@@ -68,7 +68,7 @@ export class Universe {
   /**
    * returns a channel
    */
-  public getChannelByName(channelNameArg: string) {
+  public getChannel(channelNameArg: string) {
     return this.universeCache.channelMap.find(channelArg => {
       return channelArg.name === channelNameArg;
     });
