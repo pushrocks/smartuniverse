@@ -21,7 +21,7 @@ export interface IClientOptions {
 export class ClientUniverse {
   public options;
   public smartsocketClient: plugins.smartsocket.SmartsocketClient;
-  public observableIntake: plugins.smartrx.ObservableIntake<ClientUniverseMessage<any>>;
+  public messageRxjsSubject = new plugins.smartrx.rxjs.Subject<ClientUniverseMessage<any>>();
   public clientUniverseCache = new ClientUniverseCache();
 
   constructor(optionsArg: IClientOptions) {
@@ -78,6 +78,7 @@ export class ClientUniverse {
 
   public async stop() {
     await this.smartsocketClient.disconnect();
+    this.smartsocketClient = null;
   }
 
   /**
@@ -85,7 +86,7 @@ export class ClientUniverse {
    * since password validation is done through other means, a connection should always be possible
    */
   public async checkConnection(): Promise<void> {
-    if (!this.smartsocketClient && !this.observableIntake) {
+    if (!this.smartsocketClient) {
       const parsedURL = url.parse(this.options.serverAddress);
       const socketConfig: plugins.smartsocket.ISmartsocketClientOptions = {
         alias: 'universeclient',
@@ -95,7 +96,6 @@ export class ClientUniverse {
         url: parsedURL.protocol + '//' + parsedURL.hostname
       };
       this.smartsocketClient = new SmartsocketClient(socketConfig);
-      this.observableIntake = new plugins.smartrx.ObservableIntake();
 
       // lets define some basic actions
 
@@ -105,8 +105,14 @@ export class ClientUniverse {
       const socketFunctionUnsubscribe = new plugins.smartsocket.SocketFunction({
         funcName: 'unsubscribe',
         allowedRoles: [],
-        funcDef: async (data: interfaces.IServerUnsubscribeActionPayload) => {
-          throw new Error('TODO');
+        funcDef: async (dataArg: interfaces.IServerUnsubscribeActionPayload) => {
+          const channel = this.clientUniverseCache.channelMap.find(channelArg => {
+            return channelArg.name === dataArg.name;
+          });
+          if (channel) {
+            channel.unsubscribe();
+          }
+          return {};
         }
       });
 
@@ -123,7 +129,7 @@ export class ClientUniverse {
           const clientUniverseMessage = ClientUniverseMessage.createMessageFromMessageDescriptor(
             messageDescriptorArg
           );
-          this.observableIntake.push(clientUniverseMessage);
+          this.messageRxjsSubject.next(clientUniverseMessage);
 
           // lets find the corresponding channel
           const targetChannel = this.getChannel(clientUniverseMessage.targetChannelName);

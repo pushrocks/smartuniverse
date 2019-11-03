@@ -63,6 +63,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
     );
   }
 
+  public unsubscribe() {
+    // TODO: unsubscribe all users
+  }
+
   public async populateSubscriptionToServer() {
     // lets make sure the channel is connected
     if (this.status === 'unsubscribed') {
