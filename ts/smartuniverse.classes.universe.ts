@@ -112,6 +112,7 @@ export class Universe {
       funcName: 'subscribeChannel',
       funcDef: async (dataArg, socketConnectionArg) => {
         const universeConnection = new UniverseConnection({
+          universe: this,
           socketConnection: socketConnectionArg,
           authenticationRequests: [dataArg]
         });

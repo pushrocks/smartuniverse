@@ -93,6 +93,8 @@ export class UniverseConnection {
     return universeConnection;
   }
 
+  // INSTANCE
+  public universeRef: Universe;
   public terminatedDeferred = plugins.smartpromise.defer();
 
   /**
@@ -100,23 +102,27 @@ export class UniverseConnection {
    */
   public socketConnection: plugins.smartsocket.SocketConnection;
   public authenticationRequests: Array<interfaces.ISocketRequest_SubscribeChannel['request']> = [];
-  public subscribedChannels: UniverseChannel[] = [];
   public authenticatedChannels: UniverseChannel[] = [];
   public failedToJoinChannels: UniverseChannel[] = [];
 
   /**
    * terminates the connection
    */
-  public terminateConnection() {
-    this.socketConnection.socket.disconnect();
+  public async terminateUniverseConnection() {
+    await this.socketConnection.disconnect();
+    this.universeRef.universeCache.connectionMap.remove(this);
     this.terminatedDeferred.resolve();
   }
 
   constructor(optionsArg: {
+    universe: Universe,
     socketConnection: plugins.smartsocket.SocketConnection;
     authenticationRequests: Array<interfaces.ISocketRequest_SubscribeChannel['request']>;
   }) {
     this.authenticationRequests = optionsArg.authenticationRequests;
     this.socketConnection = optionsArg.socketConnection;
+    this.socketConnection.eventSubject.subscribe(async(event) => {
+      await this.terminateUniverseConnection();
+    });
   }
 }
