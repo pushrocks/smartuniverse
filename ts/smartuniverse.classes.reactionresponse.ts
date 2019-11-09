@@ -6,7 +6,9 @@ import { ClientUniverseChannel } from './smartuniverse.classes.clientuniversecha
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 import { ClientUniverseMessage } from './smartuniverse.classes.clientuniversemessage';
 
-export type TReactionResponseFuncDef<T extends plugins.typedrequestInterfaces.ITypedRequest> = (dataArg: T['request']) => Promise<T['response']>;
+export type TReactionResponseFuncDef<T extends plugins.typedrequestInterfaces.ITypedRequest> = (
+  dataArg: T['request']
+) => Promise<T['response']>;
 
 export interface IReactionResponseConstructorOptions<
   T extends plugins.typedrequestInterfaces.ITypedRequest
@@ -42,7 +44,9 @@ export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedReq
       messageArg.messageText === 'reactionRequest' &&
       messageArg.payload.typedRequestPayload.method === this.method
     ) {
-      const response: T['response'] = await this.funcDef(messageArg.payload.typedRequestPayload.request);
+      const response: T['response'] = await this.funcDef(
+        messageArg.payload.typedRequestPayload.request
+      );
       const payload: ICombinatorPayload<T> = {
         ...messageArg.payload,
         typedRequestPayload: {
@@ -52,7 +56,7 @@ export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedReq
       };
       channelArg.sendMessage({
         messageText: 'reactionResponse',
-        payload 
+        payload
       });
     }
   }

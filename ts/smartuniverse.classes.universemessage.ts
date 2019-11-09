@@ -78,12 +78,14 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
       this.destructionTimer = new Timer(selfdestructAfterArg);
       this.destructionTimer.start();
       // set up self destruction by removing this from the parent messageCache
-      this.destructionTimer.completed.then(async () => {
-        this.universeCache.messageMap.remove(this);
-      }).catch(err => {
-        console.log(err);
-        console.log(this);
-      });
+      this.destructionTimer.completed
+        .then(async () => {
+          this.universeCache.messageMap.remove(this);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(this);
+        });
     } else {
       plugins.smartdelay.delayFor(1000).then(() => {
         if (!this.destructionTimer) {

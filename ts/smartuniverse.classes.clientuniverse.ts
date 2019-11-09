@@ -98,7 +98,7 @@ export class ClientUniverse {
       this.smartsocketClient = new SmartsocketClient(socketConfig);
 
       this.smartsocketClient.eventSubject.subscribe(async eventArg => {
-        switch(eventArg) {
+        switch (eventArg) {
           case 'disconnected':
             this.disconnect('upstreamEvent');
         }
@@ -165,7 +165,10 @@ export class ClientUniverse {
     }
   }
 
-  public async disconnect(reason: 'upstreamEvent' | 'triggered' = 'triggered', tryReconnect = false) {
+  public async disconnect(
+    reason: 'upstreamEvent' | 'triggered' = 'triggered',
+    tryReconnect = false
+  ) {
     if (reason === 'triggered') {
       const smartsocketToDisconnect = this.smartsocketClient;
       this.smartsocketClient = null; // making sure the upstreamEvent does  not interfere

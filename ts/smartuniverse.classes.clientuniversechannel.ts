@@ -54,7 +54,6 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * tells the universe about this instances interest into a channel
    */
   public subscribe(observingFunctionArg: (messageArg: ClientUniverseMessage<any>) => void) {
-
     return this.subject.subscribe(
       messageArg => {
         observingFunctionArg(messageArg);

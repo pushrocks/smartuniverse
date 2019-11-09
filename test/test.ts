@@ -74,7 +74,7 @@ tap.test('a second client should be able to subscibe', async () => {
   await testClientUniverse2.start();
 });
 
-tap.test('should receive a message correctly', async (tools) => {
+tap.test('should receive a message correctly', async tools => {
   const done = tools.defer();
   const testChannel = testClientUniverse.getChannel(testChannelData.channelName);
   const testChannel2 = testClientUniverse2.getChannel(testChannelData.channelName);
@@ -91,7 +91,7 @@ tap.test('should receive a message correctly', async (tools) => {
 });
 
 interface IDemoReqRes {
-  method: 'demo',
+  method: 'demo';
   request: {
     wowso: string;
   };
@@ -114,19 +114,22 @@ tap.test('ReactionRequest and ReactionResponse should work', async () => {
   const reactionRequest = new smartuniverse.ReactionRequest<IDemoReqRes>({
     method: 'demo'
   });
-  const reactionResult = await reactionRequest.fire([testClientUniverse2.getChannel(testChannelData.channelName)], {
-    wowso: 'wowza'
-  });
+  const reactionResult = await reactionRequest.fire(
+    [testClientUniverse2.getChannel(testChannelData.channelName)],
+    {
+      wowso: 'wowza'
+    }
+  );
   const result = await reactionResult.getFirstResult();
   console.log(result);
 });
 
-tap.test('should disconnect the client correctly', async (tools) => {
+tap.test('should disconnect the client correctly', async tools => {
   await testClientUniverse.stop();
   await testClientUniverse2.stop();
 });
 
-tap.test('should end the server correctly', async (tools) => {
+tap.test('should end the server correctly', async tools => {
   await testUniverse.stopServer();
 });
 

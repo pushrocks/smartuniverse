@@ -40,12 +40,12 @@
     "@pushrocks/smartunique": "^3.0.1"
   },
   "files": [
-    "ts/*",
-    "ts_web/*",
-    "dist/*",
-    "dist_web/*",
-    "dist_ts_web/*",
-    "assets/*",
+    "ts/**/*",
+    "ts_web/**/*",
+    "dist/**/*",
+    "dist_web/**/*",
+    "dist_ts_web/**/*",
+    "assets/**/*",
     "cli.js",
     "npmextra.json",
     "readme.md"

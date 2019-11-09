@@ -6,7 +6,7 @@ export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedReque
   private endResult: Array<T['response']> = [];
   private completeDeferred = plugins.smartpromise.defer<Array<T['response']>>();
 
-  constructor () {
+  constructor() {
     this.resultSubscribe(responseArg => {
       this.endResult.push(responseArg);
     });
@@ -42,7 +42,7 @@ export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedReque
   public async pushReactionResponse(responseArg: T['response']) {
     this.resultReplaySubject.next(responseArg);
   }
-  
+
   /**
    * completes the ReactionResult
    */
