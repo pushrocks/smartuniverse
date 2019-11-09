@@ -25,6 +25,8 @@ export class ClientUniverse {
   public messageRxjsSubject = new plugins.smartrx.rxjs.Subject<ClientUniverseMessage<any>>();
   public clientUniverseCache = new ClientUniverseCache();
 
+  public autoReconnectStatus: 'on' | 'off' = 'off';
+
   constructor(optionsArg: IClientOptions) {
     this.options = optionsArg;
   }
@@ -74,10 +76,14 @@ export class ClientUniverse {
   }
 
   public async start() {
+    if (this.options.autoReconnect) {
+      this.autoReconnectStatus = 'on';
+    }
     await this.checkConnection();
   }
 
   public async stop() {
+    this.autoReconnectStatus = 'off';
     await this.disconnect('triggered');
   }
 
@@ -85,7 +91,7 @@ export class ClientUniverse {
    * checks the connection towards a universe server
    * since password validation is done through other means, a connection should always be possible
    */
-  public async checkConnection(): Promise<void> {
+  private async checkConnection(): Promise<void> {
     if (!this.smartsocketClient) {
       const parsedURL = url.parse(this.options.serverAddress);
       const socketConfig: plugins.smartsocket.ISmartsocketClientOptions = {
@@ -165,19 +171,25 @@ export class ClientUniverse {
     }
   }
 
-  public async disconnect(
+  private async disconnect(
     reason: 'upstreamEvent' | 'triggered' = 'triggered',
     tryReconnect = false
   ) {
-    if (reason === 'triggered') {
-      const smartsocketToDisconnect = this.smartsocketClient;
-      this.smartsocketClient = null; // making sure the upstreamEvent does  not interfere
-      await smartsocketToDisconnect.disconnect();
+    const instructDisconnect = async () => {
+      if (this.smartsocketClient) {
+        const smartsocketToDisconnect = this.smartsocketClient;
+        this.smartsocketClient = null; // making sure the upstreamEvent does  not interfere
+        await smartsocketToDisconnect.disconnect();
+      }
+    };
+
+    if (reason === 'triggered' && this.smartsocketClient) {
+      await instructDisconnect();
     }
-    if (this.options.autoReconnect && reason === 'upstreamEvent' && this.smartsocketClient) {
+    if (this.autoReconnectStatus === 'on' && reason === 'upstreamEvent') {
+      await instructDisconnect();
       await plugins.smartdelay.delayForRandom(5000, 20000);
-      this.smartsocketClient = null;
-      this.checkConnection();
+      await this.checkConnection();
     }
   }
 }
