@@ -106,23 +106,29 @@ export class UniverseConnection {
   public failedToJoinChannels: UniverseChannel[] = [];
 
   /**
-   * terminates the connection
+   * disconnect the connection
    */
-  public async terminateUniverseConnection() {
-    await this.socketConnection.disconnect();
+  public async disconnect(reason: 'upstreamevent' | 'triggered' = 'triggered') {
+    if (reason === 'triggered') {
+      await this.socketConnection.disconnect();
+    }
     this.universeRef.universeCache.connectionMap.remove(this);
     this.terminatedDeferred.resolve();
   }
 
   constructor(optionsArg: {
-    universe: Universe,
+    universe: Universe;
     socketConnection: plugins.smartsocket.SocketConnection;
     authenticationRequests: Array<interfaces.ISocketRequest_SubscribeChannel['request']>;
   }) {
     this.authenticationRequests = optionsArg.authenticationRequests;
     this.socketConnection = optionsArg.socketConnection;
-    this.socketConnection.eventSubject.subscribe(async(event) => {
-      await this.terminateUniverseConnection();
+    this.socketConnection.eventSubject.subscribe(async eventArg => {
+      switch (eventArg) {
+        case 'disconnected':
+          await this.disconnect('upstreamevent');
+          break;
+      }
     });
   }
 }

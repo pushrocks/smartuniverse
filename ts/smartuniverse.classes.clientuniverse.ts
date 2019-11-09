@@ -19,7 +19,7 @@ export interface IClientOptions {
  * allows connecting to a universe server
  */
 export class ClientUniverse {
-  public options;
+  public options: IClientOptions;
   public smartsocketClient: plugins.smartsocket.SmartsocketClient;
   public messageRxjsSubject = new plugins.smartrx.rxjs.Subject<ClientUniverseMessage<any>>();
   public clientUniverseCache = new ClientUniverseCache();
@@ -77,8 +77,7 @@ export class ClientUniverse {
   }
 
   public async stop() {
-    await this.smartsocketClient.disconnect();
-    this.smartsocketClient = null;
+    await this.disconnect('triggered');
   }
 
   /**
@@ -96,6 +95,13 @@ export class ClientUniverse {
         url: parsedURL.protocol + '//' + parsedURL.hostname
       };
       this.smartsocketClient = new SmartsocketClient(socketConfig);
+
+      this.smartsocketClient.eventSubject.subscribe(async eventArg => {
+        switch(eventArg) {
+          case 'disconnected':
+            this.disconnect('upstreamEvent');
+        }
+      });
 
       // lets define some basic actions
 
@@ -155,6 +161,17 @@ export class ClientUniverse {
       await this.clientUniverseCache.channelMap.forEach(async clientUniverseChannelArg => {
         await clientUniverseChannelArg.populateSubscriptionToServer();
       });
+    }
+  }
+
+  public async disconnect(reason: 'upstreamEvent' | 'triggered' = 'triggered', tryReconnect = false) {
+    if ('triggered') {
+      this.smartsocketClient.disconnect();
+    }
+    this.smartsocketClient = null;
+    if (tryReconnect) {
+      await plugins.smartdelay.delayForRandom(5000, 20000);
+      this.checkConnection();
     }
   }
 }
