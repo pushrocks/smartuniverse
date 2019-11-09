@@ -121,6 +121,7 @@ export class UniverseConnection {
     socketConnection: plugins.smartsocket.SocketConnection;
     authenticationRequests: Array<interfaces.ISocketRequest_SubscribeChannel['request']>;
   }) {
+    this.universeRef = optionsArg.universe;
     this.authenticationRequests = optionsArg.authenticationRequests;
     this.socketConnection = optionsArg.socketConnection;
     this.socketConnection.eventSubject.subscribe(async eventArg => {

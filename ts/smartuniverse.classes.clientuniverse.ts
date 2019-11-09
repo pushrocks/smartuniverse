@@ -12,6 +12,7 @@ import { ClientUniverseCache } from './smartuniverse.classes.clientuniversecache
 
 export interface IClientOptions {
   serverAddress: string;
+  autoReconnect: boolean;
 }
 
 /**
@@ -165,12 +166,14 @@ export class ClientUniverse {
   }
 
   public async disconnect(reason: 'upstreamEvent' | 'triggered' = 'triggered', tryReconnect = false) {
-    if ('triggered') {
-      this.smartsocketClient.disconnect();
+    if (reason === 'triggered') {
+      const smartsocketToDisconnect = this.smartsocketClient;
+      this.smartsocketClient = null; // making sure the upstreamEvent does  not interfere
+      await smartsocketToDisconnect.disconnect();
     }
-    this.smartsocketClient = null;
-    if (tryReconnect) {
+    if (this.options.autoReconnect && reason === 'upstreamEvent' && this.smartsocketClient) {
       await plugins.smartdelay.delayForRandom(5000, 20000);
+      this.smartsocketClient = null;
       this.checkConnection();
     }
   }

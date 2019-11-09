@@ -31,7 +31,8 @@ tap.test('add a message to the SmartUniverse', async () => {
 // testing message handling
 tap.test('create smartuniverse client', async () => {
   testClientUniverse = new smartuniverse.ClientUniverse({
-    serverAddress: testServerData.serverAddress
+    serverAddress: testServerData.serverAddress,
+    autoReconnect: true
   });
   expect(testClientUniverse).to.be.instanceof(smartuniverse.ClientUniverse);
 });
@@ -65,7 +66,8 @@ tap.test('universe should contain the sent message', async () => {
 
 tap.test('a second client should be able to subscibe', async () => {
   testClientUniverse2 = new smartuniverse.ClientUniverse({
-    serverAddress: testServerData.serverAddress
+    serverAddress: testServerData.serverAddress,
+    autoReconnect: true
   });
 
   testClientUniverse2.addChannel(testChannelData.channelName, testChannelData.channelPass);
