@@ -28,7 +28,7 @@ export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedReq
     this.channels.addArray(optionsArg.channels);
     this.funcDef = optionsArg.funcDef;
     for (const channel of this.channels.getArray()) {
-      channel.subscribe(messageArg => {
+      channel.subscribe((messageArg) => {
         this.processMessageForReaction(channel, messageArg);
       });
     }
@@ -51,12 +51,12 @@ export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedReq
         ...messageArg.payload,
         typedRequestPayload: {
           ...messageArg.payload.typedRequestPayload,
-          response
-        }
+          response,
+        },
       };
       channelArg.sendMessage({
         messageText: 'reactionResponse',
-        payload
+        payload,
       });
     }
   }

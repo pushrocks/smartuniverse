@@ -58,7 +58,7 @@ export class UniverseCache {
     messageArg.setUniverseCache(this);
     UniverseChannel.authorizeAMessageForAChannel(this, messageArg);
     this.messageMap.add(messageArg);
-    messageArg.universeChannelList.forEach(universeChannel => {
+    messageArg.universeChannelList.forEach((universeChannel) => {
       universeChannel.push(messageArg);
     });
   }
@@ -71,7 +71,7 @@ export class UniverseCache {
     channelName?: string
   ): Observable<UniverseMessage<any>> {
     const messageObservable = from(this.messageMap.getArray()).pipe(
-      filter(messageArg => {
+      filter((messageArg) => {
         return messageArg.smartTimestamp.isYoungerThanMilliSeconds(this.destructionTime);
       })
     );

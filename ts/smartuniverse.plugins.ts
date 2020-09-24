@@ -34,5 +34,5 @@ export {
   smartrequest,
   smartsocket,
   smarttime,
-  smartunique
+  smartunique,
 };

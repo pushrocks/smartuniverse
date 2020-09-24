@@ -70,7 +70,7 @@ export class Universe {
    * returns a channel
    */
   public getChannel(channelNameArg: string) {
-    return this.universeCache.channelMap.find(channelArg => {
+    return this.universeCache.channelMap.find((channelArg) => {
       return channelArg.name === channelNameArg;
     });
   }
@@ -87,7 +87,7 @@ export class Universe {
           return `smartuniverse server ${this.getUniverseVersion()}`;
         },
         forceSsl: false,
-        port: portArg
+        port: portArg,
       });
     } else {
       console.log('Universe is using externally supplied server');
@@ -100,7 +100,7 @@ export class Universe {
     // add a role for the clients
     const ClientRole = new plugins.smartsocket.SocketRole({
       name: 'UniverseClient',
-      passwordHash: plugins.smarthash.sha256FromStringSync('UniverseClient') // authentication happens on another level
+      passwordHash: plugins.smarthash.sha256FromStringSync('UniverseClient'), // authentication happens on another level
     });
 
     // add the role to smartsocket
@@ -115,13 +115,13 @@ export class Universe {
         const universeConnection = new UniverseConnection({
           universe: this,
           socketConnection: socketConnectionArg,
-          authenticationRequests: [dataArg]
+          authenticationRequests: [dataArg],
         });
         await UniverseConnection.addConnectionToCache(this, universeConnection);
         return {
-          subscriptionStatus: 'subscribed'
+          subscriptionStatus: 'subscribed',
         };
-      }
+      },
     });
 
     const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction({
@@ -133,17 +133,11 @@ export class Universe {
           socketConnectionArg
         );
         if (universeConnection) {
-          logger.log(
-            'ok',
-            'found UniverseConnection for socket for incoming message'
-          );
+          logger.log('ok', 'found UniverseConnection for socket for incoming message');
         } else {
-          logger.log(
-            'warn',
-            'found no Authorized channel for incoming message'
-          );
+          logger.log('warn', 'found no Authorized channel for incoming message');
           return {
-            error: 'You need to authenticate for a channel'
+            error: 'You need to authenticate for a channel',
           };
         }
         const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(
@@ -158,7 +152,7 @@ export class Universe {
           const authenticatedMessage = unauthenticatedMessage;
           await this.universeCache.addMessage(authenticatedMessage);
         }
-      }
+      },
     });
 
     // add socket functions

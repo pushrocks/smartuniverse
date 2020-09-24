@@ -81,7 +81,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
         .then(async () => {
           this.universeCache.messageMap.remove(this);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           console.log(this);
         });

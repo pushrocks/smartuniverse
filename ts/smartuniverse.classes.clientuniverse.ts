@@ -57,7 +57,7 @@ export class ClientUniverse {
    * @param passphraseArg
    */
   public getChannel(channelName: string): ClientUniverseChannel {
-    const clientUniverseChannel = this.clientUniverseCache.channelMap.find(channel => {
+    const clientUniverseChannel = this.clientUniverseCache.channelMap.find((channel) => {
       return channel.name === channelName;
     });
     return clientUniverseChannel;
@@ -69,7 +69,7 @@ export class ClientUniverse {
    */
   public removeChannel(channelNameArg, notifyServer = true) {
     const clientUniverseChannel = this.clientUniverseCache.channelMap.findOneAndRemove(
-      channelItemArg => {
+      (channelItemArg) => {
         return channelItemArg.name === channelNameArg;
       }
     );
@@ -99,11 +99,11 @@ export class ClientUniverse {
         password: 'UniverseClient',
         port: parseInt(parsedURL.port, 10),
         role: 'UniverseClient',
-        url: parsedURL.protocol + '//' + parsedURL.hostname
+        url: parsedURL.protocol + '//' + parsedURL.hostname,
       };
       this.smartsocketClient = new SmartsocketClient(socketConfig);
 
-      this.smartsocketClient.eventSubject.subscribe(async eventArg => {
+      this.smartsocketClient.eventSubject.subscribe(async (eventArg) => {
         switch (eventArg) {
           case 'disconnected':
             this.disconnect('upstreamEvent');
@@ -119,14 +119,14 @@ export class ClientUniverse {
         funcName: 'unsubscribe',
         allowedRoles: [],
         funcDef: async (dataArg: interfaces.IServerUnsubscribeActionPayload) => {
-          const channel = this.clientUniverseCache.channelMap.find(channelArg => {
+          const channel = this.clientUniverseCache.channelMap.find((channelArg) => {
             return channelArg.name === dataArg.name;
           });
           if (channel) {
             channel.unsubscribe();
           }
           return {};
-        }
+        },
       });
 
       /**
@@ -137,7 +137,7 @@ export class ClientUniverse {
       >({
         funcName: 'processMessage',
         allowedRoles: [],
-        funcDef: async messageDescriptorArg => {
+        funcDef: async (messageDescriptorArg) => {
           logger.log('info', 'Got message from server');
           const clientUniverseMessage = ClientUniverseMessage.createMessageFromMessageDescriptor(
             messageDescriptorArg
@@ -149,14 +149,14 @@ export class ClientUniverse {
           if (targetChannel) {
             await targetChannel.emitMessageLocally(clientUniverseMessage);
             return {
-              messageStatus: 'ok'
+              messageStatus: 'ok',
             };
           } else {
             return {
-              messageStatus: 'channel not found'
+              messageStatus: 'channel not found',
             };
           }
-        }
+        },
       });
 
       // add functions
@@ -165,7 +165,7 @@ export class ClientUniverse {
 
       await this.smartsocketClient.connect();
       logger.log('info', 'universe client connected successfully');
-      await this.clientUniverseCache.channelMap.forEach(async clientUniverseChannelArg => {
+      await this.clientUniverseCache.channelMap.forEach(async (clientUniverseChannelArg) => {
         await clientUniverseChannelArg.populateSubscriptionToServer();
       });
     }

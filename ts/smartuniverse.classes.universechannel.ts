@@ -34,7 +34,7 @@ export class UniverseChannel {
    * returns boolean wether certain channel exists
    */
   public static async doesChannelExists(universeCacheArg: UniverseCache, channelNameArg: string) {
-    const channel = universeCacheArg.channelMap.find(channelArg => {
+    const channel = universeCacheArg.channelMap.find((channelArg) => {
       return channelArg.name === channelNameArg;
     });
     if (channel) {
@@ -55,7 +55,7 @@ export class UniverseChannel {
     universeCacheArg: UniverseCache,
     universeMessageArg: UniverseMessage<any>
   ): UniverseChannel {
-    const foundChannel = universeCacheArg.channelMap.find(universeChannel => {
+    const foundChannel = universeCacheArg.channelMap.find((universeChannel) => {
       const result = universeChannel.authenticate(universeMessageArg);
       return result;
     });
@@ -73,7 +73,7 @@ export class UniverseChannel {
   }
 
   public static getUniverseChannelByName(universeRef: Universe, universeChannelName: string) {
-    return universeRef.universeCache.channelMap.find(channelArg => {
+    return universeRef.universeCache.channelMap.find((channelArg) => {
       return channelArg.name === universeChannelName;
     });
   }
@@ -118,7 +118,7 @@ export class UniverseChannel {
   public async push(messageArg: UniverseMessage<any>) {
     this.subject.next(messageArg);
     const universeConnectionsWithChannelAccess: UniverseConnection[] = [];
-    await this.universeRef.universeCache.connectionMap.forEach(async socketConnection => {
+    await this.universeRef.universeCache.connectionMap.forEach(async (socketConnection) => {
       if (socketConnection.authenticatedChannels.includes(this)) {
         universeConnectionsWithChannelAccess.push(socketConnection);
       }
@@ -132,7 +132,7 @@ export class UniverseChannel {
         passphrase: messageArg.passphrase,
         targetChannelName: this.name,
         messageText: messageArg.messageText,
-        payload: messageArg.payload
+        payload: messageArg.payload,
       };
       smartsocket.clientCall(
         'processMessage',
@@ -145,10 +145,10 @@ export class UniverseChannel {
   // functions to interact with a channel locally
   public subscribe(observingFunctionArg: (messageArg: UniverseMessage<any>) => void) {
     return this.subject.subscribe(
-      messageArg => {
+      (messageArg) => {
         observingFunctionArg(messageArg);
       },
-      error => console.log(error)
+      (error) => console.log(error)
     );
   }
 
@@ -162,7 +162,7 @@ export class UniverseChannel {
       payload: messageDescriptor.payload,
       targetChannelName: this.name,
       passphrase: this.passphrase,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
     this.universeRef.universeCache.addMessage(messageToSend);
   }

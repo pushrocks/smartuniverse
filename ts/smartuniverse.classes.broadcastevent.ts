@@ -7,14 +7,9 @@ import * as plugins from './smartuniverse.plugins';
 export class BroadcastEvent<T extends plugins.typedrequestInterfaces.ITypedEvent<any>> {
   public eventSubject = new plugins.smartrx.rxjs.Subject<T['payload']>();
 
-  constructor() {
+  constructor() {}
 
-  };
-
-  public fire(eventPayloadArg: T['payload']) {
-
-  };
-
+  public fire(eventPayloadArg: T['payload']) {}
 
   public subscribe(funcArg: (nextArg: T['payload']) => void): plugins.smartrx.rxjs.Subscription {
     return this.eventSubject.subscribe(funcArg);

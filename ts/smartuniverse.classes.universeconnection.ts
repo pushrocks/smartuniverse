@@ -37,7 +37,7 @@ export class UniverseConnection {
     universeConnectionArg: UniverseConnection
   ): Promise<UniverseConnection> {
     let connectionToReturn: UniverseConnection;
-    universeCache.connectionMap.forEach(async existingConnection => {
+    universeCache.connectionMap.forEach(async (existingConnection) => {
       if (existingConnection.socketConnection === universeConnectionArg.socketConnection) {
         connectionToReturn = await this.mergeUniverseConnections(
           existingConnection,
@@ -87,7 +87,7 @@ export class UniverseConnection {
     universeCache: UniverseCache,
     socketConnectionArg: plugins.smartsocket.SocketConnection
   ): UniverseConnection {
-    const universeConnection = universeCache.connectionMap.find(universeConnectionArg => {
+    const universeConnection = universeCache.connectionMap.find((universeConnectionArg) => {
       return universeConnectionArg.socketConnection === socketConnectionArg;
     });
     return universeConnection;
@@ -124,7 +124,7 @@ export class UniverseConnection {
     this.universeRef = optionsArg.universe;
     this.authenticationRequests = optionsArg.authenticationRequests;
     this.socketConnection = optionsArg.socketConnection;
-    this.socketConnection.eventSubject.subscribe(async eventArg => {
+    this.socketConnection.eventSubject.subscribe(async (eventArg) => {
       switch (eventArg) {
         case 'disconnected':
           await this.disconnect('upstreamevent');

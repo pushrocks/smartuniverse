@@ -64,16 +64,16 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
         typedRequestPayload: {
           method: this.method,
           request: requestDataArg,
-          response: null
-        }
+          response: null,
+        },
       };
       channel.sendMessage({
         messageText: 'reactionRequest',
-        payload
+        payload,
       });
     }
     plugins.smartdelay.delayFor(timeoutMillisArg).then(async () => {
-      await subscriptionMap.forEach(subscriptionArg => {
+      await subscriptionMap.forEach((subscriptionArg) => {
         subscriptionArg.unsubscribe();
       });
       reactionResult.complete();

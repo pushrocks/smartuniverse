@@ -55,10 +55,10 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    */
   public subscribe(observingFunctionArg: (messageArg: ClientUniverseMessage<any>) => void) {
     return this.subject.subscribe(
-      messageArg => {
+      (messageArg) => {
         observingFunctionArg(messageArg);
       },
-      error => console.log(error)
+      (error) => console.log(error)
     );
   }
 
@@ -73,7 +73,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
         interfaces.ISocketRequest_SubscribeChannel
       >('subscribeChannel', {
         name: this.name,
-        passphrase: this.passphrase
+        passphrase: this.passphrase,
       });
       this.status = response.subscriptionStatus;
     }
@@ -95,7 +95,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
       passphrase: this.passphrase,
       targetChannelName: this.name,
       messageText: messageArg.messageText,
-      payload: messageArg.payload
+      payload: messageArg.payload,
     };
     await this.clientUniverseRef.smartsocketClient.serverCall(
       'processMessage',
