@@ -20,7 +20,7 @@ export interface IReactionResponseConstructorOptions<
 
 export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedRequest> {
   public method: T['method'];
-  public channels = new plugins.lik.Objectmap<UniverseChannel | ClientUniverseChannel>();
+  public channels = new plugins.lik.ObjectMap<UniverseChannel | ClientUniverseChannel>();
   public funcDef: TReactionResponseFuncDef<T>;
 
   constructor(optionsArg: IReactionResponseConstructorOptions<T>) {

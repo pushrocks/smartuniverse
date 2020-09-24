@@ -5,6 +5,7 @@ import { UniverseCache } from './smartuniverse.classes.universecache';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 import { Universe } from './smartuniverse.classes.universe';
+import { logger } from './smartuniverse.logging';
 
 /**
  * enables messages to stay within a certain scope.
@@ -61,12 +62,12 @@ export class UniverseChannel {
     if (foundChannel) {
       universeMessageArg.authenticated = true;
       universeMessageArg.universeChannelList.add(foundChannel);
-      plugins.smartlog.defaultLogger.log('ok', 'message authorized');
+      logger.log('ok', 'message authorized');
       return foundChannel;
     } else {
       universeMessageArg.authenticated = false;
       universeMessageArg.universeChannelList.add(universeCacheArg.blackListChannel);
-      plugins.smartlog.defaultLogger.log('warn', 'message not valid');
+      logger.log('warn', 'message not valid');
       return null;
     }
   }

@@ -1,13 +1,12 @@
 import * as plugins from './smartuniverse.plugins';
 import * as interfaces from './interfaces';
 
-import { Objectmap } from '@pushrocks/lik';
-
 import { Timer, TimeStamp } from '@pushrocks/smarttime';
 import { Universe } from './smartuniverse.classes.universe';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseCache } from './smartuniverse.classes.universecache';
 import { SocketConnection } from '@pushrocks/smartsocket';
+import { logger } from './smartuniverse.logging';
 
 /**
  * represents a message within a universe
@@ -40,7 +39,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
   /**
    * enables unprotected grouping of messages for efficiency purposes.
    */
-  public universeChannelList = new Objectmap<UniverseChannel>();
+  public universeChannelList = new plugins.lik.ObjectMap<UniverseChannel>();
 
   /**
    * wether the message is authenticated
@@ -99,6 +98,6 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
    * handles bad messages for further analysis
    */
   public handleAsBadMessage() {
-    plugins.smartlog.defaultLogger.log('warn', 'received a bad message');
+    logger.log('warn', 'received a bad message');
   }
 }

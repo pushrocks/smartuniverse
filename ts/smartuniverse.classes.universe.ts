@@ -7,6 +7,7 @@ import * as paths from './smartuniverse.paths';
 
 import * as interfaces from './interfaces';
 import { UniverseConnection } from './smartuniverse.classes.universeconnection';
+import { logger } from './smartuniverse.logging';
 
 export interface ISmartUniverseConstructorOptions {
   messageExpiryInMilliseconds: number;
@@ -132,12 +133,12 @@ export class Universe {
           socketConnectionArg
         );
         if (universeConnection) {
-          plugins.smartlog.defaultLogger.log(
+          logger.log(
             'ok',
             'found UniverseConnection for socket for incoming message'
           );
         } else {
-          plugins.smartlog.defaultLogger.log(
+          logger.log(
             'warn',
             'found no Authorized channel for incoming message'
           );
@@ -172,7 +173,7 @@ export class Universe {
     // add smartsocket to the running smartexpress app
     await this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer);
     await this.smartsocket.start();
-    plugins.smartlog.defaultLogger.log('success', 'started universe');
+    logger.log('success', 'started universe');
   }
 
   /**

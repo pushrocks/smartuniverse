@@ -3,7 +3,7 @@ import * as plugins from './smartuniverse.plugins';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
 
-import { Objectmap } from '@pushrocks/lik';
+import { ObjectMap } from '@pushrocks/lik';
 
 import { Observable, from } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -24,17 +24,17 @@ export class UniverseCache {
   /**
    * stores messages for this instance
    */
-  public messageMap = new Objectmap<UniverseMessage<any>>();
+  public messageMap = new ObjectMap<UniverseMessage<any>>();
 
   /**
    * stores the channels that are available within the universe
    */
-  public channelMap = new Objectmap<UniverseChannel>();
+  public channelMap = new ObjectMap<UniverseChannel>();
 
   /**
    * stores all connections
    */
-  public connectionMap = new plugins.lik.Objectmap<UniverseConnection>();
+  public connectionMap = new plugins.lik.ObjectMap<UniverseConnection>();
 
   /**
    * allows messages to be processed in a blacklist mode for further analysis

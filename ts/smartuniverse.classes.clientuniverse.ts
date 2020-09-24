@@ -1,6 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { Objectmap } from '@pushrocks/lik';
 import { Observable } from 'rxjs';
 import { Smartsocket, SmartsocketClient } from '@pushrocks/smartsocket';
 import * as url from 'url';
@@ -9,6 +8,7 @@ import * as interfaces from './interfaces';
 
 import { ClientUniverseChannel, ClientUniverseMessage } from './';
 import { ClientUniverseCache } from './smartuniverse.classes.clientuniversecache';
+import { logger } from './smartuniverse.logging';
 
 export interface IClientOptions {
   serverAddress: string;
@@ -138,7 +138,7 @@ export class ClientUniverse {
         funcName: 'processMessage',
         allowedRoles: [],
         funcDef: async messageDescriptorArg => {
-          plugins.smartlog.defaultLogger.log('info', 'Got message from server');
+          logger.log('info', 'Got message from server');
           const clientUniverseMessage = ClientUniverseMessage.createMessageFromMessageDescriptor(
             messageDescriptorArg
           );
@@ -164,7 +164,7 @@ export class ClientUniverse {
       this.smartsocketClient.addSocketFunction(socketFunctionProcessMessage);
 
       await this.smartsocketClient.connect();
-      plugins.smartlog.defaultLogger.log('info', 'universe client connected successfully');
+      logger.log('info', 'universe client connected successfully');
       await this.clientUniverseCache.channelMap.forEach(async clientUniverseChannelArg => {
         await clientUniverseChannelArg.populateSubscriptionToServer();
       });

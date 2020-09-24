@@ -10,34 +10,34 @@
   "scripts": {
     "test": "(tstest test/)",
     "testManual": "(tsrun test/test.ts)",
-    "build": "(tsbuild)",
+    "build": "(tsbuild --web)",
     "format": "(gitzone format)"
   },
   "devDependencies": {
-    "@gitzone/tsbuild": "^2.1.17",
-    "@gitzone/tstest": "^1.0.28",
-    "@pushrocks/tapbundle": "^3.0.13",
-    "@types/node": "^12.12.7",
-    "tslint": "^5.20.1",
+    "@gitzone/tsbuild": "^2.1.25",
+    "@gitzone/tstest": "^1.0.44",
+    "@pushrocks/tapbundle": "^3.2.9",
+    "@types/node": "^14.11.2",
+    "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0"
   },
   "peerDependencies": {
     "rxjs": "*"
   },
   "dependencies": {
-    "@apiglobal/typedrequest-interfaces": "^1.0.9",
-    "@pushrocks/lik": "^3.0.11",
-    "@pushrocks/smartdelay": "^2.0.6",
-    "@pushrocks/smartexpress": "^3.0.52",
-    "@pushrocks/smartfile": "^7.0.6",
-    "@pushrocks/smarthash": "^2.0.6",
-    "@pushrocks/smartlog": "^2.0.21",
+    "@apiglobal/typedrequest-interfaces": "^1.0.15",
+    "@pushrocks/lik": "^4.0.17",
+    "@pushrocks/smartdelay": "^2.0.10",
+    "@pushrocks/smartexpress": "^3.0.76",
+    "@pushrocks/smartfile": "^8.0.0",
+    "@pushrocks/smarthash": "^2.1.6",
+    "@pushrocks/smartlog": "^2.0.39",
     "@pushrocks/smartpromise": "^3.0.6",
-    "@pushrocks/smartrequest": "^1.1.42",
-    "@pushrocks/smartrx": "^2.0.5",
-    "@pushrocks/smartsocket": "^1.1.58",
-    "@pushrocks/smarttime": "^3.0.12",
-    "@pushrocks/smartunique": "^3.0.1"
+    "@pushrocks/smartrequest": "^1.1.49",
+    "@pushrocks/smartrx": "^2.0.19",
+    "@pushrocks/smartsocket": "^1.1.60",
+    "@pushrocks/smarttime": "^3.0.35",
+    "@pushrocks/smartunique": "^3.0.3"
   },
   "files": [
     "ts/**/*",
