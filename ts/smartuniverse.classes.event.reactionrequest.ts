@@ -1,9 +1,9 @@
 import * as plugins from './smartuniverse.plugins';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
-import { ClientUniverseChannel } from './smartuniverse.classes.clientuniversechannel';
-import { ReactionResult } from './smartuniverse.classes.reactionresult';
+import { ClientUniverseChannel } from './smartuniverse.classes.client.universechannel';
+import { ReactionResult } from './smartuniverse.classes.event.reactionresult';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
-import { ClientUniverseMessage } from './smartuniverse.classes.clientuniversemessage';
+import { ClientUniverseMessage } from './smartuniverse.classes.client.universemessage';
 
 export interface IReactionRequestConstructorOptions<
   T extends plugins.typedrequestInterfaces.ITypedRequest
@@ -67,7 +67,7 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
           response: null,
         },
       };
-      channel.sendMessage({
+      channel.postMessage({
         messageText: 'reactionRequest',
         payload,
       });

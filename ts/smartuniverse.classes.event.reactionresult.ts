@@ -1,5 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
-import { ReactionResponse } from './smartuniverse.classes.reactionresponse';
+import { ReactionResponse } from './smartuniverse.classes.event.reactionresponse';
 
 export class ReactionResult<T extends plugins.typedrequestInterfaces.ITypedRequest> {
   private resultReplaySubject = new plugins.smartrx.rxjs.ReplaySubject<T['response']>();

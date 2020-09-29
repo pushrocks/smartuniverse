@@ -6,8 +6,8 @@ import * as url from 'url';
 
 import * as interfaces from './interfaces';
 
-import { ClientUniverseChannel, ClientUniverseMessage } from './';
-import { ClientUniverseCache } from './smartuniverse.classes.clientuniversecache';
+import { ClientUniverseChannel, ClientUniverseMessage } from '.';
+import { ClientUniverseCache } from './smartuniverse.classes.client.universecache';
 import { logger } from './smartuniverse.logging';
 
 export interface IClientOptions {

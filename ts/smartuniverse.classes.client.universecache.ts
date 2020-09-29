@@ -1,5 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
-import { ClientUniverseChannel } from './smartuniverse.classes.clientuniversechannel';
+import { ClientUniverseChannel } from './smartuniverse.classes.client.universechannel';
 
 /**
  * a cache for clients

@@ -7,7 +7,6 @@ import { ObjectMap } from '@pushrocks/lik';
 
 import { Observable, from } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { rxjs } from '@pushrocks/smartrx';
 import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 import { Universe } from './smartuniverse.classes.universe';
 

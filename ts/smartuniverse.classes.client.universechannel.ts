@@ -1,10 +1,10 @@
 import * as plugins from './smartuniverse.plugins';
 import * as interfaces from './interfaces';
 
-import { ClientUniverse } from './';
-import { ClientUniverseMessage } from './smartuniverse.classes.clientuniversemessage';
-import { ReactionRequest } from './smartuniverse.classes.reactionrequest';
-import { ReactionResponse } from './smartuniverse.classes.reactionresponse';
+import { ClientUniverse } from '.';
+import { ClientUniverseMessage } from './smartuniverse.classes.client.universemessage';
+import { ReactionRequest } from './smartuniverse.classes.event.reactionrequest';
+import { ReactionResponse } from './smartuniverse.classes.event.reactionresponse';
 
 export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   // ======
@@ -87,7 +87,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
    * sends a message towards the server
    * @param messageArg
    */
-  public async sendMessage(messageArg: interfaces.IMessageCreator) {
+  public async postMessage(messageArg: interfaces.IMessageCreator) {
     await this.clientUniverseRef.start(); // its ok to call this multiple times
     const universeMessageToSend: interfaces.IUniverseMessage = {
       id: plugins.smartunique.shortId(),

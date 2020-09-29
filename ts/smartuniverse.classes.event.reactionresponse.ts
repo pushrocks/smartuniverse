@@ -1,10 +1,10 @@
 import * as plugins from './smartuniverse.plugins';
 
-import { ICombinatorPayload } from './smartuniverse.classes.reactionrequest';
+import { ICombinatorPayload } from './smartuniverse.classes.event.reactionrequest';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
-import { ClientUniverseChannel } from './smartuniverse.classes.clientuniversechannel';
+import { ClientUniverseChannel } from './smartuniverse.classes.client.universechannel';
 import { UniverseMessage } from './smartuniverse.classes.universemessage';
-import { ClientUniverseMessage } from './smartuniverse.classes.clientuniversemessage';
+import { ClientUniverseMessage } from './smartuniverse.classes.client.universemessage';
 
 export type TReactionResponseFuncDef<T extends plugins.typedrequestInterfaces.ITypedRequest> = (
   dataArg: T['request']
@@ -54,7 +54,7 @@ export class ReactionResponse<T extends plugins.typedrequestInterfaces.ITypedReq
           response,
         },
       };
-      channelArg.sendMessage({
+      channelArg.postMessage({
         messageText: 'reactionResponse',
         payload,
       });
