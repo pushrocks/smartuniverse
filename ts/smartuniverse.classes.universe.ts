@@ -77,7 +77,13 @@ export class Universe {
   /**
    * initiates a server
    */
-  public async start(portArg: number) {
+  public async start(portArg?: number) {
+    if (!this.options.externalServer && !portArg) {
+      throw new Error(`You supplied an external error. You need to specify a portArg to start on.`);
+    }
+
+    portArg = portArg || 3000; // TODO: remove
+
     // add websocket upgrade
     this.smartsocket = new plugins.smartsocket.Smartsocket({
       port: portArg
