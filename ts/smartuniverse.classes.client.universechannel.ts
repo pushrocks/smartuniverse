@@ -90,7 +90,7 @@ export class ClientUniverseChannel implements interfaces.IUniverseChannel {
   public async postMessage(messageArg: interfaces.IMessageCreator) {
     await this.clientUniverseRef.start(); // its ok to call this multiple times
     const universeMessageToSend: interfaces.IUniverseMessage = {
-      id: plugins.smartunique.shortId(),
+      id: plugins.isounique.uni(),
       timestamp: Date.now(),
       passphrase: this.passphrase,
       targetChannelName: this.name,

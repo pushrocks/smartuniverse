@@ -1,7 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
 import * as interfaces from './interfaces';
-
-import { Timer, TimeStamp } from '@pushrocks/smarttime';
 import { Universe } from './smartuniverse.classes.universe';
 import { UniverseChannel } from './smartuniverse.classes.universechannel';
 import { UniverseCache } from './smartuniverse.classes.universecache';
@@ -24,7 +22,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
 
   public id: string;
   public timestamp: number;
-  public smartTimestamp: TimeStamp;
+  public smartTimestamp: plugins.smarttime.TimeStamp;
   public messageText: string;
   public passphrase: string;
   public payload: T;
@@ -49,7 +47,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
   /**
    * a destruction timer for this message
    */
-  public destructionTimer: Timer; // a timer to take care of message destruction
+  public destructionTimer: plugins.smarttime.Timer; // a timer to take care of message destruction
 
   /**
    * the constructor to create a universe message
@@ -57,7 +55,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
    * @param attachedPayloadArg
    */
   constructor(messageDescriptor: interfaces.IUniverseMessage) {
-    this.smartTimestamp = new TimeStamp(this.timestamp);
+    this.smartTimestamp = new plugins.smarttime.TimeStamp(this.timestamp);
     this.messageText = messageDescriptor.messageText;
     this.targetChannelName = messageDescriptor.targetChannelName;
     this.passphrase = messageDescriptor.passphrase;
@@ -74,7 +72,7 @@ export class UniverseMessage<T> implements interfaces.IUniverseMessage {
 
   public setDestructionTimer(selfdestructAfterArg?: number) {
     if (selfdestructAfterArg) {
-      this.destructionTimer = new Timer(selfdestructAfterArg);
+      this.destructionTimer = new plugins.smarttime.Timer(selfdestructAfterArg);
       this.destructionTimer.start();
       // set up self destruction by removing this from the parent messageCache
       this.destructionTimer.completed

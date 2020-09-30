@@ -37,7 +37,7 @@ export class ReactionRequest<T extends plugins.typedrequestInterfaces.ITypedRequ
   ) {
     const subscriptionMap = new plugins.lik.ObjectMap<plugins.smartrx.rxjs.Subscription>();
     const reactionResult = new ReactionResult<T>();
-    const requestId = plugins.smartunique.shortId();
+    const requestId = plugins.isounique.uni();
     for (const channel of channelsArg) {
       subscriptionMap.add(
         channel.subscribe(

@@ -26,18 +26,16 @@
   },
   "dependencies": {
     "@apiglobal/typedrequest-interfaces": "^1.0.15",
+    "@pushrocks/isohash": "^1.0.2",
+    "@pushrocks/isounique": "^1.0.4",
     "@pushrocks/lik": "^4.0.17",
     "@pushrocks/smartdelay": "^2.0.10",
     "@pushrocks/smartexpress": "^3.0.76",
-    "@pushrocks/smartfile": "^8.0.0",
-    "@pushrocks/smarthash": "^2.1.6",
     "@pushrocks/smartlog": "^2.0.39",
     "@pushrocks/smartpromise": "^3.0.6",
-    "@pushrocks/smartrequest": "^1.1.51",
     "@pushrocks/smartrx": "^2.0.19",
     "@pushrocks/smartsocket": "^1.1.67",
-    "@pushrocks/smarttime": "^3.0.35",
-    "@pushrocks/smartunique": "^3.0.3"
+    "@pushrocks/smarttime": "^3.0.35"
   },
   "files": [
     "ts/**/*",

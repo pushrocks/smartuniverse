@@ -4,8 +4,6 @@ import * as pluginsTyped from './smartuniverse.pluginstyped';
 import { Handler, Route, Server } from '@pushrocks/smartexpress';
 import { UniverseCache, UniverseChannel, UniverseMessage } from './';
 
-import * as paths from './smartuniverse.paths';
-
 import * as interfaces from './interfaces';
 import { UniverseConnection } from './smartuniverse.classes.universeconnection';
 import { logger } from './smartuniverse.logging';
@@ -49,7 +47,7 @@ export class Universe {
   /**
    * get the currently running version of smartuniverse
    */
-  public getUniverseVersion() {
+  /* public getUniverseVersion() {
     if (this.universeVersionStore) {
       return this.universeVersionStore;
     } else {
@@ -57,7 +55,7 @@ export class Universe {
       this.universeVersionStore = packageJson.version;
       return this.universeVersionStore;
     }
-  }
+  } */
 
   /**
    * adds a channel to the Universe
@@ -94,7 +92,7 @@ export class Universe {
     // add a role for the clients
     const ClientRole = new plugins.smartsocket.SocketRole({
       name: 'UniverseClient',
-      passwordHash: plugins.smarthash.sha256FromStringSync('UniverseClient'), // authentication happens on another level
+      passwordHash: await plugins.isohash.sha256FromString('UniverseClient'), // authentication happens on another level
     });
 
     // add the role to smartsocket

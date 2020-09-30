@@ -157,7 +157,7 @@ export class UniverseChannel {
    */
   public async postMessage(messageDescriptor: interfaces.IMessageCreator) {
     const messageToSend = new UniverseMessage({
-      id: plugins.smartunique.shortId(),
+      id: plugins.isounique.uni(),
       messageText: messageDescriptor.messageText,
       payload: messageDescriptor.payload,
       targetChannelName: this.name,

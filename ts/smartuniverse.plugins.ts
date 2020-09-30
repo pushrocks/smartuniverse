@@ -1,8 +1,3 @@
-// node native
-import * as path from 'path';
-
-export { path };
-
 // apiglobal scope
 import * as typedrequestInterfaces from '@apiglobal/typedrequest-interfaces';
 
@@ -10,27 +5,23 @@ export { typedrequestInterfaces };
 
 // pushrocks scope
 import * as lik from '@pushrocks/lik';
-import * as smarthash from '@pushrocks/smarthash';
+import * as isohash from '@pushrocks/isohash';
 import * as smartdelay from '@pushrocks/smartdelay';
-import * as smartfile from '@pushrocks/smartfile';
 import * as smartlog from '@pushrocks/smartlog';
 import * as smartpromise from '@pushrocks/smartpromise';
-import * as smartrequest from '@pushrocks/smartrequest';
 import * as smartrx from '@pushrocks/smartrx';
 import * as smartsocket from '@pushrocks/smartsocket';
 import * as smarttime from '@pushrocks/smarttime';
-import * as smartunique from '@pushrocks/smartunique';
+import * as isounique from '@pushrocks/isounique';
 
 export {
   lik,
-  smarthash,
+  isohash,
   smartdelay,
-  smartfile,
   smartlog,
   smartpromise,
   smartrx,
-  smartrequest,
   smartsocket,
   smarttime,
-  smartunique,
+  isounique,
 };
