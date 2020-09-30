@@ -1,4 +1,5 @@
 import * as plugins from './smartuniverse.plugins';
+import * as pluginsTyped from './smartuniverse.pluginstyped';
 
 import { Handler, Route, Server } from '@pushrocks/smartexpress';
 import { UniverseCache, UniverseChannel, UniverseMessage } from './';
@@ -11,7 +12,7 @@ import { logger } from './smartuniverse.logging';
 
 export interface ISmartUniverseConstructorOptions {
   messageExpiryInMilliseconds: number;
-  externalServer?: plugins.smartexpress.Server;
+  externalServer?: pluginsTyped.smartexpress.Server;
 }
 
 /**
@@ -27,7 +28,7 @@ export class Universe {
   /**
    * the smartexpress server used
    */
-  private smartexpressServer: plugins.smartexpress.Server;
+  private smartexpressServer: pluginsTyped.smartexpress.Server;
 
   /**
    * the smartsocket used
@@ -79,23 +80,16 @@ export class Universe {
    * initiates a server
    */
   public async start(portArg: number) {
-    // lets create the base smartexpress server
-    if (!this.options.externalServer) {
-      this.smartexpressServer = new plugins.smartexpress.Server({
-        cors: true,
-        defaultAnswer: async () => {
-          return `smartuniverse server ${this.getUniverseVersion()}`;
-        },
-        forceSsl: false,
-        port: portArg,
-      });
-    } else {
-      console.log('Universe is using externally supplied server');
-      this.smartexpressServer = this.options.externalServer;
-    }
-
     // add websocket upgrade
-    this.smartsocket = new plugins.smartsocket.Smartsocket({});
+    this.smartsocket = new plugins.smartsocket.Smartsocket({
+      port: portArg
+    });
+
+    // lets create the base smartexpress server
+    if (this.options.externalServer) {
+      console.log('Universe is using externally supplied server');
+      this.smartsocket.setExternalServer('smartexpress' ,this.options.externalServer);
+    }
 
     // add a role for the clients
     const ClientRole = new plugins.smartsocket.SocketRole({
@@ -159,13 +153,7 @@ export class Universe {
     this.smartsocket.addSocketFunction(socketFunctionSubscription);
     this.smartsocket.addSocketFunction(socketFunctionProcessMessage);
 
-    // start the server
-    if (!this.options.externalServer) {
-      await this.smartexpressServer.start();
-    }
-
     // add smartsocket to the running smartexpress app
-    await this.smartsocket.setExternalServer('smartexpress', this.smartexpressServer);
     await this.smartsocket.start();
     logger.log('success', 'started universe');
   }
@@ -175,8 +163,5 @@ export class Universe {
    */
   public async stopServer() {
     await this.smartsocket.stop();
-    if (!this.options.externalServer) {
-      await this.smartexpressServer.stop();
-    }
   }
 }

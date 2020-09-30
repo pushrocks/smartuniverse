@@ -12,7 +12,6 @@ export { typedrequestInterfaces };
 import * as lik from '@pushrocks/lik';
 import * as smarthash from '@pushrocks/smarthash';
 import * as smartdelay from '@pushrocks/smartdelay';
-import * as smartexpress from '@pushrocks/smartexpress';
 import * as smartfile from '@pushrocks/smartfile';
 import * as smartlog from '@pushrocks/smartlog';
 import * as smartpromise from '@pushrocks/smartpromise';
@@ -26,7 +25,6 @@ export {
   lik,
   smarthash,
   smartdelay,
-  smartexpress,
   smartfile,
   smartlog,
   smartpromise,

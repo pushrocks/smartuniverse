@@ -10,7 +10,7 @@
   "scripts": {
     "test": "(tstest test/)",
     "testManual": "(tsrun test/test.ts)",
-    "build": "(tsbuild --web)",
+    "build": "(tsbuild --web && tsbundle --from ./ts/index.ts --to dist_bundle/bundle.js)",
     "format": "(gitzone format)"
   },
   "devDependencies": {
