@@ -122,10 +122,10 @@ export class Universe {
       },
     });
 
-    const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction({
+    const socketFunctionProcessMessage = new plugins.smartsocket.SocketFunction<any>({ // TODO proper ITypedRequest here instead of any
       allowedRoles: [ClientRole], // there is only one client role, Authentication happens on another level
       funcName: 'processMessage',
-      funcDef: async (dataArg: interfaces.IUniverseMessage, socketConnectionArg) => {
+      funcDef: async (messageDataArg: interfaces.IUniverseMessage, socketConnectionArg) => {
         const universeConnection = UniverseConnection.findUniverseConnectionBySocketConnection(
           this.universeCache,
           socketConnectionArg
@@ -140,7 +140,7 @@ export class Universe {
         }
         const unauthenticatedMessage = UniverseMessage.createMessageFromPayload(
           socketConnectionArg,
-          dataArg
+          messageDataArg
         );
         const foundChannel = await UniverseChannel.authorizeAMessageForAChannel(
           this.universeCache,
